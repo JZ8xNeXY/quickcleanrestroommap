@@ -7,49 +7,49 @@ class PostSerializer < ActiveModel::Serializer
             #  :image
 
   def name
-    object.facility.name
+    object.name
   end
 
   def address
-    object.facility.address
+    object.address
   end
 
   def content
-    object.facility.content
+    object.content
   end
 
   def latitude
-    object.facility.latitude
+    object.latitude
   end
 
   def longitude
-    object.facility.longitude
+    object.longitude
   end
 
   def nursing_room
-    object.facility.nursing_room
+    object.nursing_room
   end
 
   def anyone_toilet
-    object.facility.anyone_toilet
+    object.anyone_toilet
   end
 
   def diaper_changing_station
-    object.facility.diaper_changing_station
+    object.diaper_changing_station
   end
 
   def powder_corner
-    object.facility.powder_corner
+    object.powder_corner
   end
 
   def stroller_accessible
-    object.facility.stroller_accessible
+    object.stroller_accessible
   end
 
   # def image
-  #   if object.facility.image.attached?
+  #   if object.image.attached?
   #     # ローカルと本番環境で分ける
-  #     rails_blob_url(object.facility.image, host: 'localhost', port: 3000)
+  #     rails_blob_url(object.image, host: 'localhost', port: 3000)
   #   end
   # end
 end
