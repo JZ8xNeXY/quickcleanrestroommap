@@ -1,7 +1,19 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
-#   Character.create(name: "Luke", movie: movies.first)
+Post.create!(
+  name: 'としま区民センター',
+  address: '東京都豊島区',
+  content: 'とても綺麗だった',
+  latitude: 35.7315,
+  longitude: 139.716,
+  nursing_room: true,
+  anyone_toilet: true,
+  diaper_changing_station: true,
+  powder_corner: true,
+  stroller_accessible: true
+)
+
+# # ファイルを添付
+# facility.image.attach(
+#   io: File.open(Rails.root.join('app/assets/images/toshima.jpeg')),
+#   filename: 'toshima.jpeg',
+#   content_type: 'image/jpeg'
+# )
