@@ -1,4 +1,4 @@
-Post.create!(
+post = Post.create!(
   name: 'としま区民センター',
   address: '東京都豊島区',
   content: 'とても綺麗だった',
@@ -11,9 +11,9 @@ Post.create!(
   stroller_accessible: true
 )
 
-# # ファイルを添付
-# facility.image.attach(
-#   io: File.open(Rails.root.join('app/assets/images/toshima.jpeg')),
-#   filename: 'toshima.jpeg',
-#   content_type: 'image/jpeg'
-# )
+# ファイルを添付
+post.image.attach(
+  io: File.open(Rails.root.join('app/assets/images/toshima.jpeg')),
+  filename: 'toshima.jpeg',
+  content_type: 'image/jpeg'
+)

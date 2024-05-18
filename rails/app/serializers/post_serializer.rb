@@ -4,7 +4,7 @@ class PostSerializer < ActiveModel::Serializer
 
   attributes :id, :name, :address, :content, :latitude, :longitude, :created_at, :nursing_room, :anyone_toilet,
              :diaper_changing_station, :powder_corner, :stroller_accessible,
-            #  :image
+             :image
 
   def name
     object.name
@@ -46,10 +46,10 @@ class PostSerializer < ActiveModel::Serializer
     object.stroller_accessible
   end
 
-  # def image
-  #   if object.image.attached?
-  #     # ローカルと本番環境で分ける
-  #     rails_blob_url(object.image, host: 'localhost', port: 3000)
-  #   end
-  # end
+  def image
+    if object.image.attached?
+      # ローカルと本番環境で分ける
+      rails_blob_url(object.image, host: 'localhost', port: 3000)
+    end
+  end
 end
