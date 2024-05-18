@@ -19,5 +19,5 @@ test:
 
 production:
    <<: *default
-   database: quickcleanrestroommap_prouction
+   database: quickcleanrestroommap_production
    url: <%= Rails.application.credentials.production.database_url %>
