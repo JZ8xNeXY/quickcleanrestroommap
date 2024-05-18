@@ -1,5 +1,4 @@
 class PostSerializer < ActiveModel::Serializer
-
   include Rails.application.routes.url_helpers
 
   attributes :id, :name, :address, :content, :latitude, :longitude, :created_at, :nursing_room, :anyone_toilet,
@@ -47,9 +46,9 @@ class PostSerializer < ActiveModel::Serializer
   end
 
   def image
-    if object.image.attached?
-      # ローカルと本番環境で分ける
-      rails_blob_url(object.image, host: 'localhost', port: 3000)
-    end
+    return unless object.image.attached?
+
+    # ローカルと本番環境で分ける
+    rails_blob_url(object.image, host: 'localhost', port: 3000)
   end
 end

@@ -6,5 +6,4 @@ class Post < ApplicationRecord
   def was_attached?
     image.attached?
   end
-
 end
