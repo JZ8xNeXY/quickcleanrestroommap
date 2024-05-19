@@ -52,9 +52,8 @@ class PostSerializer < ActiveModel::Serializer
     port = Rails.env.development? ? 3000 : nil
     protocol = Rails.env.production? ? 'https' : 'http'
 
-    url = rails_blob_url(object.image, host: host, port: port, protocol: protocol)
+    url = rails_blob_url(object.image, host:, port:, protocol:)
     Rails.logger.debug "Generated URL: #{url}"
     url
   end
-
 end
