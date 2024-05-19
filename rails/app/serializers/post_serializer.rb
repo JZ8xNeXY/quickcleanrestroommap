@@ -48,7 +48,12 @@ class PostSerializer < ActiveModel::Serializer
   def image
     return unless object.image.attached?
 
-    # ローカルと本番環境で分ける
-    rails_blob_url(object.image, host: 'localhost', port: 3000)
+    host = Rails.env.production? ? 'backend.quickcleanrestrooms.com' : 'localhost'
+    port = Rails.env.development? ? 3000 : nil
+    protocol = Rails.env.production? ? 'https' : 'http'
+
+    url = rails_blob_url(object.image, host:, port:, protocol:)
+    Rails.logger.debug "Generated URL: #{url}"
+    url
   end
 end
