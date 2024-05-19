@@ -1,18 +1,23 @@
+import { Box, Container } from '@mui/material'
 import type { NextPage } from 'next'
-import useSWR from 'swr'
-import { fetcher } from '@/utils'
+import { useEffect, useState } from 'react'
+import AddMarkers from '@/components/AddMarkers'
+import { loadGoogleMapsAPI } from '@/utils/loadGoogleMapsAPI'
 
 const Index: NextPage = () => {
-  const url = 'https://backend.quickcleanrestrooms.com/api/v1/health_check'
-  const { data, error } = useSWR(url, fetcher)
+  const [map, setMap] = useState<google.maps.Map | null>(null)
 
-  if (error) return <div>An error has occurred.</div>
-  if (!data) return <div>Loading...</div>
+  useEffect(() => {
+    loadGoogleMapsAPI(setMap)
+  }, [])
 
   return (
     <>
-      <div>Rails疎通確認</div>
-      <div>レスポンスメッセージ: {data.message}</div>
+      <Container maxWidth="xl">
+        <AddMarkers map={map} />
+        <Box id="map" style={{ height: '80vh', width: '100%' }}></Box>
+        <Box id="infoPanel"></Box>
+      </Container>
     </>
   )
 }
