@@ -30,7 +30,7 @@ interface Restroom {
 
 // eslint-disable-next-line react/prop-types
 const AddMarkers: NextPage<AddMarkersProps> = ({ map }) => {
-  const url = process.env.NEXT_PUBLIC_API_BASE_URL + 'posts'
+  const url = process.env.NEXT_PUBLIC_API_BASE_URL + '/posts'
   const { data, error } = useSWR(url, fetcher, { revalidateOnFocus: false })
 
   const [openModalWindow, setOpenModalWindow] = useState(false)
