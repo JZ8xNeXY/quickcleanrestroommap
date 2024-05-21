@@ -2,7 +2,5 @@
   "/_app": "pages/_app.js",
   "/_document": "pages/_document.js",
   "/_error": "pages/_error.js",
-  "/": "pages/index.js",
-  "/health_check": "pages/health_check.js",
-  "/hello_mui": "pages/hello_mui.js"
+  "/": "pages/index.js"
 }
