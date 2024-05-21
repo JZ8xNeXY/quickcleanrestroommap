@@ -68,7 +68,7 @@ export const loadGoogleMapsAPI = (
     }
   })({
     // key: process.env.GOOGLE_MAPS_API_KEY,
-    key: process.env.GOOGLE_MAP_KEY,
+    key: 'AIzaSyAAFsYCIgMx3Ssb26BhDPvgjDrtd0TV4K4',
     v: 'beta',
   })
 }
