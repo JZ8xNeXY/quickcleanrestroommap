@@ -2,6 +2,7 @@ import { Box, Container } from '@mui/material'
 import type { NextPage } from 'next'
 import { useEffect, useState } from 'react'
 import AddMarkers from '@/components/AddMarkers'
+import { RightClickMapHandler } from '@/utils/RightClickMapHandler'
 import { loadGoogleMapsAPI } from '@/utils/loadGoogleMapsAPI'
 
 const Index: NextPage = () => {
@@ -10,6 +11,12 @@ const Index: NextPage = () => {
   useEffect(() => {
     loadGoogleMapsAPI(setMap)
   }, [])
+
+  useEffect(() => {
+    if (map) {
+      RightClickMapHandler({ map })
+    }
+  }, [map])
 
   return (
     <>
