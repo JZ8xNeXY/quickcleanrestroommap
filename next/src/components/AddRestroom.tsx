@@ -287,6 +287,36 @@ const AddRestroom: React.FC<AddRestroomProps> = ({ open, onClose, coords }) => {
                 </>
               )}
             </div>
+            <Controller
+              name="latitude"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  type="number"
+                  label="緯度"
+                  sx={{ backgroundColor: 'white' }}
+                  value={coords ? coords.lat : ''}
+                  InputProps={{ readOnly: true }}
+                  style={{ display: 'none' }}
+                />
+              )}
+            />
+            <Controller
+              name="longitude"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  type="number"
+                  label="経度"
+                  sx={{ backgroundColor: 'white' }}
+                  value={coords ? coords.lng : ''}
+                  InputProps={{ readOnly: true }}
+                  style={{ display: 'none' }}
+                />
+              )}
+            />
             <Button
               variant="contained"
               type="submit"
