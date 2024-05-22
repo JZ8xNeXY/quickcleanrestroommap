@@ -92,8 +92,6 @@ const AddMarkers: NextPage<AddMarkersProps> = ({ map }) => {
             content: restroomImg,
           })
 
-          console.log(restroom.image)
-
           marker.addListener('gmp-click', function () {
             setOpenModalWindow(true)
             setSelectedRestroomName(restroom.name)
