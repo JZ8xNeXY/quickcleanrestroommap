@@ -20,9 +20,8 @@ const Index: NextPage = () => {
 
   useEffect(() => {
     if (map) {
-      RightClickMapHandler({ map, setOpenAddRestroomModal, setCoords })
+      RightClickMapHandler({ map, setMap, setOpenAddRestroomModal, setCoords })
     }
-    console.log(coords)
   }, [map])
 
   return (
