@@ -1,6 +1,7 @@
 interface RightClickMapHandlerProps {
   map: google.maps.Map
-  setOpenAddRestroomModal: React.Dispatch<React.SetStateAction<boolean | null>>
+  setMap: React.Dispatch<React.SetStateAction<google.maps.Map | null>>
+  setOpenAddRestroomModal: React.Dispatch<React.SetStateAction<boolean>>
   setCoords: React.Dispatch<
     React.SetStateAction<{ lat: number; lng: number } | null>
   >
@@ -11,26 +12,37 @@ export const RightClickMapHandler = ({
   setOpenAddRestroomModal,
   setCoords,
 }: RightClickMapHandlerProps) => {
+  let currentMarker: google.maps.marker.AdvancedMarkerElement | null = null
+
   map.addListener('rightclick', (e: google.maps.MapMouseEvent) => {
     const latitude = e.latLng?.lat()
     const longitude = e.latLng?.lng()
 
     if (latitude !== undefined && longitude !== undefined) {
-      setCoords({ lat: latitude, lng: longitude }) //緯度経度更新
+      setCoords({ lat: latitude, lng: longitude })
 
+      // 既存のマーカーがある場合は削除
+      if (currentMarker) {
+        currentMarker.map = null
+      }
+
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error
       const pinViewScaled = new google.maps.marker.PinView({
+        // ToDo PinViewで型の警告が出るため
         background: '#4CAF50',
         glyphColor: 'white',
       })
 
-      // マーカーを作成してマップに追加
       const marker = new google.maps.marker.AdvancedMarkerElement({
         position: { lat: latitude, lng: longitude },
         map,
         content: pinViewScaled.element,
       })
 
-      // 登録画面へのリンクを含む吹き出しを生成
+      // 新しいマーカーを現在のマーカーとしてセット
+      currentMarker = marker
+
       const contentString = `
       <div id="infoWindowContent" style="padding: 15px;">
         <button id="openModalButton" 
@@ -54,13 +66,16 @@ export const RightClickMapHandler = ({
           .getElementById('openModalButton')
           ?.addEventListener('click', () => {
             setOpenAddRestroomModal(true)
+            marker.map = null
             infowindow.close()
+            currentMarker = null
           })
       })
 
-      // 情報ウィンドウの閉じるボタンがクリックされたらマーカーを削除
-      infowindow.addListener('closeclick', function () {
-        marker.setMap(null)
+      // マーカーをマップから削除
+      google.maps.event.addListener(marker, 'click', () => {
+        marker.map = null
+        currentMarker = null
       })
 
       return marker

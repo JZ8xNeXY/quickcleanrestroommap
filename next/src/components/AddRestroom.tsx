@@ -14,6 +14,7 @@ import {
 import axios, { AxiosResponse, AxiosError } from 'axios'
 import { useState, useRef } from 'react'
 import { useForm, SubmitHandler, Controller } from 'react-hook-form'
+import { mutate } from 'swr'
 
 interface AddRestroomFormData {
   name: string
@@ -22,12 +23,12 @@ interface AddRestroomFormData {
   latitude: number
   longitude: number
   createdAt: string
-  nursingRoom: boolean
-  anyoneToilet: boolean
-  diaperChangingStation: boolean
-  powderCorner: boolean
-  strollerAccessible: boolean
-  image: string
+  nursing_room: boolean
+  anyone_toilet: boolean
+  diaper_changing_station: boolean
+  powder_corner: boolean
+  stroller_accessible: boolean
+  image?: FileList
 }
 
 const modalStyle = {
@@ -56,9 +57,10 @@ interface AddRestroomProps {
 }
 
 const AddRestroom: React.FC<AddRestroomProps> = ({ open, onClose, coords }) => {
-  const { register, handleSubmit, control } = useForm<AddRestroomFormData>({
-    defaultValues: { name: '', address: '', content: '' },
-  })
+  const { register, handleSubmit, control, reset } =
+    useForm<AddRestroomFormData>({
+      defaultValues: { name: '', address: '', content: '' },
+    })
 
   const fileInput = useRef<HTMLInputElement | null>(null)
   const [fileName, setFileName] = useState('')
@@ -67,21 +69,18 @@ const AddRestroom: React.FC<AddRestroomProps> = ({ open, onClose, coords }) => {
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files
     if (!files || files.length <= 0) return
-    deployment(files)
+    showImageFileName(files)
   }
 
-  const { ref, ...rest } = register('image', {
-    onChange,
-    required: 'ファイルを選択してください',
-  })
+  const { ref, ...rest } = register('image', { onChange })
 
-  const selectFile = () => {
+  const selectImageFile = () => {
     if (!fileInput.current) return
     fileInput.current.removeAttribute('capture')
     fileInput.current.click()
   }
 
-  const deployment = (files: FileList) => {
+  const showImageFileName = (files: FileList) => {
     const file = files[0]
     const fileReader = new FileReader()
     setFileName(file.name)
@@ -91,7 +90,7 @@ const AddRestroom: React.FC<AddRestroomProps> = ({ open, onClose, coords }) => {
     fileReader.readAsDataURL(file)
   }
 
-  const reset = () => {
+  const resetImageFile = () => {
     setFileName('')
     setImageData('')
     if (fileInput.current) {
@@ -99,25 +98,64 @@ const AddRestroom: React.FC<AddRestroomProps> = ({ open, onClose, coords }) => {
     }
   }
 
+  const resetModal = () => {
+    reset() // フォームをリセット
+    resetImageFile() // 画像ファイル入力をリセット
+    onClose() // モーダルを閉じる
+  }
+
   const onSubmit: SubmitHandler<AddRestroomFormData> = (data) => {
     if (coords) {
-      const payload = { ...data, latitude: coords.lat, longitude: coords.lng }
-      const url = process.env.NEXT_PUBLIC_API_BASE_URL + '/posts/new'
-      const headers = { 'Content-Type': 'application/json' }
+      //画像があるためformDataを使用
+      const formData = new FormData()
+      formData.append('post[name]', data.name)
+      formData.append('post[address]', data.address)
+      formData.append('post[content]', data.content)
+      formData.append('post[latitude]', coords.lat.toString())
+      formData.append('post[longitude]', coords.lng.toString())
+      formData.append(
+        'post[nursing_room]',
+        (data.nursing_room ?? false).toString(),
+      )
+      formData.append(
+        'post[anyone_toilet]',
+        (data.anyone_toilet ?? false).toString(),
+      )
+      formData.append(
+        'post[diaper_changing_station]',
+        (data.diaper_changing_station ?? false).toString(),
+      )
+      formData.append(
+        'post[powder_corner]',
+        (data.powder_corner ?? false).toString(),
+      )
+      formData.append(
+        'post[stroller_accessible]',
+        (data.stroller_accessible ?? false).toString(),
+      )
+      if (fileInput.current?.files && fileInput.current.files[0]) {
+        formData.append('post[image]', fileInput.current.files[0])
+      }
 
-      axios({ method: 'POST', url: url, data: payload, headers: headers })
+      const url = process.env.NEXT_PUBLIC_API_BASE_URL + '/posts'
+      const headers = { 'Content-Type': 'multipart/form-data' }
+
+      axios
+        .post(url, formData, { headers })
         .then((res: AxiosResponse) => {
           console.log('Data submitted successfully', res.data)
-          onClose()
+          mutate(url) // 投稿が成功した後にデータを再取得
+          resetModal()
         })
         .catch((e: AxiosError<{ error: string }>) => {
-          console.log(e.message)
+          console.error(`Request failed with status code ${e.response?.status}`)
+          console.error(e.message)
         })
     }
   }
 
   return (
-    <Modal open={open} onClose={onClose}>
+    <Modal open={open} onClose={resetModal}>
       <Box sx={modalStyle}>
         <Container maxWidth="sm">
           <Box sx={{ mb: 2, pt: 4 }}>
@@ -183,7 +221,7 @@ const AddRestroom: React.FC<AddRestroomProps> = ({ open, onClose, coords }) => {
               <Grid container spacing={0.1}>
                 <Grid item xs={6}>
                   <Controller
-                    name="nursingRoom"
+                    name="nursing_room"
                     control={control}
                     render={({ field }) => (
                       <FormControlLabel
@@ -196,7 +234,7 @@ const AddRestroom: React.FC<AddRestroomProps> = ({ open, onClose, coords }) => {
                 </Grid>
                 <Grid item xs={6}>
                   <Controller
-                    name="anyoneToilet"
+                    name="anyone_toilet"
                     control={control}
                     render={({ field }) => (
                       <FormControlLabel
@@ -209,7 +247,7 @@ const AddRestroom: React.FC<AddRestroomProps> = ({ open, onClose, coords }) => {
                 </Grid>
                 <Grid item xs={6}>
                   <Controller
-                    name="diaperChangingStation"
+                    name="diaper_changing_station"
                     control={control}
                     render={({ field }) => (
                       <FormControlLabel
@@ -222,7 +260,7 @@ const AddRestroom: React.FC<AddRestroomProps> = ({ open, onClose, coords }) => {
                 </Grid>
                 <Grid item xs={6}>
                   <Controller
-                    name="powderCorner"
+                    name="powder_corner"
                     control={control}
                     render={({ field }) => (
                       <FormControlLabel
@@ -235,7 +273,7 @@ const AddRestroom: React.FC<AddRestroomProps> = ({ open, onClose, coords }) => {
                 </Grid>
                 <Grid item xs={6}>
                   <Controller
-                    name="strollerAccessible"
+                    name="stroller_accessible"
                     control={control}
                     render={({ field }) => (
                       <FormControlLabel
@@ -263,7 +301,7 @@ const AddRestroom: React.FC<AddRestroomProps> = ({ open, onClose, coords }) => {
               variant="contained"
               type="button"
               sx={{ fontWeight: 'bold', color: 'white' }}
-              onClick={selectFile}
+              onClick={selectImageFile}
             >
               📁 ファイルから選択
             </Button>
@@ -277,13 +315,13 @@ const AddRestroom: React.FC<AddRestroomProps> = ({ open, onClose, coords }) => {
             >
               {fileName && (
                 <>
-                  <button onClick={reset}>❌ CLOSE</button>
+                  <Button onClick={resetImageFile}>❌ CLOSE</Button>
                   <img
                     src={imageData}
                     style={{ margin: 'auto', maxWidth: '100%' }}
                     alt="Selected"
                   />
-                  <div>{fileName}</div>
+                  <Typography>{fileName}</Typography>
                 </>
               )}
             </div>
