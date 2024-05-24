@@ -30,14 +30,14 @@ const Index: NextPage = () => {
       <Container maxWidth="xl">
         <RestroomProvider>
           <AddMarkers map={map} />
+          <AddRestroom
+            open={openAddRestroomModal}
+            onClose={() => setOpenAddRestroomModal(false)}
+            coords={coords}
+          />
         </RestroomProvider>
         <Box id="map" style={{ height: '80vh', width: '100%' }}></Box>
         <Box id="infoPanel"></Box>
-        <AddRestroom
-          open={openAddRestroomModal}
-          onClose={() => setOpenAddRestroomModal(false)}
-          coords={coords}
-        />
       </Container>
     </>
   )
