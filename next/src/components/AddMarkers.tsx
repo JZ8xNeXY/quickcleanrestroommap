@@ -5,6 +5,7 @@ import { useEffect, useState, useRef } from 'react'
 import useSWR from 'swr'
 import CalculateAndDisplayRoute from './CalculateAndDisplayRoute'
 import DisplayModalWindow from './DisplayModalWindow'
+import { useRestroomContext } from '@/context/RestRoomContext'
 import { fetcher } from '@/utils'
 import { userGeoLocation } from '@/utils/userGeoLocation'
 
@@ -33,26 +34,10 @@ const AddMarkers: NextPage<AddMarkersProps> = ({ map }) => {
   const url = process.env.NEXT_PUBLIC_API_BASE_URL + '/posts'
   const { data, error } = useSWR(url, fetcher, { revalidateOnFocus: false })
 
+  const { selectedRestroom, setSelectedRestroom } = useRestroomContext()
+
   const [openModalWindow, setOpenModalWindow] = useState(false)
   const closeModalWindow = () => setOpenModalWindow(false)
-
-  const [selectedRestroomName, setSelectedRestroomName] = useState<string>('')
-  const [selectedRestroomAddress, setSelectedRestroomAddress] =
-    useState<string>('')
-  const [selectedRestroomContent, setSelectedRestroomContent] =
-    useState<string>('')
-  const [selectedRestroomLatitude, setSelectedRestroomLatitude] =
-    useState<number>()
-  const [selectedRestroomLongitude, setSelectedRestroomLongitude] =
-    useState<number>()
-  const [selectedNursingRoom, setSelectedNursingRoom] = useState<boolean>()
-  const [selectedAnyoneToilet, setSelectedAnyoneToilet] = useState<boolean>()
-  const [selectedDiaperChangingStation, setSelectedDiaperChangingStation] =
-    useState<boolean>()
-  const [selectedPowderCorner, setSelectedPowderCorner] = useState<boolean>()
-  const [selectedStrollerAccessible, setSelectedStrollerAccessible] =
-    useState<boolean>()
-  const [selectedImage, setSelectedImage] = useState<string>('')
 
   const [currentUserPos, setCurrentUserPos] = useState<{
     lat: number
@@ -94,17 +79,21 @@ const AddMarkers: NextPage<AddMarkersProps> = ({ map }) => {
 
           marker.addListener('gmp-click', function () {
             setOpenModalWindow(true)
-            setSelectedRestroomName(restroom.name)
-            setSelectedRestroomAddress(restroom.address)
-            setSelectedRestroomContent(restroom.content)
-            setSelectedRestroomLatitude(restroom.latitude)
-            setSelectedRestroomLongitude(restroom.longitude)
-            setSelectedNursingRoom(restroom.nursingRoom)
-            setSelectedAnyoneToilet(restroom.anyoneToilet)
-            setSelectedDiaperChangingStation(restroom.diaperChangingStation)
-            setSelectedPowderCorner(restroom.powderCorner)
-            setSelectedStrollerAccessible(restroom.strollerAccessible)
-            setSelectedImage(restroom.image)
+            setSelectedRestroom({
+              id: restroom.id,
+              name: restroom.name,
+              address: restroom.address,
+              content: restroom.content,
+              latitude: restroom.latitude,
+              longitude: restroom.longitude,
+              createdAt: restroom.createdAt,
+              nursingRoom: restroom.nursingRoom,
+              anyoneToilet: restroom.anyoneToilet,
+              diaperChangingStation: restroom.diaperChangingStation,
+              powderCorner: restroom.powderCorner,
+              strollerAccessible: restroom.strollerAccessible,
+              image: restroom.image,
+            })
           })
         })
       }
@@ -132,7 +121,7 @@ const AddMarkers: NextPage<AddMarkersProps> = ({ map }) => {
         }
       }
     }
-  }, [map, data])
+  }, [map, data, selectedRestroom, setSelectedRestroom])
 
   if (error) return <Box>An error has occurred.</Box>
   if (!data) return <Box>Loading...</Box>
@@ -142,23 +131,23 @@ const AddMarkers: NextPage<AddMarkersProps> = ({ map }) => {
       <DisplayModalWindow
         openModalWindow={openModalWindow}
         closeModalWindow={closeModalWindow}
-        name={selectedRestroomName}
-        address={selectedRestroomAddress}
-        content={selectedRestroomContent}
-        nursingRoom={selectedNursingRoom}
-        anyoneToilet={selectedAnyoneToilet}
-        diaperChangingStation={selectedDiaperChangingStation}
-        powderCorner={selectedPowderCorner}
-        strollerAccessible={selectedStrollerAccessible}
-        image={selectedImage}
+        name={selectedRestroom.name}
+        address={selectedRestroom.address}
+        content={selectedRestroom.content}
+        nursingRoom={selectedRestroom.nursingRoom}
+        anyoneToilet={selectedRestroom.anyoneToilet}
+        diaperChangingStation={selectedRestroom.diaperChangingStation}
+        powderCorner={selectedRestroom.powderCorner}
+        strollerAccessible={selectedRestroom.strollerAccessible}
+        image={selectedRestroom.image}
       />
       {currentUserPos &&
-        selectedRestroomLatitude !== undefined &&
-        selectedRestroomLongitude !== undefined && (
+        selectedRestroom.latitude !== undefined &&
+        selectedRestroom.longitude !== undefined && (
           <CalculateAndDisplayRoute
             userPos={currentUserPos}
-            latitude={selectedRestroomLatitude}
-            longitude={selectedRestroomLongitude}
+            latitude={selectedRestroom.latitude}
+            longitude={selectedRestroom.longitude}
             map={map}
           />
         )}
