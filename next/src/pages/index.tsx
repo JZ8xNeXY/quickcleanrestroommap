@@ -3,6 +3,7 @@ import type { NextPage } from 'next'
 import { useEffect, useState } from 'react'
 import AddMarkers from '@/components/AddMarkers'
 import AddRestroom from '@/components/AddRestroom'
+import { RestroomProvider } from '@/context/RestRoomContext'
 import { RightClickMapHandler } from '@/utils/RightClickMapHandler'
 import { loadGoogleMapsAPI } from '@/utils/loadGoogleMapsAPI'
 
@@ -27,7 +28,9 @@ const Index: NextPage = () => {
   return (
     <>
       <Container maxWidth="xl">
-        <AddMarkers map={map} />
+        <RestroomProvider>
+          <AddMarkers map={map} />
+        </RestroomProvider>
         <Box id="map" style={{ height: '80vh', width: '100%' }}></Box>
         <Box id="infoPanel"></Box>
         <AddRestroom
