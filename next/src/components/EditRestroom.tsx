@@ -151,7 +151,7 @@ const EditRestroom: React.FC<EditRestroomProps> = ({ open, onClose }) => {
       axios
         .put(editUrl, formData, { headers })
         .then((res: AxiosResponse) => {
-          console.log('Data submitted successfully', res.data)
+          console.log('Data Edited successfully', res.data)
           mutate(getUrl) // 投稿が成功した後にデータを再取得
           resetModal()
         })
@@ -173,11 +173,8 @@ const EditRestroom: React.FC<EditRestroomProps> = ({ open, onClose }) => {
       .delete(deleteUrl, { headers })
       .then((res: AxiosResponse) => {
         console.log('Data deleted successfully', res.data)
+        mutate(getUrl) // 削除が成功した後にデータを再取得
         resetModal()
-        mutate(getUrl, async () => {
-          const updatedData = await fetch(getUrl).then((res) => res.json())
-          return updatedData
-        })
       })
       .catch((e: AxiosError<{ error: string }>) => {
         console.error(`Request failed with status code ${e.response?.status}`)
@@ -435,7 +432,7 @@ const EditRestroom: React.FC<EditRestroomProps> = ({ open, onClose }) => {
                 color: 'white',
                 backgroundColor: 'red',
                 '&:hover': {
-                  backgroundColor: 'darkred', // ホバー時の色
+                  backgroundColor: 'darkred',
                 },
               }}
               onClick={onDelete}
