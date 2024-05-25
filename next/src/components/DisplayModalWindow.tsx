@@ -1,7 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 import CloseIcon from '@mui/icons-material/Close'
 import { Box, Button, Modal, Typography } from '@mui/material'
-import React from 'react'
+import React, { useState } from 'react'
+import EditRestroom from './EditRestroom'
 
 interface DisplayModalWindowProps {
   openModalWindow: boolean
@@ -9,6 +10,8 @@ interface DisplayModalWindowProps {
   name: string
   address: string
   content: string
+  latitude: number
+  longitude: number
   nursingRoom?: boolean
   anyoneToilet?: boolean
   diaperChangingStation?: boolean
@@ -101,105 +104,125 @@ const DisplayModalWindow: React.FC<DisplayModalWindowProps> = ({
   strollerAccessible,
   image,
 }) => {
+  const [EditModalWindow, setEditModalWindow] = useState(false)
+  const openEditRestroomModalWindow = () => setEditModalWindow(true)
+  const closeEditRestroomModalWindow = () => setEditModalWindow(false)
+
   return (
-    <Modal
-      open={openModalWindow}
-      onClose={closeModalWindow}
-      aria-labelledby="modal-title"
-      aria-describedby="modal-description"
-    >
-      <Box sx={modalStyle}>
-        <Box sx={{ display: 'flex', justifyContent: 'right' }}>
-          <Button
+    <>
+      {/* //propsを渡す */}
+      <EditRestroom
+        open={EditModalWindow}
+        onClose={closeEditRestroomModalWindow}
+      />
+      <Modal
+        open={openModalWindow}
+        onClose={closeModalWindow}
+        aria-labelledby="modal-title"
+        aria-describedby="modal-description"
+      >
+        <Box sx={modalStyle}>
+          <Box sx={{ display: 'flex', justifyContent: 'right' }}>
+            <Button
+              sx={{
+                color: '#000000',
+              }}
+              onClick={closeModalWindow}
+            >
+              <CloseIcon />
+            </Button>
+          </Box>
+          <Box
             sx={{
-              color: '#000000',
-            }}
-            onClick={closeModalWindow}
-          >
-            <CloseIcon />
-          </Button>
-        </Box>
-        <Box
-          sx={{
-            width: '100%',
-            height: 'auto',
-            '& img': {
               width: '100%',
               height: 'auto',
-            },
-          }}
-        >
-          {/* HTMLのimgタグ */}
-          <img src={image} alt="restroom" width={200} height={200} />
-        </Box>
-        <Box
-          sx={{
-            display: 'flex',
-            bgcolor: '#F0F0F0',
-            alignItems: 'center',
-          }}
-        >
-          <Typography
-            sx={{
-              ...changeFontSize(name),
+              '& img': {
+                width: '100%',
+                height: 'auto',
+              },
             }}
           >
-            {name}
-          </Typography>
-        </Box>
-        <Box sx={{ display: 'flex', justifyContent: 'right' }}>
-          <Button sx={buttonStyle} onClick={closeModalWindow}>
-            編集する
-          </Button>
-        </Box>
-        <Box sx={{ mt: 0 }}>
-          <Typography variant="h6" sx={{ fontWeight: 'bold', mt: 1 }}>
-            住所
-          </Typography>
-          <Typography sx={{ ml: 2 }}>{address}</Typography>
-          <Typography variant="h6" sx={{ fontWeight: 'bold', mt: 1 }}>
-            コメント
-          </Typography>
-          <Typography sx={{ ml: 2 }}>{content}</Typography>
-          <Typography variant="h6" sx={{ fontWeight: 'bold', mt: 1 }}>
-            設備情報
-          </Typography>
+            {/* HTMLのimgタグ */}
+            <img src={image} alt="restroom" width={200} height={200} />
+          </Box>
           <Box
             sx={{
               display: 'flex',
-              justifyContent: 'left',
-              flexDirection: 'row',
-              flexWrap: 'wrap',
+              bgcolor: '#F0F0F0',
+              alignItems: 'center',
             }}
           >
-            {nursingRoom && <Typography sx={facilityStyle}>授乳室</Typography>}
-            {anyoneToilet && (
-              <Typography sx={facilityStyle}>誰でもトイレ</Typography>
-            )}
-            {diaperChangingStation && (
-              <Typography sx={facilityStyle}>オムツ交換代</Typography>
-            )}
-            {powderCorner && (
-              <Typography sx={facilityStyle}>パウダーコーナー</Typography>
-            )}
-            {strollerAccessible && (
-              <Typography sx={facilityStyle}>ベビーカー可</Typography>
-            )}
+            <Typography
+              sx={{
+                ...changeFontSize(name),
+              }}
+            >
+              {name}
+            </Typography>
           </Box>
-          <Typography variant="h6" sx={{ fontWeight: 'bold', mt: 1 }}>
-            レビュー
-          </Typography>
-          <Typography sx={{ ml: 2 }}>
-            平均4.7 ⭐️⭐️⭐️⭐️⭐️ ( <u>3件の評価をみる</u> )
-          </Typography>
+          <Box sx={{ display: 'flex', justifyContent: 'right' }}>
+            <Button
+              sx={buttonStyle}
+              //既存のモーダルウィンドウを閉じる 編集用モーダルウィンドウを開く
+              onClick={() => {
+                closeModalWindow()
+                openEditRestroomModalWindow()
+              }}
+            >
+              編集する
+            </Button>
+          </Box>
+          <Box sx={{ mt: 0 }}>
+            <Typography variant="h6" sx={{ fontWeight: 'bold', mt: 1 }}>
+              住所
+            </Typography>
+            <Typography sx={{ ml: 2 }}>{address}</Typography>
+            <Typography variant="h6" sx={{ fontWeight: 'bold', mt: 1 }}>
+              コメント
+            </Typography>
+            <Typography sx={{ ml: 2 }}>{content}</Typography>
+            <Typography variant="h6" sx={{ fontWeight: 'bold', mt: 1 }}>
+              設備情報
+            </Typography>
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'left',
+                flexDirection: 'row',
+                flexWrap: 'wrap',
+              }}
+            >
+              {nursingRoom && (
+                <Typography sx={facilityStyle}>授乳室</Typography>
+              )}
+              {anyoneToilet && (
+                <Typography sx={facilityStyle}>誰でもトイレ</Typography>
+              )}
+              {diaperChangingStation && (
+                <Typography sx={facilityStyle}>オムツ交換代</Typography>
+              )}
+              {powderCorner && (
+                <Typography sx={facilityStyle}>パウダーコーナー</Typography>
+              )}
+              {strollerAccessible && (
+                <Typography sx={facilityStyle}>ベビーカー可</Typography>
+              )}
+            </Box>
+            <Typography variant="h6" sx={{ fontWeight: 'bold', mt: 1 }}>
+              レビュー
+            </Typography>
+            <Typography sx={{ ml: 2 }}>
+              平均4.7 ⭐️⭐️⭐️⭐️⭐️ ( <u>3件の評価をみる</u> )
+            </Typography>
+          </Box>
+          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            <Button sx={buttonStyle} onClick={closeModalWindow}>
+              評価する
+            </Button>
+          </Box>
         </Box>
-        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-          <Button sx={buttonStyle} onClick={closeModalWindow}>
-            評価する
-          </Button>
-        </Box>
-      </Box>
-    </Modal>
+      </Modal>
+    </>
   )
 }
 
