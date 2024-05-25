@@ -139,7 +139,8 @@ const EditRestroom: React.FC<EditRestroomProps> = ({ open, onClose }) => {
         formData.append('post[image]', fileInput.current.files[0])
       }
 
-      const url = process.env.NEXT_PUBLIC_API_BASE_URL + '/posts'
+      const url =
+        process.env.NEXT_PUBLIC_API_BASE_URL + '/posts/' + selectedRestroom.id
       const headers = { 'Content-Type': 'multipart/form-data' }
 
       axios
