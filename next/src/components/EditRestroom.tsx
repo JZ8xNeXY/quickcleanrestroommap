@@ -404,6 +404,21 @@ const EditRestroom: React.FC<EditRestroomProps> = ({ open, onClose }) => {
             >
               編集する
             </Button>
+            <Button
+              variant="contained"
+              type="button"
+              sx={{
+                fontWeight: 'bold',
+                color: 'white',
+                backgroundColor: 'red',
+                '&:hover': {
+                  backgroundColor: 'darkred', // ホバー時の色
+                },
+              }}
+              // onClick={}
+            >
+              削除する
+            </Button>
           </Stack>
         </Container>
       </Box>
