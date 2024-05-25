@@ -18,6 +18,7 @@ import { mutate } from 'swr'
 import { useRestroomContext } from '@/context/RestRoomContext'
 
 interface EditRestroomFormData {
+  id: number
   name: string
   address: string
   content: string
@@ -29,7 +30,7 @@ interface EditRestroomFormData {
   diaper_changing_station: boolean
   powder_corner: boolean
   stroller_accessible: boolean
-  image?: FileList
+  image?: string
 }
 
 const modalStyle = {
@@ -60,9 +61,7 @@ const EditRestroom: React.FC<EditRestroomProps> = ({ open, onClose }) => {
   const { selectedRestroom } = useRestroomContext() //useContextを利用
 
   const { register, handleSubmit, control, reset } =
-    useForm<EditRestroomFormData>({
-      defaultValues: { name: '', address: '', content: '' },
-    })
+    useForm<EditRestroomFormData>()
 
   const fileInput = useRef<HTMLInputElement | null>(null)
   const [fileName, setFileName] = useState('')
@@ -110,45 +109,51 @@ const EditRestroom: React.FC<EditRestroomProps> = ({ open, onClose }) => {
     if (selectedRestroom.latitude && selectedRestroom.longitude) {
       //画像があるためformDataを使用
       const formData = new FormData()
-      formData.append('post[name]', data.name)
-      formData.append('post[address]', data.address)
-      formData.append('post[content]', data.content)
+      formData.append('post[name]', data.name || selectedRestroom.name)
+      formData.append('post[address]', data.address || selectedRestroom.address)
+      formData.append('post[content]', data.content || selectedRestroom.content)
       formData.append('post[latitude]', selectedRestroom.latitude.toString())
       formData.append('post[longitude]', selectedRestroom.longitude.toString())
       formData.append(
         'post[nursing_room]',
-        (data.nursing_room ?? false).toString(),
+        (data.nursing_room || selectedRestroom.nursingRoom).toString(),
       )
       formData.append(
         'post[anyone_toilet]',
-        (data.anyone_toilet ?? false).toString(),
+        (data.anyone_toilet || selectedRestroom.anyoneToilet).toString(),
       )
       formData.append(
         'post[diaper_changing_station]',
-        (data.diaper_changing_station ?? false).toString(),
+        (
+          data.diaper_changing_station || selectedRestroom.diaperChangingStation
+        ).toString(),
       )
       formData.append(
         'post[powder_corner]',
-        (data.powder_corner ?? false).toString(),
+        (data.powder_corner || selectedRestroom.powderCorner).toString(),
       )
       formData.append(
         'post[stroller_accessible]',
-        (data.stroller_accessible ?? false).toString(),
+        (
+          data.stroller_accessible || selectedRestroom.strollerAccessible
+        ).toString(),
       )
       if (fileInput.current?.files && fileInput.current.files[0]) {
         formData.append('post[image]', fileInput.current.files[0])
       }
 
-      const url =
+      const editUrl =
         process.env.NEXT_PUBLIC_API_BASE_URL + '/posts/' + selectedRestroom.id
       const headers = { 'Content-Type': 'multipart/form-data' }
 
+      const getUrl = process.env.NEXT_PUBLIC_API_BASE_URL + '/posts/'
+
       axios
-        .post(url, formData, { headers })
+        .put(editUrl, formData, { headers })
         .then((res: AxiosResponse) => {
           console.log('Data submitted successfully', res.data)
-          mutate(url) // 投稿が成功した後にデータを再取得
           resetModal()
+          mutate(getUrl) // 投稿が成功した後にデータを再取得
         })
         .catch((e: AxiosError<{ error: string }>) => {
           console.error(`Request failed with status code ${e.response?.status}`)
@@ -180,9 +185,9 @@ const EditRestroom: React.FC<EditRestroomProps> = ({ open, onClose }) => {
               render={({ field }) => (
                 <TextField
                   {...field}
-                  value={selectedRestroom.name || null}
                   type="text"
                   label="施設名称"
+                  defaultValue={selectedRestroom.name}
                   sx={{ backgroundColor: 'white' }}
                 />
               )}
@@ -193,7 +198,7 @@ const EditRestroom: React.FC<EditRestroomProps> = ({ open, onClose }) => {
               render={({ field }) => (
                 <TextField
                   {...field}
-                  value={selectedRestroom.address || null}
+                  defaultValue={selectedRestroom.address}
                   type="text"
                   label="住所"
                   sx={{ backgroundColor: 'white' }}
@@ -206,7 +211,7 @@ const EditRestroom: React.FC<EditRestroomProps> = ({ open, onClose }) => {
               render={({ field }) => (
                 <TextField
                   {...field}
-                  value={selectedRestroom.content || null}
+                  defaultValue={selectedRestroom.content}
                   type="text"
                   label="コメント"
                   sx={{ backgroundColor: 'white' }}
@@ -235,7 +240,7 @@ const EditRestroom: React.FC<EditRestroomProps> = ({ open, onClose }) => {
                         control={
                           <Checkbox
                             {...field}
-                            checked={selectedRestroom.nursingRoom}
+                            defaultChecked={selectedRestroom.nursingRoom}
                           />
                         }
                         sx={{ padding: '1px', marginBottom: '1px' }}
@@ -253,7 +258,7 @@ const EditRestroom: React.FC<EditRestroomProps> = ({ open, onClose }) => {
                         control={
                           <Checkbox
                             {...field}
-                            checked={selectedRestroom.anyoneToilet}
+                            defaultChecked={selectedRestroom.anyoneToilet}
                           />
                         }
                         sx={{ padding: '1px', marginBottom: '1px' }}
@@ -271,7 +276,9 @@ const EditRestroom: React.FC<EditRestroomProps> = ({ open, onClose }) => {
                         control={
                           <Checkbox
                             {...field}
-                            checked={selectedRestroom.diaperChangingStation}
+                            defaultChecked={
+                              selectedRestroom.diaperChangingStation
+                            }
                           />
                         }
                         sx={{ padding: '1px', marginBottom: '1px' }}
@@ -289,7 +296,7 @@ const EditRestroom: React.FC<EditRestroomProps> = ({ open, onClose }) => {
                         control={
                           <Checkbox
                             {...field}
-                            checked={selectedRestroom.powderCorner}
+                            defaultChecked={selectedRestroom.powderCorner}
                           />
                         }
                         sx={{ padding: '1px', marginBottom: '1px' }}
@@ -307,7 +314,7 @@ const EditRestroom: React.FC<EditRestroomProps> = ({ open, onClose }) => {
                         control={
                           <Checkbox
                             {...field}
-                            checked={selectedRestroom.strollerAccessible}
+                            defaultChecked={selectedRestroom.strollerAccessible}
                           />
                         }
                         sx={{ padding: '1px', marginBottom: '1px' }}
