@@ -22,11 +22,11 @@ interface RestroomContextProps {
 }
 
 const defaultRestroom: Restroom = {
+  id: 0,
   name: '',
   address: '',
   content: '',
   image: '',
-  id: 0,
   latitude: 0,
   longitude: 0,
   createdAt: '',
