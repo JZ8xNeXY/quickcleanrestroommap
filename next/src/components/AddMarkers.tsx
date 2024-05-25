@@ -134,6 +134,8 @@ const AddMarkers: NextPage<AddMarkersProps> = ({ map }) => {
         name={selectedRestroom.name}
         address={selectedRestroom.address}
         content={selectedRestroom.content}
+        latitude={selectedRestroom.latitude}
+        longitude={selectedRestroom.longitude}
         nursingRoom={selectedRestroom.nursingRoom}
         anyoneToilet={selectedRestroom.anyoneToilet}
         diaperChangingStation={selectedRestroom.diaperChangingStation}
