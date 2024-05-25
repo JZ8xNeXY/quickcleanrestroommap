@@ -137,14 +137,14 @@ const AddRestroom: React.FC<AddRestroomProps> = ({ open, onClose, coords }) => {
         formData.append('post[image]', fileInput.current.files[0])
       }
 
-      const url = process.env.NEXT_PUBLIC_API_BASE_URL + '/posts'
+      const getUrl = process.env.NEXT_PUBLIC_API_BASE_URL + '/posts'
       const headers = { 'Content-Type': 'multipart/form-data' }
 
       axios
-        .post(url, formData, { headers })
+        .post(getUrl, formData, { headers })
         .then((res: AxiosResponse) => {
           console.log('Data submitted successfully', res.data)
-          mutate(url) // 投稿が成功した後にデータを再取得
+          mutate(getUrl) // 投稿が成功した後にデータを再取得
           resetModal()
         })
         .catch((e: AxiosError<{ error: string }>) => {

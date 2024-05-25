@@ -52,9 +52,16 @@ const AddMarkers: NextPage<AddMarkersProps> = ({ map }) => {
     }
   }
 
+  //マーカを管理するために作成
+  const markersRef = useRef<google.maps.marker.AdvancedMarkerElement[]>([])
+
   useEffect(() => {
     const addMarkers = async () => {
       if (map && data) {
+        // 既存のマーカーがあれば削除する
+        markersRef.current.forEach((marker) => (marker.map = null))
+        markersRef.current = []
+
         const restrooms: Restroom[] = data ? camelcaseKeys(data) : []
 
         const { AdvancedMarkerElement } = (await google.maps.importLibrary(
@@ -95,6 +102,8 @@ const AddMarkers: NextPage<AddMarkersProps> = ({ map }) => {
               image: restroom.image,
             })
           })
+
+          markersRef.current.push(marker)
         })
       }
     }
@@ -103,18 +112,13 @@ const AddMarkers: NextPage<AddMarkersProps> = ({ map }) => {
 
     if (map && showGeolocationButton.current) {
       const controlPosition = google.maps.ControlPosition.TOP_CENTER
-      // eslint-disable-next-line react/prop-types
       map.controls[controlPosition].push(showGeolocationButton.current)
 
       return () => {
-        //既存のボタンがある場合削除
-        // eslint-disable-next-line react/prop-types
         const controls = map.controls[controlPosition]
-        // eslint-disable-next-line react/prop-types
         for (let i = 0; i < controls.getLength(); i++) {
-          // eslint-disable-next-line react-hooks/exhaustive-deps, react/prop-types
+          // eslint-disable-next-line react-hooks/exhaustive-deps
           if (controls.getAt(i) === showGeolocationButton.current) {
-            // eslint-disable-next-line react/prop-types
             controls.removeAt(i)
             break
           }
