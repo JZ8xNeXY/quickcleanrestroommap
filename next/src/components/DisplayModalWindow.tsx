@@ -97,8 +97,6 @@ const DisplayModalWindow: React.FC<DisplayModalWindowProps> = ({
   name,
   address,
   content,
-  latitude,
-  longitude,
   nursingRoom,
   anyoneToilet,
   diaperChangingStation,
@@ -116,8 +114,6 @@ const DisplayModalWindow: React.FC<DisplayModalWindowProps> = ({
       <EditRestroom
         open={EditModalWindow}
         onClose={closeEditRestroomModalWindow}
-        lat={latitude}
-        lng={longitude}
       />
       <Modal
         open={openModalWindow}

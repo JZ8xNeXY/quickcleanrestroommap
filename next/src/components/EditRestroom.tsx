@@ -54,18 +54,10 @@ const modalStyle = {
 interface EditRestroomProps {
   open: boolean
   onClose: () => void
-  lat: number
-  lng: number
 }
 
-const EditRestroom: React.FC<EditRestroomProps> = ({
-  open,
-  onClose,
-  lat,
-  lng,
-}) => {
+const EditRestroom: React.FC<EditRestroomProps> = ({ open, onClose }) => {
   const { selectedRestroom } = useRestroomContext() //useContextを利用
-  console.log(selectedRestroom.image)
 
   const { register, handleSubmit, control, reset } =
     useForm<EditRestroomFormData>({
@@ -115,14 +107,14 @@ const EditRestroom: React.FC<EditRestroomProps> = ({
   }
 
   const onSubmit: SubmitHandler<EditRestroomFormData> = (data) => {
-    if (lat && lng) {
+    if (selectedRestroom.latitude && selectedRestroom.longitude) {
       //画像があるためformDataを使用
       const formData = new FormData()
       formData.append('post[name]', data.name)
       formData.append('post[address]', data.address)
       formData.append('post[content]', data.content)
-      formData.append('post[latitude]', lat.toString())
-      formData.append('post[longitude]', lng.toString())
+      formData.append('post[latitude]', selectedRestroom.latitude.toString())
+      formData.append('post[longitude]', selectedRestroom.longitude.toString())
       formData.append(
         'post[nursing_room]',
         (data.nursing_room ?? false).toString(),
