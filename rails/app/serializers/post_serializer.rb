@@ -5,6 +5,10 @@ class PostSerializer < ActiveModel::Serializer
              :diaper_changing_station, :powder_corner, :stroller_accessible,
              :image
 
+  def id
+    object.id
+  end
+
   def name
     object.name
   end
