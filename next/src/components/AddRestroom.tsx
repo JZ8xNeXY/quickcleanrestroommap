@@ -99,9 +99,9 @@ const AddRestroom: React.FC<AddRestroomProps> = ({ open, onClose, coords }) => {
   }
 
   const resetModal = () => {
-    reset() // フォームをリセット
-    resetImageFile() // 画像ファイル入力をリセット
-    onClose() // モーダルを閉じる
+    reset()
+    resetImageFile()
+    onClose()
   }
 
   const onSubmit: SubmitHandler<AddRestroomFormData> = (data) => {
