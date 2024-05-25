@@ -146,14 +146,14 @@ const EditRestroom: React.FC<EditRestroomProps> = ({ open, onClose }) => {
         process.env.NEXT_PUBLIC_API_BASE_URL + '/posts/' + selectedRestroom.id
       const headers = { 'Content-Type': 'multipart/form-data' }
 
-      const getUrl = process.env.NEXT_PUBLIC_API_BASE_URL + '/posts/'
+      const getUrl = process.env.NEXT_PUBLIC_API_BASE_URL + '/posts'
 
       axios
         .put(editUrl, formData, { headers })
         .then((res: AxiosResponse) => {
           console.log('Data submitted successfully', res.data)
-          resetModal()
           mutate(getUrl) // 投稿が成功した後にデータを再取得
+          resetModal()
         })
         .catch((e: AxiosError<{ error: string }>) => {
           console.error(`Request failed with status code ${e.response?.status}`)

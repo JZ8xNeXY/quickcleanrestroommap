@@ -161,7 +161,14 @@ const DisplayModalWindow: React.FC<DisplayModalWindowProps> = ({
             </Typography>
           </Box>
           <Box sx={{ display: 'flex', justifyContent: 'right' }}>
-            <Button sx={buttonStyle} onClick={openEditRestroomModalWindow}>
+            <Button
+              sx={buttonStyle}
+              //既存のモーダルウィンドウを閉じる 編集用モーダルウィンドウを開く
+              onClick={() => {
+                closeModalWindow()
+                openEditRestroomModalWindow()
+              }}
+            >
               編集する
             </Button>
           </Box>
