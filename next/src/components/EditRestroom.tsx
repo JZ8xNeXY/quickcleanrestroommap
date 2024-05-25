@@ -162,6 +162,29 @@ const EditRestroom: React.FC<EditRestroomProps> = ({ open, onClose }) => {
     }
   }
 
+  const onDelete = () => {
+    const deleteUrl =
+      process.env.NEXT_PUBLIC_API_BASE_URL + '/posts/' + selectedRestroom.id
+    const headers = { 'Content-Type': 'application/json' }
+
+    const getUrl = process.env.NEXT_PUBLIC_API_BASE_URL + '/posts'
+
+    axios
+      .delete(deleteUrl, { headers })
+      .then((res: AxiosResponse) => {
+        console.log('Data deleted successfully', res.data)
+        resetModal()
+        mutate(getUrl, async () => {
+          const updatedData = await fetch(getUrl).then((res) => res.json())
+          return updatedData
+        })
+      })
+      .catch((e: AxiosError<{ error: string }>) => {
+        console.error(`Request failed with status code ${e.response?.status}`)
+        console.error(e.message)
+      })
+  }
+
   return (
     <Modal open={open} onClose={resetModal}>
       <Box sx={modalStyle}>
@@ -415,7 +438,7 @@ const EditRestroom: React.FC<EditRestroomProps> = ({ open, onClose }) => {
                   backgroundColor: 'darkred', // ホバー時の色
                 },
               }}
-              // onClick={}
+              onClick={onDelete}
             >
               削除する
             </Button>
