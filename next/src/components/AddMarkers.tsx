@@ -4,7 +4,7 @@ import type { NextPage } from 'next'
 import { useEffect, useState, useRef } from 'react'
 import useSWR from 'swr'
 import CalculateAndDisplayRoute from './CalculateAndDisplayRoute'
-import DisplayModalWindow from './DisplayModalWindow'
+import DisplayModalWindowContainer from '@/containers/DisplayModalWindowContainer'
 import { useRestroomContext } from '@/context/RestRoomContext'
 import { fetcher } from '@/utils'
 import { userGeoLocation } from '@/utils/userGeoLocation'
@@ -132,7 +132,7 @@ const AddMarkers: NextPage<AddMarkersProps> = ({ map }) => {
 
   return (
     <>
-      <DisplayModalWindow
+      <DisplayModalWindowContainer
         openModalWindow={openModalWindow}
         closeModalWindow={closeModalWindow}
         name={selectedRestroom.name}
