@@ -1,6 +1,6 @@
 import { Box, Button } from '@mui/material'
-import CalculateAndDisplayRoute from '@/components/CalculateAndDisplayRoute'
-import DisplayModalWindow from '@/components/DisplayModalWindow'
+import CalculateAndDisplayRoute from './CalculateAndDisplayRoute'
+import DisplayModalWindowContainer from '@/containers/DisplayModalWindowContainer'
 
 interface Restroom {
   id: number
@@ -48,7 +48,7 @@ const AddMarkers: React.FC<AddMarkersProps> = ({
 
   return (
     <>
-      <DisplayModalWindow
+      <DisplayModalWindowContainer
         openModalWindow={openModalWindow}
         closeModalWindow={closeModalWindow}
         name={selectedRestroom.name}
