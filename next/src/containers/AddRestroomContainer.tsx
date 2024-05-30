@@ -56,8 +56,6 @@ const AddRestroomContainer: React.FC<AddRestroomProps> = ({
     fileInput.current.click()
   }
 
-  console.log(imageData)
-
   const showImageFileName = (files: FileList) => {
     const file = files[0]
     const fileReader = new FileReader()
@@ -145,7 +143,7 @@ const AddRestroomContainer: React.FC<AddRestroomProps> = ({
       resetImageFile={resetImageFile}
       register={{ ...rest, ref }}
       fileInput={fileInput}
-      onChange={onChange}
+      onChange={onChange} //ファイル分割用に追加
     />
   )
 }

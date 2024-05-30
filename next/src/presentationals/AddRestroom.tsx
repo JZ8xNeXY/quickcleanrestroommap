@@ -65,10 +65,6 @@ const AddRestroom: React.FC<AddRestroomProps> = ({
   fileInput,
   onChange,
 }) => {
-  console.log(fileInput)
-  console.log(selectImageFile)
-  console.log(register)
-  console.log(imageData)
   return (
     <Modal open={open} onClose={onClose}>
       <Box sx={modalStyle}>
