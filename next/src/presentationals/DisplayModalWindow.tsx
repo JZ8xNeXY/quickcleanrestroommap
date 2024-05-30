@@ -2,6 +2,16 @@
 import CloseIcon from '@mui/icons-material/Close'
 import { Box, Button, Modal, Typography } from '@mui/material'
 import React from 'react'
+import buttonStyle from '@/styles/buttonStyle'
+import changeFontSize from '@/styles/changeFontSize'
+import {
+  nursingRoomStyle,
+  anyoneToiletStyle,
+  diaperChangingStationStyle,
+  powderCornerStyle,
+  strollerAccessibleStyle,
+} from '@/styles/facilityStyles'
+import modalStyle from '@/styles/modalStyles'
 
 interface DisplayModalWindowProps {
   openModalWindow: boolean
@@ -18,106 +28,6 @@ interface DisplayModalWindowProps {
   strollerAccessible?: boolean
   image: string
   openEditRestroomModalWindow: () => void
-}
-
-const modalStyle = {
-  position: 'absolute' as const,
-  top: '48.5%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: {
-    xs: '90%',
-    sm: '65%',
-    md: '40%',
-    lg: '30%',
-    xl: '25%',
-  },
-  height: '80%',
-  bgcolor: '#F9F9F9',
-  boxShadow: 24,
-  p: 3,
-  overflow: 'auto',
-  borderRadius: '10px',
-}
-
-const changeFontSize = (name: string) => {
-  if (name.length >= 15) {
-    return {
-      fontSize: '18px',
-      fontWeight: 'bold',
-      margin: '0 auto',
-      textAlign: 'center',
-      verticalAlign: 'middle',
-    }
-  } else if (name.length >= 10) {
-    return {
-      fontSize: '20px',
-      fontWeight: 'bold',
-      margin: '0 auto',
-      textAlign: 'center',
-      verticalAlign: 'middle',
-    }
-  } else {
-    return {
-      fontSize: '22px',
-      fontWeight: 'bold',
-      margin: '0 auto',
-      textAlign: 'center',
-      verticalAlign: 'middle',
-    }
-  }
-}
-
-const facilityStyle = {
-  maxWidth: '150px',
-  pl: 1,
-  pr: 1,
-  ml: 2,
-  mt: 1,
-  mb: 1,
-  border: '1px solid black',
-  borderRadius: '5px',
-  color: '#000000',
-  opacity: 0.8,
-}
-
-const nursingRoomStyle = {
-  ...facilityStyle,
-  backgroundColor: 'rgba(255, 182, 193, 0.7)',
-}
-
-const anyoneToiletStyle = {
-  ...facilityStyle,
-  backgroundColor: 'rgba(173, 216, 230, 0.7)',
-}
-
-const diaperChangingStationStyle = {
-  ...facilityStyle,
-  backgroundColor: 'rgba(144, 238, 144, 0.7)',
-}
-
-const powderCornerStyle = {
-  ...facilityStyle,
-  backgroundColor: 'rgba(255, 215, 0, 0.7)',
-}
-
-const strollerAccessibleStyle = {
-  ...facilityStyle,
-  backgroundColor: 'rgba(255, 160, 122, 0.7)',
-}
-
-const buttonStyle = {
-  height: '40px',
-  color: '#FFFFFF',
-  fontWeight: 'bold',
-  bgcolor: '#4CAF50',
-  borderRadius: '10px',
-  pt: 2,
-  pb: 2,
-  mt: 2,
-  ':hover': {
-    backgroundColor: '#006400',
-  },
 }
 
 const DisplayModalWindow: React.FC<DisplayModalWindowProps> = ({
