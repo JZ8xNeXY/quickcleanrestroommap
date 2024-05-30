@@ -45,9 +45,10 @@ interface EditRestroomProps {
   selectImageFile: () => void
   resetImageFile: () => void
   register: any
-  fileInput: MutableRefObject<HTMLInputElement> //更新可能
+  fileInput: MutableRefObject<HTMLInputElement | null> //更新可能
   selectedRestroom: any
   onDelete: () => void
+  onChange: any
 }
 
 const EditRestroom: React.FC<EditRestroomProps> = ({
@@ -64,6 +65,7 @@ const EditRestroom: React.FC<EditRestroomProps> = ({
   fileInput,
   selectedRestroom,
   onDelete,
+  onChange,
 }) => {
   return (
     <Modal open={open} onClose={onClose}>
@@ -231,12 +233,13 @@ const EditRestroom: React.FC<EditRestroomProps> = ({
               type="file"
               id="file"
               ref={(e) => {
-                register.ref(e)
+                register.ref(e) // ref関数でフォームに入力した値を管理
                 if (e) fileInput.current = e
               }}
               accept="image/*"
               style={{ display: 'none' }}
-              {...register}
+              {...register.rest}
+              onChange={onChange}
             />
             <Button
               variant="contained"

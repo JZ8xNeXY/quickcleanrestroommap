@@ -1,7 +1,6 @@
 import { Box, Container } from '@mui/material'
 import type { NextPage } from 'next'
 import { useEffect, useState } from 'react'
-// import AddRestroom from '@/components/AddRestroom'
 import AddMarkersContainer from '@/containers/AddMarkersContainer'
 import AddRestroomContainer from '@/containers/AddRestroomContainer'
 import { RestroomProvider } from '@/context/RestRoomContext'

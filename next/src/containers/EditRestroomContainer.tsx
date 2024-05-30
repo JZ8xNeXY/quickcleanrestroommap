@@ -35,8 +35,9 @@ const EditRestroomContainer: React.FC<EditRestroomProps> = ({
   const { register, handleSubmit, control, reset } =
     useForm<EditRestroomFormData>()
 
-  const fileInput =
-    useRef<HTMLInputElement>() as MutableRefObject<HTMLInputElement> //更新可能
+  const fileInput = useRef<HTMLInputElement>(
+    null,
+  ) as MutableRefObject<HTMLInputElement> //更新可能
 
   const [fileName, setFileName] = useState('')
   const [imageData, setImageData] = useState('')
@@ -47,10 +48,13 @@ const EditRestroomContainer: React.FC<EditRestroomProps> = ({
     showImageFileName(files)
   }
 
+  // ref関数 react-hook-formが管理できるようになる
   const { ref, ...rest } = register('image', { onChange })
 
   const selectImageFile = () => {
-    if (fileInput.current) fileInput.current.click()
+    if (!fileInput.current) return
+    fileInput.current.removeAttribute('capture')
+    fileInput.current.click()
   }
 
   const showImageFileName = (files: FileList) => {
@@ -168,6 +172,7 @@ const EditRestroomContainer: React.FC<EditRestroomProps> = ({
       fileInput={fileInput}
       selectedRestroom={selectedRestroom}
       onDelete={onDelete}
+      onChange={onChange} //ファイル分割用に追加
     />
   )
 }
