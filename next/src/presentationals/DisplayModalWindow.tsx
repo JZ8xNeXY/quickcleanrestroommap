@@ -22,11 +22,11 @@ interface DisplayModalWindowProps {
 
 const modalStyle = {
   position: 'absolute' as const,
-  top: '47%',
+  top: '48.5%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: {
-    xs: '80%',
+    xs: '90%',
     sm: '65%',
     md: '40%',
     lg: '30%',
@@ -37,12 +37,13 @@ const modalStyle = {
   boxShadow: 24,
   p: 3,
   overflow: 'auto',
+  borderRadius: '10px',
 }
 
 const changeFontSize = (name: string) => {
   if (name.length >= 15) {
     return {
-      fontSize: '24px',
+      fontSize: '18px',
       fontWeight: 'bold',
       margin: '0 auto',
       textAlign: 'center',
@@ -50,7 +51,7 @@ const changeFontSize = (name: string) => {
     }
   } else if (name.length >= 10) {
     return {
-      fontSize: '26px',
+      fontSize: '20px',
       fontWeight: 'bold',
       margin: '0 auto',
       textAlign: 'center',
@@ -58,7 +59,7 @@ const changeFontSize = (name: string) => {
     }
   } else {
     return {
-      fontSize: '28px',
+      fontSize: '22px',
       fontWeight: 'bold',
       margin: '0 auto',
       textAlign: 'center',
@@ -73,8 +74,36 @@ const facilityStyle = {
   pr: 1,
   ml: 2,
   mt: 1,
+  mb: 1,
   border: '1px solid black',
   borderRadius: '5px',
+  color: '#000000',
+  opacity: 0.8,
+}
+
+const nursingRoomStyle = {
+  ...facilityStyle,
+  backgroundColor: 'rgba(255, 182, 193, 0.7)',
+}
+
+const anyoneToiletStyle = {
+  ...facilityStyle,
+  backgroundColor: 'rgba(173, 216, 230, 0.7)',
+}
+
+const diaperChangingStationStyle = {
+  ...facilityStyle,
+  backgroundColor: 'rgba(144, 238, 144, 0.7)',
+}
+
+const powderCornerStyle = {
+  ...facilityStyle,
+  backgroundColor: 'rgba(255, 215, 0, 0.7)',
+}
+
+const strollerAccessibleStyle = {
+  ...facilityStyle,
+  backgroundColor: 'rgba(255, 160, 122, 0.7)',
 }
 
 const buttonStyle = {
@@ -114,12 +143,7 @@ const DisplayModalWindow: React.FC<DisplayModalWindowProps> = ({
     >
       <Box sx={modalStyle}>
         <Box sx={{ display: 'flex', justifyContent: 'right' }}>
-          <Button
-            sx={{
-              color: '#000000',
-            }}
-            onClick={closeModalWindow}
-          >
+          <Button sx={{ color: '#000000' }} onClick={closeModalWindow}>
             <CloseIcon />
           </Button>
         </Box>
@@ -140,17 +164,14 @@ const DisplayModalWindow: React.FC<DisplayModalWindowProps> = ({
             display: 'flex',
             bgcolor: '#F0F0F0',
             alignItems: 'center',
+            borderRadius: '5px',
+            p: 1,
+            mt: 2,
           }}
         >
-          <Typography
-            sx={{
-              ...changeFontSize(name),
-            }}
-          >
-            {name}
-          </Typography>
+          <Typography sx={{ ...changeFontSize(name) }}>{name}</Typography>
         </Box>
-        <Box sx={{ display: 'flex', justifyContent: 'right' }}>
+        <Box sx={{ display: 'flex', justifyContent: 'right', mt: 0 }}>
           <Button
             sx={buttonStyle}
             onClick={() => {
@@ -161,7 +182,7 @@ const DisplayModalWindow: React.FC<DisplayModalWindowProps> = ({
             編集する
           </Button>
         </Box>
-        <Box sx={{ mt: 0 }}>
+        <Box sx={{ mt: 1 }}>
           <Typography variant="h6" sx={{ fontWeight: 'bold', mt: 1 }}>
             住所
           </Typography>
@@ -181,18 +202,22 @@ const DisplayModalWindow: React.FC<DisplayModalWindowProps> = ({
               flexWrap: 'wrap',
             }}
           >
-            {nursingRoom && <Typography sx={facilityStyle}>授乳室</Typography>}
+            {nursingRoom && (
+              <Typography sx={nursingRoomStyle}>授乳室</Typography>
+            )}
             {anyoneToilet && (
-              <Typography sx={facilityStyle}>誰でもトイレ</Typography>
+              <Typography sx={anyoneToiletStyle}>誰でもトイレ</Typography>
             )}
             {diaperChangingStation && (
-              <Typography sx={facilityStyle}>オムツ交換代</Typography>
+              <Typography sx={diaperChangingStationStyle}>
+                オムツ交換代
+              </Typography>
             )}
             {powderCorner && (
-              <Typography sx={facilityStyle}>パウダーコーナー</Typography>
+              <Typography sx={powderCornerStyle}>パウダーコーナー</Typography>
             )}
             {strollerAccessible && (
-              <Typography sx={facilityStyle}>ベビーカー可</Typography>
+              <Typography sx={strollerAccessibleStyle}>ベビーカー可</Typography>
             )}
           </Box>
           <Typography variant="h6" sx={{ fontWeight: 'bold', mt: 1 }}>
