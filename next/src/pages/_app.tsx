@@ -3,8 +3,8 @@ import CssBaseline from '@mui/material/CssBaseline'
 import { ThemeProvider } from '@mui/material/styles'
 import { AppProps } from 'next/app'
 import * as React from 'react'
-import Footer from '@/components/Footer'
-import Header from '@/components/Header'
+import HeaderContainer from '@/containers/HeaderContainer'
+import Footer from '@/presentationals/Footer'
 
 import createEmotionCache from '@/styles/createEmotionCache'
 import theme from '@/styles/theme'
@@ -24,7 +24,7 @@ export default function MyApp(props: MyAppProps): JSX.Element {
       <ThemeProvider theme={theme}>
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
-        <Header />
+        <HeaderContainer />
         <Component {...pageProps} />
         <Footer />
       </ThemeProvider>
