@@ -35,8 +35,9 @@ const AddRestroomContainer: React.FC<AddRestroomProps> = ({
       defaultValues: { name: '', address: '', content: '' },
     })
 
-  const fileInput =
-    useRef<HTMLInputElement>() as MutableRefObject<HTMLInputElement> //更新可能
+  const fileInput = useRef<HTMLInputElement>(
+    null,
+  ) as MutableRefObject<HTMLInputElement> //更新可能
   const [fileName, setFileName] = useState('')
   const [imageData, setImageData] = useState('')
 
@@ -46,11 +47,16 @@ const AddRestroomContainer: React.FC<AddRestroomProps> = ({
     showImageFileName(files)
   }
 
+  // ref関数 react-hook-formが管理できるようになる
   const { ref, ...rest } = register('image', { onChange })
 
   const selectImageFile = () => {
-    if (fileInput.current) fileInput.current.click()
+    if (!fileInput.current) return
+    fileInput.current.removeAttribute('capture')
+    fileInput.current.click()
   }
+
+  console.log(imageData)
 
   const showImageFileName = (files: FileList) => {
     const file = files[0]
@@ -139,6 +145,7 @@ const AddRestroomContainer: React.FC<AddRestroomProps> = ({
       resetImageFile={resetImageFile}
       register={{ ...rest, ref }}
       fileInput={fileInput}
+      onChange={onChange}
     />
   )
 }

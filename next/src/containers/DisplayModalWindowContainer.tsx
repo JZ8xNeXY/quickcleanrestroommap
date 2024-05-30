@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import EditRestroomContainer from './EditRestroomContainer'
+// import EditRestroomContainer from './EditRestroomContainer'
+import EditRestroom from '@/components/EditRestroom'
 import DisplayModalWindow from '@/presentationals/DisplayModalWindow'
 
 interface DisplayModalWindowContainerProps {
@@ -41,7 +42,7 @@ const DisplayModalWindowContainer: React.FC<
 
   return (
     <>
-      <EditRestroomContainer
+      <EditRestroom
         open={editModalWindow}
         onClose={closeEditRestroomModalWindow}
       />
