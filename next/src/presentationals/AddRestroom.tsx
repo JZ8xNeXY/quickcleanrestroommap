@@ -46,7 +46,8 @@ interface AddRestroomProps {
   selectImageFile: () => void
   resetImageFile: () => void
   register: any
-  fileInput: MutableRefObject<HTMLInputElement> //更新可能
+  fileInput: MutableRefObject<HTMLInputElement | null> //更新可能
+  onChange: any
 }
 
 const AddRestroom: React.FC<AddRestroomProps> = ({
@@ -62,7 +63,12 @@ const AddRestroom: React.FC<AddRestroomProps> = ({
   resetImageFile,
   register,
   fileInput,
+  onChange,
 }) => {
+  console.log(fileInput)
+  console.log(selectImageFile)
+  console.log(register)
+  console.log(imageData)
   return (
     <Modal open={open} onClose={onClose}>
       <Box sx={modalStyle}>
@@ -199,12 +205,13 @@ const AddRestroom: React.FC<AddRestroomProps> = ({
               type="file"
               id="file"
               ref={(e) => {
-                register.ref(e)
+                register.ref(e) // ref関数でフォームに入力した値を管理
                 if (e) fileInput.current = e
               }}
               accept="image/*"
               style={{ display: 'none' }}
-              {...register}
+              {...register.rest} // ここを register から rest に変更
+              onChange={onChange} // ここを直接追加
             />
             <Button
               variant="contained"
