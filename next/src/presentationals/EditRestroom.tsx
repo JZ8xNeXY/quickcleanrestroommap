@@ -14,25 +14,7 @@ import {
 } from '@mui/material'
 import { MutableRefObject } from 'react'
 import { Controller } from 'react-hook-form'
-
-const modalStyle = {
-  position: 'absolute' as const,
-  top: '47%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: {
-    xs: '80%',
-    sm: '65%',
-    md: '40%',
-    lg: '30%',
-    xl: '25%',
-  },
-  height: '80%',
-  bgcolor: '#F9F9F9',
-  boxShadow: 24,
-  p: 3,
-  overflow: 'auto',
-}
+import modalStyle from '@/styles/modalStyles'
 
 interface EditRestroomProps {
   open: boolean
