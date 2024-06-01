@@ -11,16 +11,25 @@ import {
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
+import AddSimpleRestroomContainer from '@/containers/AddSimpleRestroomContainer'
 
 interface HeaderProps {
   isOpen: boolean
   openDrawer: (
     open: boolean,
   ) => (event: React.KeyboardEvent | React.MouseEvent) => void
+  openAddSimpleRestroomModal: boolean
+  setOpenAddSimpleRestroomModal: any
   list: () => JSX.Element
 }
 
-const Header: React.FC<HeaderProps> = ({ isOpen, openDrawer, list }) => {
+const Header: React.FC<HeaderProps> = ({
+  isOpen,
+  openDrawer,
+  openAddSimpleRestroomModal,
+  setOpenAddSimpleRestroomModal,
+  list,
+}) => {
   return (
     <AppBar
       position="static"
@@ -103,20 +112,15 @@ const Header: React.FC<HeaderProps> = ({ isOpen, openDrawer, list }) => {
                 edge="start"
                 color="inherit"
                 aria-label="menu"
-                onClick={openDrawer(true)}
+                onClick={() => setOpenAddSimpleRestroomModal(true)}
               >
                 <AddLocationIcon />
               </IconButton>
             </Toolbar>
-            <Drawer
-              anchor="left"
-              open={isOpen}
-              onClose={() => {
-                openDrawer(false)
-              }}
-            >
-              {list()}
-            </Drawer>
+            <AddSimpleRestroomContainer
+              open={openAddSimpleRestroomModal}
+              onClose={() => setOpenAddSimpleRestroomModal(false)}
+            />
           </Box>
         </Box>
       </Container>
