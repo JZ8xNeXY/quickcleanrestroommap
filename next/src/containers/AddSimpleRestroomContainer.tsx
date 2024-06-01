@@ -59,6 +59,8 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
   ) as MutableRefObject<HTMLInputElement> //更新可能
   const [fileName, setFileName] = useState('')
   const [imageData, setImageData] = useState('')
+  const [imageLatitude, setImageLatitude] = useState('')
+  const [imageLongitude, setImageLongitude] = useState('')
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files
@@ -108,7 +110,9 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
         const gpsData = allExifData['34853']
         if (gpsData) {
           const latitude = convertDMSToDD(gpsData['2'], gpsData['1'])
+          setImageLatitude(latitude.toString())
           const longitude = convertDMSToDD(gpsData['4'], gpsData['3'])
+          setImageLongitude(longitude.toString())
         } else {
           console.log('No GPS data found')
         }
@@ -141,8 +145,8 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
     formData.append('post[name]', data.name)
     formData.append('post[address]', data.address)
     formData.append('post[content]', data.content)
-    formData.append('post[latitude]', data.latitude.toString())
-    formData.append('post[longitude]', data.longitude.toString())
+    formData.append('post[latitude]', imageLatitude ? imageLatitude : '0')
+    formData.append('post[longitude]', imageLongitude ? imageLongitude : '0')
     formData.append(
       'post[nursing_room]',
       (data.nursing_room ?? false).toString(),
