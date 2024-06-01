@@ -71,8 +71,6 @@ const AddSimpleRestroom: React.FC<AddSimpleRestroomProps> = ({
                   type="text"
                   label="施設名称"
                   sx={{ backgroundColor: 'white' }}
-                  value=""
-                  style={{ display: 'none' }}
                 />
               )}
             />
@@ -85,8 +83,6 @@ const AddSimpleRestroom: React.FC<AddSimpleRestroomProps> = ({
                   type="text"
                   label="住所"
                   sx={{ backgroundColor: 'white' }}
-                  value=""
-                  style={{ display: 'none' }}
                 />
               )}
             />
@@ -99,8 +95,6 @@ const AddSimpleRestroom: React.FC<AddSimpleRestroomProps> = ({
                   type="text"
                   label="コメント"
                   sx={{ backgroundColor: 'white' }}
-                  value=""
-                  style={{ display: 'none' }}
                 />
               )}
             />
@@ -126,8 +120,6 @@ const AddSimpleRestroom: React.FC<AddSimpleRestroomProps> = ({
                         label="授乳室"
                         control={<Checkbox {...field} checked={field.value} />}
                         sx={{ padding: '1px', marginBottom: '1px' }}
-                        value=""
-                        style={{ display: 'none' }}
                       />
                     )}
                   />
@@ -141,8 +133,6 @@ const AddSimpleRestroom: React.FC<AddSimpleRestroomProps> = ({
                         label="誰でもトイレ"
                         control={<Checkbox {...field} checked={field.value} />}
                         sx={{ padding: '1px', marginBottom: '1px' }}
-                        value=""
-                        style={{ display: 'none' }}
                       />
                     )}
                   />
@@ -156,8 +146,6 @@ const AddSimpleRestroom: React.FC<AddSimpleRestroomProps> = ({
                         label="オムツ交換台"
                         control={<Checkbox {...field} checked={field.value} />}
                         sx={{ padding: '1px', marginBottom: '1px' }}
-                        value=""
-                        style={{ display: 'none' }}
                       />
                     )}
                   />
@@ -171,8 +159,6 @@ const AddSimpleRestroom: React.FC<AddSimpleRestroomProps> = ({
                         label="パウダーコーナー"
                         control={<Checkbox {...field} checked={field.value} />}
                         sx={{ padding: '1px', marginBottom: '1px' }}
-                        value=""
-                        style={{ display: 'none' }}
                       />
                     )}
                   />
@@ -186,8 +172,6 @@ const AddSimpleRestroom: React.FC<AddSimpleRestroomProps> = ({
                         label="ベビーカー可"
                         control={<Checkbox {...field} checked={field.value} />}
                         sx={{ padding: '1px', marginBottom: '1px' }}
-                        value=""
-                        style={{ display: 'none' }}
                       />
                     )}
                   />
