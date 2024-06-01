@@ -11,6 +11,7 @@ const Index: NextPage = () => {
   const [map, setMap] = useState<google.maps.Map | null>(null)
 
   const [openAddRestroomModal, setOpenAddRestroomModal] = useState(false)
+
   const [coords, setCoords] = useState<{ lat: number; lng: number } | null>(
     null,
   )
