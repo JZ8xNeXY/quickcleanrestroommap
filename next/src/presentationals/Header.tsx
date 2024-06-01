@@ -99,13 +99,24 @@ const Header: React.FC<HeaderProps> = ({ isOpen, openDrawer, list }) => {
           </Box>
           <Box>
             <Toolbar>
-              <AddLocationIcon
+              <IconButton
                 edge="start"
                 color="inherit"
                 aria-label="menu"
                 onClick={openDrawer(true)}
-              ></AddLocationIcon>
+              >
+                <AddLocationIcon />
+              </IconButton>
             </Toolbar>
+            <Drawer
+              anchor="left"
+              open={isOpen}
+              onClose={() => {
+                openDrawer(false)
+              }}
+            >
+              {list()}
+            </Drawer>
           </Box>
         </Box>
       </Container>
