@@ -31,9 +31,9 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
   const { register, handleSubmit, control, reset } =
     useForm<AddSimpleRestroomFormData>({
       defaultValues: {
-        name: '-',
-        address: '-',
-        content: '-',
+        name: '',
+        address: '',
+        content: '',
         nursing_room: false,
         anyone_toilet: false,
         diaper_changing_station: false,
