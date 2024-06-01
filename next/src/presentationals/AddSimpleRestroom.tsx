@@ -19,7 +19,6 @@ import modalStyle from '@/styles/modalStyles'
 interface AddSimpleRestroomProps {
   open: boolean
   onClose: () => void
-  coords: { lat: number; lng: number } | null
   handleSubmit: any
   onSubmit: any
   control: any
@@ -72,6 +71,7 @@ const AddSimpleRestroom: React.FC<AddSimpleRestroomProps> = ({
                   type="text"
                   label="施設名称"
                   sx={{ backgroundColor: 'white' }}
+                  value=""
                   style={{ display: 'none' }}
                 />
               )}
@@ -85,6 +85,7 @@ const AddSimpleRestroom: React.FC<AddSimpleRestroomProps> = ({
                   type="text"
                   label="住所"
                   sx={{ backgroundColor: 'white' }}
+                  value=""
                   style={{ display: 'none' }}
                 />
               )}
@@ -98,6 +99,7 @@ const AddSimpleRestroom: React.FC<AddSimpleRestroomProps> = ({
                   type="text"
                   label="コメント"
                   sx={{ backgroundColor: 'white' }}
+                  value=""
                   style={{ display: 'none' }}
                 />
               )}
@@ -124,6 +126,7 @@ const AddSimpleRestroom: React.FC<AddSimpleRestroomProps> = ({
                         label="授乳室"
                         control={<Checkbox {...field} checked={field.value} />}
                         sx={{ padding: '1px', marginBottom: '1px' }}
+                        value=""
                         style={{ display: 'none' }}
                       />
                     )}
@@ -138,6 +141,7 @@ const AddSimpleRestroom: React.FC<AddSimpleRestroomProps> = ({
                         label="誰でもトイレ"
                         control={<Checkbox {...field} checked={field.value} />}
                         sx={{ padding: '1px', marginBottom: '1px' }}
+                        value=""
                         style={{ display: 'none' }}
                       />
                     )}
@@ -152,6 +156,7 @@ const AddSimpleRestroom: React.FC<AddSimpleRestroomProps> = ({
                         label="オムツ交換台"
                         control={<Checkbox {...field} checked={field.value} />}
                         sx={{ padding: '1px', marginBottom: '1px' }}
+                        value=""
                         style={{ display: 'none' }}
                       />
                     )}
@@ -166,6 +171,7 @@ const AddSimpleRestroom: React.FC<AddSimpleRestroomProps> = ({
                         label="パウダーコーナー"
                         control={<Checkbox {...field} checked={field.value} />}
                         sx={{ padding: '1px', marginBottom: '1px' }}
+                        value=""
                         style={{ display: 'none' }}
                       />
                     )}
@@ -180,6 +186,7 @@ const AddSimpleRestroom: React.FC<AddSimpleRestroomProps> = ({
                         label="ベビーカー可"
                         control={<Checkbox {...field} checked={field.value} />}
                         sx={{ padding: '1px', marginBottom: '1px' }}
+                        value=""
                         style={{ display: 'none' }}
                       />
                     )}
@@ -236,7 +243,7 @@ const AddSimpleRestroom: React.FC<AddSimpleRestroomProps> = ({
                   type="number"
                   label="緯度"
                   sx={{ backgroundColor: 'white' }}
-                  // value={coords ? coords.lat : ''}
+                  value={35.681236}
                   InputProps={{ readOnly: true }}
                   style={{ display: 'none' }}
                 />
@@ -251,7 +258,7 @@ const AddSimpleRestroom: React.FC<AddSimpleRestroomProps> = ({
                   type="number"
                   label="経度"
                   sx={{ backgroundColor: 'white' }}
-                  // value={coords ? coords.lng : ''}
+                  value={139.767125}
                   InputProps={{ readOnly: true }}
                   style={{ display: 'none' }}
                 />

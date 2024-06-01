@@ -8,8 +8,8 @@ interface AddSimpleRestroomFormData {
   name: string
   address: string
   content: string
-  // latitude: number
-  // longitude: number
+  latitude: number
+  longitude: number
   createdAt: string
   nursing_room: boolean
   anyone_toilet: boolean
@@ -30,7 +30,18 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
 }) => {
   const { register, handleSubmit, control, reset } =
     useForm<AddSimpleRestroomFormData>({
-      defaultValues: { name: '', address: '', content: '' },
+      defaultValues: {
+        name: '-',
+        address: '-',
+        content: '-',
+        nursing_room: false,
+        anyone_toilet: false,
+        diaper_changing_station: false,
+        powder_corner: false,
+        stroller_accessible: false,
+        latitude: 35.681236,
+        longitude: 139.767125,
+      },
     })
 
   const fileInput = useRef<HTMLInputElement>(
@@ -83,8 +94,8 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
     formData.append('post[name]', data.name)
     formData.append('post[address]', data.address)
     formData.append('post[content]', data.content)
-    // formData.append('post[latitude]', coords.lat.toString())
-    // formData.append('post[longitude]', coords.lng.toString())
+    formData.append('post[latitude]', data.latitude.toString())
+    formData.append('post[longitude]', data.longitude.toString())
     formData.append(
       'post[nursing_room]',
       (data.nursing_room ?? false).toString(),
