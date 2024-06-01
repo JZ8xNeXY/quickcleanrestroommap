@@ -114,7 +114,13 @@ const Header: React.FC<HeaderProps> = ({
                 aria-label="menu"
                 onClick={() => setOpenAddSimpleRestroomModal(true)}
               >
-                <AddLocationIcon />
+                <AddLocationIcon
+                  style={{
+                    cursor: 'pointer',
+                    stroke: 'none',
+                    fontSize: '35px',
+                  }}
+                />
               </IconButton>
             </Toolbar>
             <AddSimpleRestroomContainer
