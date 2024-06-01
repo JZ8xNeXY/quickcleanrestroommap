@@ -1,4 +1,5 @@
 import axios, { AxiosResponse, AxiosError } from 'axios'
+import loadImage from 'blueimp-load-image'
 import { useState, useRef, MutableRefObject } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { mutate } from 'swr'
@@ -22,6 +23,15 @@ interface AddSimpleRestroomFormData {
 interface AddSimpleRestroomProps {
   open: boolean
   onClose: () => void
+}
+
+interface ExifTagValue {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any
+  '1'?: string
+  '2'?: [number, number, number]
+  '3'?: string
+  '4'?: [number, number, number]
 }
 
 const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
@@ -54,6 +64,7 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
     const files = e.target.files
     if (!files || files.length <= 0) return
     showImageFileName(files)
+    onChangeShowExifData(e)
   }
 
   // ref関数 react-hook-formが管理できるようになる
@@ -87,6 +98,42 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
     reset()
     resetImageFile()
     onClose()
+  }
+
+  const getExifData = (file: File) => {
+    loadImage.parseMetaData(file, (data) => {
+      if (data.exif) {
+        const allExifData = data.exif as ExifTagValue
+
+        const gpsData = allExifData['34853']
+        if (gpsData) {
+          const latitude = convertDMSToDD(gpsData['2'], gpsData['1'])
+          const longitude = convertDMSToDD(gpsData['4'], gpsData['3'])
+        } else {
+          console.log('No GPS data found')
+        }
+      } else {
+        console.log('No EXIF data found')
+      }
+    })
+  }
+
+  const convertDMSToDD = (
+    dmsArray: [number, number, number],
+    direction: string,
+  ) => {
+    const [degrees, minutes, seconds] = dmsArray
+    let dd = degrees + minutes / 60 + seconds / 3600
+    if (direction === 'S' || direction === 'W') {
+      dd *= -1
+    }
+    return dd
+  }
+
+  const onChangeShowExifData = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return
+    const file = e.target.files[0]
+    getExifData(file)
   }
 
   const onSubmit: SubmitHandler<AddSimpleRestroomFormData> = (data) => {
