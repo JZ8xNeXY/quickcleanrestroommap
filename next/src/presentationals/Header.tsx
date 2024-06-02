@@ -19,6 +19,7 @@ interface HeaderProps {
     open: boolean,
   ) => (event: React.KeyboardEvent | React.MouseEvent) => void
   openAddSimpleRestroomModal: boolean
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setOpenAddSimpleRestroomModal: any
   list: () => JSX.Element
 }
