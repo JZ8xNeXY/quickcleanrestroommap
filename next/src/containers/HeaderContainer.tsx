@@ -6,6 +6,8 @@ import Header from '@/presentationals/Header'
 
 const HeaderContainer = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
+  const [openAddSimpleRestroomModal, setOpenAddSimpleRestroomModal] =
+    useState(false)
 
   const openDrawer =
     (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
@@ -52,7 +54,15 @@ const HeaderContainer = () => {
     </Box>
   )
 
-  return <Header isOpen={isOpen} openDrawer={openDrawer} list={list} />
+  return (
+    <Header
+      isOpen={isOpen}
+      openDrawer={openDrawer}
+      openAddSimpleRestroomModal={openAddSimpleRestroomModal}
+      setOpenAddSimpleRestroomModal={setOpenAddSimpleRestroomModal}
+      list={list}
+    />
+  )
 }
 
 export default HeaderContainer

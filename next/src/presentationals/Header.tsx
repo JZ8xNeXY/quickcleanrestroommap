@@ -1,3 +1,4 @@
+import AddLocationIcon from '@mui/icons-material/AddLocation'
 import MenuIcon from '@mui/icons-material/Menu'
 import {
   AppBar,
@@ -10,16 +11,26 @@ import {
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
+import AddSimpleRestroomContainer from '@/containers/AddSimpleRestroomContainer'
 
 interface HeaderProps {
   isOpen: boolean
   openDrawer: (
     open: boolean,
   ) => (event: React.KeyboardEvent | React.MouseEvent) => void
+  openAddSimpleRestroomModal: boolean
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  setOpenAddSimpleRestroomModal: any
   list: () => JSX.Element
 }
 
-const Header: React.FC<HeaderProps> = ({ isOpen, openDrawer, list }) => {
+const Header: React.FC<HeaderProps> = ({
+  isOpen,
+  openDrawer,
+  openAddSimpleRestroomModal,
+  setOpenAddSimpleRestroomModal,
+  list,
+}) => {
   return (
     <AppBar
       position="static"
@@ -34,59 +45,89 @@ const Header: React.FC<HeaderProps> = ({ isOpen, openDrawer, list }) => {
         <Box
           sx={{
             display: 'flex',
-            justifyContent: 'left',
+            justifyContent: 'space-between',
             alignItems: 'center',
           }}
         >
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            <Box>
+              <Toolbar>
+                <IconButton
+                  edge="start"
+                  color="inherit"
+                  aria-label="menu"
+                  onClick={openDrawer(true)}
+                >
+                  <MenuIcon />
+                </IconButton>
+              </Toolbar>
+              <Drawer
+                anchor="left"
+                open={isOpen}
+                onClose={() => {
+                  openDrawer(false)
+                }}
+              >
+                {list()}
+              </Drawer>
+            </Box>
+            <Box>
+              <Link href="/">
+                <Box
+                  sx={{
+                    width: '100%',
+                    maxWidth: {
+                      xs: '120px',
+                      sm: '140px',
+                      md: '160px',
+                      lg: '180px',
+                      xl: '200px',
+                    },
+                    height: 'auto',
+                    '& img': {
+                      width: '100%',
+                      height: 'auto',
+                    },
+                  }}
+                >
+                  <Image
+                    src="/headerlogo.png"
+                    alt="logo"
+                    width={200}
+                    height={50}
+                    prefix="false"
+                  />
+                </Box>
+              </Link>
+            </Box>
+          </Box>
           <Box>
             <Toolbar>
               <IconButton
                 edge="start"
                 color="inherit"
                 aria-label="menu"
-                onClick={openDrawer(true)}
+                onClick={() => setOpenAddSimpleRestroomModal(true)}
               >
-                <MenuIcon />
+                <AddLocationIcon
+                  style={{
+                    cursor: 'pointer',
+                    stroke: 'none',
+                    fontSize: '35px',
+                  }}
+                />
               </IconButton>
             </Toolbar>
-            <Drawer
-              anchor="left"
-              open={isOpen}
-              onClose={() => {
-                openDrawer(false)
-              }}
-            >
-              {list()}
-            </Drawer>
-          </Box>
-          <Box>
-            <Link href="/">
-              <Box
-                sx={{
-                  width: '100%',
-                  maxWidth: {
-                    xs: '120px',
-                    sm: '140px',
-                    md: '160px',
-                    lg: '180px',
-                    xl: '200px',
-                  },
-                  height: 'auto',
-                  '& img': {
-                    width: '100%',
-                    height: 'auto',
-                  },
-                }}
-              >
-                <Image
-                  src="/headerlogo.png"
-                  alt="logo"
-                  width={200}
-                  height={50}
-                  prefix="false"
-                />
-              </Box>
-            </Link>
+            <AddSimpleRestroomContainer
+              open={openAddSimpleRestroomModal}
+              onClose={() => setOpenAddSimpleRestroomModal(false)}
+            />
           </Box>
         </Box>
       </Container>
