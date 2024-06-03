@@ -4,6 +4,7 @@ import { useState, useRef, MutableRefObject } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { mutate } from 'swr'
 import AddSimpleRestroom from '@/presentationals/AddSimpleRestroom'
+import { chatgpt, encodeImageToBase64 } from '@/utils/chatgptAPI'
 
 interface AddSimpleRestroomFormData {
   name: string
@@ -132,10 +133,25 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
     }
     return dd
   }
+
   const onChangeShowExifData = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return
     const file = e.target.files[0]
     getExifData(file)
+  }
+
+  // chat gptとやりとりする
+  const evaluateToiletCleanness = async () => {
+    const filePath = '/public-toilet.jpeg'
+    const imageBase64 = await encodeImageToBase64(filePath)
+    const message =
+      'This is an app to rate the cleanliness of a toilet based on photos on a five-point scale.'
+    const result = await chatgpt(message, imageBase64)
+    console.log(result)
+  }
+
+  const onChangeEvaluateCleanliness = () => {
+    evaluateToiletCleanness()
   }
 
   const onSubmit: SubmitHandler<AddSimpleRestroomFormData> = (data) => {
