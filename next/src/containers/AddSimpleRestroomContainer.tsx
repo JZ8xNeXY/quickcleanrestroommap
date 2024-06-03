@@ -109,9 +109,11 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
 
         const gpsData = allExifData['34853']
         if (gpsData) {
-          const latitude = convertDMSToDD(gpsData['2'], gpsData['1'])
+          // 正しい型の引数を渡す
+          const latitude = convertDMSToDD(gpsData[2], gpsData[1])
           setImageLatitude(latitude.toString())
-          const longitude = convertDMSToDD(gpsData['4'], gpsData['3'])
+          // 正しい型の引数を渡す
+          const longitude = convertDMSToDD(gpsData[4], gpsData[3])
           setImageLongitude(longitude.toString())
         } else {
           console.log('No GPS data found')
@@ -122,10 +124,7 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
     })
   }
 
-  const convertDMSToDD = (
-    dmsArray: [number, number, number],
-    direction: string,
-  ) => {
+  const convertDMSToDD = (dmsArray: number[], direction: string) => {
     const [degrees, minutes, seconds] = dmsArray
     let dd = degrees + minutes / 60 + seconds / 3600
     if (direction === 'S' || direction === 'W') {
@@ -133,7 +132,6 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
     }
     return dd
   }
-
   const onChangeShowExifData = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return
     const file = e.target.files[0]
