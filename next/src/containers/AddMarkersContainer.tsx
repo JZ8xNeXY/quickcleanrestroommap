@@ -31,7 +31,7 @@ interface Restroom {
 const AddMarkersContainer: NextPage<AddMarkersProps> = ({ map }) => {
   const url = process.env.NEXT_PUBLIC_API_BASE_URL + '/posts'
   const { data, error } = useSWR(url, fetcher, { revalidateOnFocus: false })
-  console.log(data)
+
   const { selectedRestroom, setSelectedRestroom } = useRestroomContext()
 
   const [openModalWindow, setOpenModalWindow] = useState(false)

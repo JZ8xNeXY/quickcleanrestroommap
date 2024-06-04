@@ -221,6 +221,21 @@ const AddSimpleRestroom: React.FC<AddSimpleRestroomProps> = ({
               )}
             </div>
             <Controller
+              name="evaluation"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  type="number"
+                  label="評価"
+                  sx={{ backgroundColor: 'white' }}
+                  value={imageToiletCleanness}
+                  InputProps={{ readOnly: true }}
+                  style={{ display: 'none' }}
+                />
+              )}
+            />
+            <Controller
               name="latitude"
               control={control}
               render={({ field }) => (

@@ -46,7 +46,6 @@ const DisplayModalWindow: React.FC<DisplayModalWindowProps> = ({
   image,
   openEditRestroomModalWindow,
 }) => {
-  console.log(image)
   return (
     <Modal
       open={openModalWindow}
