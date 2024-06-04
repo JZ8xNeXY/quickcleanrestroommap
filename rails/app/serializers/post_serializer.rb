@@ -2,7 +2,7 @@ class PostSerializer < ActiveModel::Serializer
   include Rails.application.routes.url_helpers
 
   attributes :id, :name, :address, :content, :latitude, :longitude, :created_at, :nursing_room, :anyone_toilet,
-             :diaper_changing_station, :powder_corner, :stroller_accessible,
+             :diaper_changing_station, :powder_corner, :stroller_accessible, :evaluation
              :image
 
   def id
@@ -47,6 +47,10 @@ class PostSerializer < ActiveModel::Serializer
 
   def stroller_accessible
     object.stroller_accessible
+  end
+
+  def evaluation
+    object.evaluation
   end
 
   def image
