@@ -26,6 +26,7 @@ interface DisplayModalWindowProps {
   diaperChangingStation?: boolean
   powderCorner?: boolean
   strollerAccessible?: boolean
+  evaluation: number
   image: string
   openEditRestroomModalWindow: () => void
 }
@@ -41,9 +42,11 @@ const DisplayModalWindow: React.FC<DisplayModalWindowProps> = ({
   diaperChangingStation,
   powderCorner,
   strollerAccessible,
+  evaluation,
   image,
   openEditRestroomModalWindow,
 }) => {
+  console.log(image)
   return (
     <Modal
       open={openModalWindow}
@@ -133,9 +136,7 @@ const DisplayModalWindow: React.FC<DisplayModalWindowProps> = ({
           <Typography variant="h6" sx={{ fontWeight: 'bold', mt: 1 }}>
             レビュー
           </Typography>
-          <Typography sx={{ ml: 2 }}>
-            平均4.7 ⭐️⭐️⭐️⭐️⭐️ ( <u>3件の評価をみる</u> )
-          </Typography>
+          <Typography sx={{ ml: 2 }}>評価:{evaluation}</Typography>
         </Box>
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
           <Button sx={buttonStyle} onClick={closeModalWindow}>
