@@ -4,30 +4,25 @@ const API_URL = 'https://api.openai.com/v1/'
 const MODEL = 'gpt-4o'
 const API_KEY = process.env.NEXT_PUBLIC_OPENAI_API_KEY
 
-// 画像をBase64エンコードする関数
-export const encodeImageToBase64 = async (filePath: string) => {
-  const response = await fetch(filePath)
-  const blob = await response.blob()
+// 画像をそのまま送れないので画像をBase64エンコード（テキストに変換）する関数
+export const encodeImageToBase64 = (file: File): Promise<string> => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader()
     reader.onloadend = () => {
-      const base64data = reader.result.split(',')[1] // "data:image/jpeg;base64," の部分を除去
+      const base64data = (reader.result as string).split(',')[1] // "data:image/jpeg;base64," の部分を除去
       resolve(base64data)
     }
     reader.onerror = reject
-    reader.readAsDataURL(blob)
+    reader.readAsDataURL(file)
   })
 }
 
-export const chatgpt = async (message: string, imageBase64: string) => {
-  // export const chatgpt = async (message: string) => {
+export const chatgpt = async (imageBase64: string) => {
   try {
     const response = await axios.post(
       `${API_URL}chat/completions`,
       {
-        // モデル ID の指定
         model: MODEL,
-        // 質問内容
         messages: [
           {
             role: 'system',
@@ -37,12 +32,15 @@ export const chatgpt = async (message: string, imageBase64: string) => {
           {
             role: 'user',
             content: [
-              { type: 'text', text: message },
+              {
+                type: 'text',
+                text: 'This is an app to rate the cleanliness of a toilet based on photos on a five-point scale.',
+              },
               {
                 type: 'image_url',
                 image_url: {
                   url: `data:image/jpeg;base64,${imageBase64}`,
-                  detail: 'low', // 解像度を指定（low、high、autoのいずれか）
+                  detail: 'low', // 解像度を指定（low、high、autoのいずれか）今のところlowでも精度高い
                 },
               },
             ],
@@ -50,14 +48,12 @@ export const chatgpt = async (message: string, imageBase64: string) => {
         ],
       },
       {
-        // 送信する HTTP ヘッダー(認証情報)
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${API_KEY}`,
         },
       },
     )
-    // 回答の取得
     return response.data.choices[0].message.content
   } catch (error) {
     console.error(error)

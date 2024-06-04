@@ -60,6 +60,7 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
   ) as MutableRefObject<HTMLInputElement> //更新可能
   const [fileName, setFileName] = useState('')
   const [imageData, setImageData] = useState('')
+  const [imageToiletCleanness, setImageToiletCleanness] = useState<number>(0)
   const [imageLatitude, setImageLatitude] = useState('')
   const [imageLongitude, setImageLongitude] = useState('')
 
@@ -68,6 +69,7 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
     if (!files || files.length <= 0) return
     showImageFileName(files)
     onChangeShowExifData(e)
+    onChangeEvaluateToiletCleanness(files)
   }
 
   // ref関数 react-hook-formが管理できるようになる
@@ -140,18 +142,16 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
     getExifData(file)
   }
 
-  // chat gptとやりとりする
-  const evaluateToiletCleanness = async () => {
-    const filePath = '/public-toilet.jpeg'
-    const imageBase64 = await encodeImageToBase64(filePath)
-    const message =
-      'This is an app to rate the cleanliness of a toilet based on photos on a five-point scale.'
-    const result = await chatgpt(message, imageBase64)
-    console.log(result)
+  const evaluateToiletCleanness = async (file: File) => {
+    const imageBase64 = await encodeImageToBase64(file)
+    const result = await chatgpt(imageBase64)
+    setImageToiletCleanness(result)
+    console.log(imageToiletCleanness)
   }
 
-  const onChangeEvaluateCleanliness = () => {
-    evaluateToiletCleanness()
+  const onChangeEvaluateToiletCleanness = (files: FileList) => {
+    const file = files[0]
+    evaluateToiletCleanness(file)
   }
 
   const onSubmit: SubmitHandler<AddSimpleRestroomFormData> = (data) => {
@@ -211,6 +211,7 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
       control={control}
       fileName={fileName}
       imageData={imageData}
+      imageToiletCleanness={imageToiletCleanness}
       selectImageFile={selectImageFile}
       resetImageFile={resetImageFile}
       register={{ ...rest, ref }}

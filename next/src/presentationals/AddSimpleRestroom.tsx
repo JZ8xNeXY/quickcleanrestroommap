@@ -24,6 +24,7 @@ interface AddSimpleRestroomProps {
   control: any
   fileName: string
   imageData: string
+  imageToiletCleanness: string
   selectImageFile: () => void
   resetImageFile: () => void
   register: any
@@ -39,6 +40,7 @@ const AddSimpleRestroom: React.FC<AddSimpleRestroomProps> = ({
   control,
   fileName,
   imageData,
+  imageToiletCleanness,
   selectImageFile,
   resetImageFile,
   register,
