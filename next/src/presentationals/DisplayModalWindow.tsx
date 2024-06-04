@@ -133,15 +133,15 @@ const DisplayModalWindow: React.FC<DisplayModalWindowProps> = ({
             )}
           </Box>
           <Typography variant="h6" sx={{ fontWeight: 'bold', mt: 1 }}>
-            レビュー
+            評価
           </Typography>
           <Typography sx={{ ml: 2 }}>評価:{evaluation}</Typography>
         </Box>
-        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+        {/* <Box sx={{ display: 'flex', justifyContent: 'center' }}>
           <Button sx={buttonStyle} onClick={closeModalWindow}>
             評価する
           </Button>
-        </Box>
+        </Box> */}
       </Box>
     </Modal>
   )
