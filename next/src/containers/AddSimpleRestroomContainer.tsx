@@ -1,6 +1,6 @@
 import axios, { AxiosResponse, AxiosError } from 'axios'
 import loadImage from 'blueimp-load-image'
-import { useState, useRef, MutableRefObject } from 'react'
+import { useState, useEffect, useRef, MutableRefObject } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { mutate } from 'swr'
 import AddSimpleRestroom from '@/presentationals/AddSimpleRestroom'
@@ -18,6 +18,7 @@ interface AddSimpleRestroomFormData {
   diaper_changing_station: boolean
   powder_corner: boolean
   stroller_accessible: boolean
+  evaluation: number
   image?: FileList
 }
 
@@ -39,7 +40,7 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
   open,
   onClose,
 }) => {
-  const { register, handleSubmit, control, reset } =
+  const { register, handleSubmit, control, reset, setValue } =
     useForm<AddSimpleRestroomFormData>({
       defaultValues: {
         name: '',
@@ -50,6 +51,7 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
         diaper_changing_station: false,
         powder_corner: false,
         stroller_accessible: false,
+        evaluation: 0,
         latitude: 35.681236,
         longitude: 139.767125,
       },
@@ -63,6 +65,10 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
   const [imageToiletCleanness, setImageToiletCleanness] = useState<number>(0)
   const [imageLatitude, setImageLatitude] = useState('')
   const [imageLongitude, setImageLongitude] = useState('')
+
+  useEffect(() => {
+    setValue('evaluation', imageToiletCleanness)
+  }, [imageToiletCleanness, setValue])
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files
@@ -145,8 +151,8 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
   const evaluateToiletCleanness = async (file: File) => {
     const imageBase64 = await encodeImageToBase64(file)
     const result = await chatgpt(imageBase64)
+    console.log(result)
     setImageToiletCleanness(result)
-    console.log(imageToiletCleanness)
   }
 
   const onChangeEvaluateToiletCleanness = (files: FileList) => {
@@ -181,6 +187,9 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
       'post[stroller_accessible]',
       (data.stroller_accessible ?? false).toString(),
     )
+    console.log(data.evaluation)
+    formData.append('post[evaluation]', data.evaluation.toString())
+
     if (fileInput.current?.files && fileInput.current.files[0]) {
       formData.append('post[image]', fileInput.current.files[0])
     }
