@@ -25,6 +25,7 @@ const HeaderContainer = () => {
   }
 
   const DrawerMenuItems = [
+    { text: 'TOP', href: '/' },
     { text: '紹介', href: '/' },
     { text: '新規登録', href: '/' },
     { text: 'ログイン', href: '/' },
@@ -33,7 +34,7 @@ const HeaderContainer = () => {
       href: 'https://docs.google.com/forms/d/e/1FAIpQLSdZwE2uS1wUDa9NQyJU8yIpv_Qq04WzVAZm5CxNnLrVLtuLKg/viewform',
     },
     { text: '利用規約', href: '/termsofuse' },
-    { text: 'プライバシーポリシー', href: '/' },
+    { text: 'プライバシーポリシー', href: '/privacypolicy' },
   ]
 
   const list = () => (
