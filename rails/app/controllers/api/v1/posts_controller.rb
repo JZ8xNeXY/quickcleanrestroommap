@@ -41,6 +41,6 @@ class Api::V1::PostsController < ApplicationController
   def post_params
     params.require(:post).permit(:name, :address, :content, :latitude, :longitude,
                                  :nursing_room, :anyone_toilet, :diaper_changing_station,
-                                 :powder_corner, :stroller_accessible,:evaluation, :image)
+                                 :powder_corner, :stroller_accessible, :evaluation, :image)
   end
 end

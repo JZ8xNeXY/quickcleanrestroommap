@@ -187,7 +187,6 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
       'post[stroller_accessible]',
       (data.stroller_accessible ?? false).toString(),
     )
-    console.log(data.evaluation)
     formData.append('post[evaluation]', data.evaluation.toString())
 
     if (fileInput.current?.files && fileInput.current.files[0]) {
@@ -214,13 +213,11 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
     <AddSimpleRestroom
       open={open}
       onClose={resetModal}
-      // coords={coords}
       handleSubmit={handleSubmit}
       onSubmit={onSubmit}
       control={control}
       fileName={fileName}
       imageData={imageData}
-      imageToiletCleanness={imageToiletCleanness}
       selectImageFile={selectImageFile}
       resetImageFile={resetImageFile}
       register={{ ...rest, ref }}

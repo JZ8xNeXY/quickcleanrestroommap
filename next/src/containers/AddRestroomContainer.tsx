@@ -1,8 +1,9 @@
 import axios, { AxiosResponse, AxiosError } from 'axios'
-import { useState, useRef, MutableRefObject } from 'react'
+import { useState, useEffect, useRef, MutableRefObject } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { mutate } from 'swr'
 import AddRestroom from '@/presentationals/AddRestroom'
+import { chatgpt, encodeImageToBase64 } from '@/utils/chatgptAPI'
 
 interface AddRestroomFormData {
   name: string
@@ -16,6 +17,7 @@ interface AddRestroomFormData {
   diaper_changing_station: boolean
   powder_corner: boolean
   stroller_accessible: boolean
+  evaluation: number
   image?: FileList
 }
 
@@ -30,9 +32,19 @@ const AddRestroomContainer: React.FC<AddRestroomProps> = ({
   onClose,
   coords,
 }) => {
-  const { register, handleSubmit, control, reset } =
+  const { register, handleSubmit, control, reset, setValue } =
     useForm<AddRestroomFormData>({
-      defaultValues: { name: '', address: '', content: '' },
+      defaultValues: {
+        name: '',
+        address: '',
+        content: '',
+        nursing_room: false,
+        anyone_toilet: false,
+        diaper_changing_station: false,
+        powder_corner: false,
+        stroller_accessible: false,
+        evaluation: 0,
+      },
     })
 
   const fileInput = useRef<HTMLInputElement>(
@@ -40,11 +52,17 @@ const AddRestroomContainer: React.FC<AddRestroomProps> = ({
   ) as MutableRefObject<HTMLInputElement> //更新可能
   const [fileName, setFileName] = useState('')
   const [imageData, setImageData] = useState('')
+  const [imageToiletCleanness, setImageToiletCleanness] = useState<number>(0)
+
+  useEffect(() => {
+    setValue('evaluation', imageToiletCleanness)
+  }, [imageToiletCleanness, setValue])
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files
     if (!files || files.length <= 0) return
     showImageFileName(files)
+    onChangeEvaluateToiletCleanness(files)
   }
 
   // ref関数 react-hook-formが管理できるようになる
@@ -80,6 +98,18 @@ const AddRestroomContainer: React.FC<AddRestroomProps> = ({
     onClose()
   }
 
+  const evaluateToiletCleanness = async (file: File) => {
+    const imageBase64 = await encodeImageToBase64(file)
+    const result = await chatgpt(imageBase64)
+    console.log(result)
+    setImageToiletCleanness(result)
+  }
+
+  const onChangeEvaluateToiletCleanness = (files: FileList) => {
+    const file = files[0]
+    evaluateToiletCleanness(file)
+  }
+
   const onSubmit: SubmitHandler<AddRestroomFormData> = (data) => {
     if (coords) {
       const formData = new FormData()
@@ -108,6 +138,7 @@ const AddRestroomContainer: React.FC<AddRestroomProps> = ({
         'post[stroller_accessible]',
         (data.stroller_accessible ?? false).toString(),
       )
+      formData.append('post[evaluation]', data.evaluation.toString())
       if (fileInput.current?.files && fileInput.current.files[0]) {
         formData.append('post[image]', fileInput.current.files[0])
       }

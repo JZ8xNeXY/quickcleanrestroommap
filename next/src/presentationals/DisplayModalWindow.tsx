@@ -123,7 +123,7 @@ const DisplayModalWindow: React.FC<DisplayModalWindowProps> = ({
             )}
             {diaperChangingStation && (
               <Typography sx={diaperChangingStationStyle}>
-                オムツ交換代
+                オムツ交換台
               </Typography>
             )}
             {powderCorner && (
