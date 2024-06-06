@@ -59,13 +59,14 @@ const About: NextPage = () => {
           component="p"
           sx={{ color: 'black', fontSize: '20px', lineHeight: 1.8 }}
         >
-          外出先でのトイレ探しのストレスを軽減し、
           <br />
-          快適で衛生的なトイレ体験を提供するために作成されました。
+          外出先でのトイレ探しにもう悩む必要はありません。
+          <br />
+          このアプリがあれば、快適で綺麗なトイレをすぐに見つけることができます。
         </Typography>
       </Box>
 
-      <Box sx={{ textAlign: 'center', mt: 15 }}>
+      <Box sx={{ textAlign: 'center', mt: 10 }}>
         <Typography variant="h6" component="p">
           \ P O I N T /
         </Typography>
@@ -163,7 +164,7 @@ const About: NextPage = () => {
         </Grid>
       </Box>
 
-      <Box sx={{ textAlign: 'center', mt: 15 }}>
+      <Box sx={{ textAlign: 'center', mt: 10 }}>
         <Typography variant="h6" component="p">
           \ S E A R C H /
         </Typography>
