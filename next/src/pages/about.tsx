@@ -2,7 +2,6 @@ import {
   Box,
   Container,
   Typography,
-  Button,
   Grid,
   Card,
   CardMedia,
@@ -10,11 +9,9 @@ import {
 } from '@mui/material'
 import type { NextPage } from 'next'
 import Image from 'next/image'
-import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import AddMarkersContainer from '@/containers/AddMarkersContainer'
 import { RestroomProvider } from '@/context/RestRoomContext'
-import buttonStyle from '@/styles/buttonStyle'
 import { loadGoogleMapsAPI } from '@/utils/loadGoogleMapsAPI'
 
 const cardStyle = {
