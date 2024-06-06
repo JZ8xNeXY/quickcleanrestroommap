@@ -26,7 +26,7 @@ const HeaderContainer = () => {
 
   const DrawerMenuItems = [
     { text: 'TOP', href: '/' },
-    { text: '紹介', href: '/' },
+    { text: '紹介', href: '/about' },
     { text: '新規登録', href: '/' },
     { text: 'ログイン', href: '/' },
     {
