@@ -15,6 +15,7 @@ interface DisplayModalWindowContainerProps {
   diaperChangingStation?: boolean
   powderCorner?: boolean
   strollerAccessible?: boolean
+  evaluation: number
   image: string
 }
 
@@ -33,6 +34,7 @@ const DisplayModalWindowContainer: React.FC<
   diaperChangingStation,
   powderCorner,
   strollerAccessible,
+  evaluation,
   image,
 }) => {
   const [editModalWindow, setEditModalWindow] = useState(false)
@@ -58,6 +60,7 @@ const DisplayModalWindowContainer: React.FC<
         diaperChangingStation={diaperChangingStation}
         powderCorner={powderCorner}
         strollerAccessible={strollerAccessible}
+        evaluation={evaluation}
         image={image}
         openEditRestroomModalWindow={openEditRestroomModalWindow}
       />

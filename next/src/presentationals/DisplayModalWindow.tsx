@@ -2,6 +2,7 @@
 import CloseIcon from '@mui/icons-material/Close'
 import { Box, Button, Modal, Typography } from '@mui/material'
 import React from 'react'
+import ReactStarsRating from 'react-awesome-stars-rating'
 import buttonStyle from '@/styles/buttonStyle'
 import changeFontSize from '@/styles/changeFontSize'
 import {
@@ -26,6 +27,7 @@ interface DisplayModalWindowProps {
   diaperChangingStation?: boolean
   powderCorner?: boolean
   strollerAccessible?: boolean
+  evaluation: number
   image: string
   openEditRestroomModalWindow: () => void
 }
@@ -41,6 +43,7 @@ const DisplayModalWindow: React.FC<DisplayModalWindowProps> = ({
   diaperChangingStation,
   powderCorner,
   strollerAccessible,
+  evaluation,
   image,
   openEditRestroomModalWindow,
 }) => {
@@ -120,7 +123,7 @@ const DisplayModalWindow: React.FC<DisplayModalWindowProps> = ({
             )}
             {diaperChangingStation && (
               <Typography sx={diaperChangingStationStyle}>
-                オムツ交換代
+                オムツ交換台
               </Typography>
             )}
             {powderCorner && (
@@ -131,17 +134,18 @@ const DisplayModalWindow: React.FC<DisplayModalWindowProps> = ({
             )}
           </Box>
           <Typography variant="h6" sx={{ fontWeight: 'bold', mt: 1 }}>
-            レビュー
+            評価
           </Typography>
-          <Typography sx={{ ml: 2 }}>
-            平均4.7 ⭐️⭐️⭐️⭐️⭐️ ( <u>3件の評価をみる</u> )
-          </Typography>
+          {/* <Typography sx={{ ml: 2 }}>評価:{evaluation}</Typography> */}
+          <Box sx={{ ml: 2 }}>
+            <ReactStarsRating isEdit={false} value={evaluation} />
+          </Box>
         </Box>
-        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+        {/* <Box sx={{ display: 'flex', justifyContent: 'center' }}>
           <Button sx={buttonStyle} onClick={closeModalWindow}>
             評価する
           </Button>
-        </Box>
+        </Box> */}
       </Box>
     </Modal>
   )
