@@ -15,6 +15,7 @@ interface Restroom {
   diaperChangingStation: boolean
   powderCorner: boolean
   strollerAccessible: boolean
+  evaluation: number
   image: string
 }
 
@@ -61,6 +62,7 @@ const AddMarkers: React.FC<AddMarkersProps> = ({
         diaperChangingStation={selectedRestroom.diaperChangingStation}
         powderCorner={selectedRestroom.powderCorner}
         strollerAccessible={selectedRestroom.strollerAccessible}
+        evaluation={selectedRestroom.evaluation}
         image={selectedRestroom.image}
       />
       {currentUserPos &&

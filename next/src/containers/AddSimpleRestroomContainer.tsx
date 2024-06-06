@@ -1,9 +1,10 @@
 import axios, { AxiosResponse, AxiosError } from 'axios'
 import loadImage from 'blueimp-load-image'
-import { useState, useRef, MutableRefObject } from 'react'
+import { useState, useEffect, useRef, MutableRefObject } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { mutate } from 'swr'
 import AddSimpleRestroom from '@/presentationals/AddSimpleRestroom'
+import { chatgpt, encodeImageToBase64 } from '@/utils/chatgptAPI'
 
 interface AddSimpleRestroomFormData {
   name: string
@@ -17,6 +18,7 @@ interface AddSimpleRestroomFormData {
   diaper_changing_station: boolean
   powder_corner: boolean
   stroller_accessible: boolean
+  evaluation: number
   image?: FileList
 }
 
@@ -38,7 +40,7 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
   open,
   onClose,
 }) => {
-  const { register, handleSubmit, control, reset } =
+  const { register, handleSubmit, control, reset, setValue } =
     useForm<AddSimpleRestroomFormData>({
       defaultValues: {
         name: '',
@@ -49,6 +51,7 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
         diaper_changing_station: false,
         powder_corner: false,
         stroller_accessible: false,
+        evaluation: 0,
         latitude: 35.681236,
         longitude: 139.767125,
       },
@@ -59,14 +62,20 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
   ) as MutableRefObject<HTMLInputElement> //更新可能
   const [fileName, setFileName] = useState('')
   const [imageData, setImageData] = useState('')
+  const [imageToiletCleanness, setImageToiletCleanness] = useState<number>(0)
   const [imageLatitude, setImageLatitude] = useState('')
   const [imageLongitude, setImageLongitude] = useState('')
+
+  useEffect(() => {
+    setValue('evaluation', imageToiletCleanness)
+  }, [imageToiletCleanness, setValue])
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files
     if (!files || files.length <= 0) return
     showImageFileName(files)
     onChangeShowExifData(e)
+    onChangeEvaluateToiletCleanness(files)
   }
 
   // ref関数 react-hook-formが管理できるようになる
@@ -109,9 +118,11 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
 
         const gpsData = allExifData['34853']
         if (gpsData) {
-          const latitude = convertDMSToDD(gpsData['2'], gpsData['1'])
+          // 正しい型の引数を渡す
+          const latitude = convertDMSToDD(gpsData[2], gpsData[1])
           setImageLatitude(latitude.toString())
-          const longitude = convertDMSToDD(gpsData['4'], gpsData['3'])
+          // 正しい型の引数を渡す
+          const longitude = convertDMSToDD(gpsData[4], gpsData[3])
           setImageLongitude(longitude.toString())
         } else {
           console.log('No GPS data found')
@@ -122,10 +133,7 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
     })
   }
 
-  const convertDMSToDD = (
-    dmsArray: [number, number, number],
-    direction: string,
-  ) => {
+  const convertDMSToDD = (dmsArray: number[], direction: string) => {
     const [degrees, minutes, seconds] = dmsArray
     let dd = degrees + minutes / 60 + seconds / 3600
     if (direction === 'S' || direction === 'W') {
@@ -138,6 +146,18 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
     if (!e.target.files) return
     const file = e.target.files[0]
     getExifData(file)
+  }
+
+  const evaluateToiletCleanness = async (file: File) => {
+    const imageBase64 = await encodeImageToBase64(file)
+    const result = await chatgpt(imageBase64)
+    console.log(result)
+    setImageToiletCleanness(result)
+  }
+
+  const onChangeEvaluateToiletCleanness = (files: FileList) => {
+    const file = files[0]
+    evaluateToiletCleanness(file)
   }
 
   const onSubmit: SubmitHandler<AddSimpleRestroomFormData> = (data) => {
@@ -167,6 +187,8 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
       'post[stroller_accessible]',
       (data.stroller_accessible ?? false).toString(),
     )
+    formData.append('post[evaluation]', data.evaluation.toString())
+
     if (fileInput.current?.files && fileInput.current.files[0]) {
       formData.append('post[image]', fileInput.current.files[0])
     }
@@ -191,7 +213,6 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
     <AddSimpleRestroom
       open={open}
       onClose={resetModal}
-      // coords={coords}
       handleSubmit={handleSubmit}
       onSubmit={onSubmit}
       control={control}
