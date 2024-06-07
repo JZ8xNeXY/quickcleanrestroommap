@@ -2,7 +2,7 @@ import { CacheProvider, EmotionCache } from '@emotion/react'
 import CssBaseline from '@mui/material/CssBaseline'
 import { ThemeProvider } from '@mui/material/styles'
 import { AppProps } from 'next/app'
-import CurrentUserFetch from '@/components/CurrentUserFetch'
+import CurrentUserFetch from '@/containers/CurrentUserFetchContainer'
 import HeaderContainer from '@/containers/HeaderContainer'
 import Footer from '@/presentationals/Footer'
 

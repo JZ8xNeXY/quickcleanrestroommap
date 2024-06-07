@@ -14,6 +14,7 @@ import React from 'react'
 import AddSimpleRestroomContainer from '@/containers/AddSimpleRestroomContainer'
 
 interface HeaderProps {
+  user: any
   isOpen: boolean
   openDrawer: (
     open: boolean,
@@ -25,6 +26,7 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({
+  user,
   isOpen,
   openDrawer,
   openAddSimpleRestroomModal,
@@ -105,6 +107,12 @@ const Header: React.FC<HeaderProps> = ({
                   />
                 </Box>
               </Link>
+            </Box>
+            <Box>
+              {user.isFetched &&
+                (user.isSignedIn ? (
+                  <Box sx={{ ml: 10 }}> 管理者権限でログイン中 </Box>
+                ) : null)}
             </Box>
           </Box>
           <Box>
