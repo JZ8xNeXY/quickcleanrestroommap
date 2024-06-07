@@ -4,6 +4,10 @@ Rails.application.routes.draw do
       get "health_check", to: "health_check#index"
       resources :posts, only: [:index, :show, :create, :update, :destroy]
       mount_devise_token_auth_for 'User', at: 'auth',skip: [:registrations]
+
+      namespace :current do
+        resource :user, only: [:show]
+      end
     end
   end
 end
