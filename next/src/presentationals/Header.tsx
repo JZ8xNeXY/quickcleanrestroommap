@@ -1,5 +1,7 @@
 import AddLocationIcon from '@mui/icons-material/AddLocation'
+import Logout from '@mui/icons-material/Logout'
 import MenuIcon from '@mui/icons-material/Menu'
+import PersonIcon from '@mui/icons-material/Person'
 import {
   AppBar,
   Box,
@@ -13,8 +15,15 @@ import Link from 'next/link'
 import React from 'react'
 import AddSimpleRestroomContainer from '@/containers/AddSimpleRestroomContainer'
 
+interface UserProps {
+  email: string
+  id: number
+  isFetched: boolean
+  isSignedIn: boolean
+}
+
 interface HeaderProps {
-  user: any
+  user: UserProps
   isOpen: boolean
   openDrawer: (
     open: boolean,
@@ -33,6 +42,7 @@ const Header: React.FC<HeaderProps> = ({
   setOpenAddSimpleRestroomModal,
   list,
 }) => {
+  console.log(user)
   return (
     <AppBar
       position="static"
