@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import CloseIcon from '@mui/icons-material/Close'
-import { Box, Button, Modal, Typography, Link } from '@mui/material'
+import { Box, Button, Modal, Typography } from '@mui/material'
 import React from 'react'
 import ReactStarsRating from 'react-awesome-stars-rating'
 import buttonStyle from '@/styles/buttonStyle'
