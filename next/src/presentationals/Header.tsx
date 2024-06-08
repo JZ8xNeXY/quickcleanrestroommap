@@ -1,7 +1,5 @@
 import AddLocationIcon from '@mui/icons-material/AddLocation'
-import Logout from '@mui/icons-material/Logout'
 import MenuIcon from '@mui/icons-material/Menu'
-import PersonIcon from '@mui/icons-material/Person'
 import {
   AppBar,
   Box,

@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import CloseIcon from '@mui/icons-material/Close'
-import { Box, Button, Modal, Typography } from '@mui/material'
+import { Box, Button, Modal, Typography, Link } from '@mui/material'
 import React from 'react'
 import ReactStarsRating from 'react-awesome-stars-rating'
 import buttonStyle from '@/styles/buttonStyle'
@@ -14,7 +14,15 @@ import {
 } from '@/styles/facilityStyles'
 import modalStyle from '@/styles/modalStyles'
 
+interface UserProps {
+  email: string
+  id: number
+  isFetched: boolean
+  isSignedIn: boolean
+}
+
 interface DisplayModalWindowProps {
+  user: UserProps
   openModalWindow: boolean
   closeModalWindow: () => void
   name: string
@@ -33,6 +41,7 @@ interface DisplayModalWindowProps {
 }
 
 const DisplayModalWindow: React.FC<DisplayModalWindowProps> = ({
+  user,
   openModalWindow,
   closeModalWindow,
   name,
@@ -84,17 +93,20 @@ const DisplayModalWindow: React.FC<DisplayModalWindowProps> = ({
         >
           <Typography sx={{ ...changeFontSize(name) }}>{name}</Typography>
         </Box>
-        <Box sx={{ display: 'flex', justifyContent: 'right', mt: 0 }}>
-          <Button
-            sx={buttonStyle}
-            onClick={() => {
-              closeModalWindow()
-              openEditRestroomModalWindow()
-            }}
-          >
-            編集する
-          </Button>
-        </Box>
+        {user.isFetched &&
+          (user.isSignedIn ? (
+            <Box sx={{ display: 'flex', justifyContent: 'right', mt: 0 }}>
+              <Button
+                sx={buttonStyle}
+                onClick={() => {
+                  closeModalWindow()
+                  openEditRestroomModalWindow()
+                }}
+              >
+                編集する
+              </Button>
+            </Box>
+          ) : null)}
         <Box sx={{ mt: 1 }}>
           <Typography variant="h6" sx={{ fontWeight: 'bold', mt: 1 }}>
             住所
@@ -146,6 +158,17 @@ const DisplayModalWindow: React.FC<DisplayModalWindowProps> = ({
             評価する
           </Button>
         </Box> */}
+        <Box sx={{ textAlign: 'center', mt: 4 }}>
+          <Button
+            variant="contained"
+            color="primary"
+            href="https://docs.google.com/forms/d/e/1FAIpQLSekveKygTBRldu2AcRV97sUq5RXS7K4qq_k0DLKuT_Skcv48g/viewform"
+            target="_blank"
+            sx={{ color: 'white', textTransform: 'none' }}
+          >
+            お問い合わせはこちら ＞
+          </Button>
+        </Box>
       </Box>
     </Modal>
   )
