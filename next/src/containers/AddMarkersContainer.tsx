@@ -24,6 +24,7 @@ interface Restroom {
   diaperChangingStation: boolean
   powderCorner: boolean
   strollerAccessible: boolean
+  evaluation: number
   image: string
 }
 
@@ -92,6 +93,7 @@ const AddMarkersContainer: NextPage<AddMarkersProps> = ({ map }) => {
               diaperChangingStation: restroom.diaperChangingStation,
               powderCorner: restroom.powderCorner,
               strollerAccessible: restroom.strollerAccessible,
+              evaluation: restroom.evaluation,
               image: restroom.image,
             })
           })

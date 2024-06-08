@@ -2,7 +2,7 @@ import { CacheProvider, EmotionCache } from '@emotion/react'
 import CssBaseline from '@mui/material/CssBaseline'
 import { ThemeProvider } from '@mui/material/styles'
 import { AppProps } from 'next/app'
-import * as React from 'react'
+import CurrentUserFetch from '@/containers/CurrentUserFetchContainer'
 import HeaderContainer from '@/containers/HeaderContainer'
 import Footer from '@/presentationals/Footer'
 
@@ -24,6 +24,7 @@ export default function MyApp(props: MyAppProps): JSX.Element {
       <ThemeProvider theme={theme}>
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
+        <CurrentUserFetch />
         <HeaderContainer />
         <Component {...pageProps} />
         <Footer />

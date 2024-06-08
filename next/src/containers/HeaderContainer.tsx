@@ -3,8 +3,10 @@ import { Box, List, ListItem, ListItemText } from '@mui/material'
 import Link from 'next/link'
 import React, { useState } from 'react'
 import Header from '@/presentationals/Header'
+import { useUserState } from '@/utils/useGlobalState'
 
 const HeaderContainer = () => {
+  const [user] = useUserState()
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [openAddSimpleRestroomModal, setOpenAddSimpleRestroomModal] =
     useState(false)
@@ -25,12 +27,14 @@ const HeaderContainer = () => {
   }
 
   const DrawerMenuItems = [
-    { text: '紹介', href: '/' },
-    { text: '新規登録', href: '/' },
-    { text: 'ログイン', href: '/' },
-    { text: 'お問い合わせ', href: '/' },
-    { text: '利用規約', href: '/' },
-    { text: 'プライバシーポリシー', href: '/' },
+    { text: 'TOP', href: '/' },
+    { text: '紹介', href: '/about' },
+    {
+      text: 'お問い合わせ',
+      href: 'https://docs.google.com/forms/d/e/1FAIpQLSdZwE2uS1wUDa9NQyJU8yIpv_Qq04WzVAZm5CxNnLrVLtuLKg/viewform',
+    },
+    { text: '利用規約', href: '/termsofuse' },
+    { text: 'プライバシーポリシー', href: '/privacypolicy' },
   ]
 
   const list = () => (
@@ -56,6 +60,7 @@ const HeaderContainer = () => {
 
   return (
     <Header
+      user={user}
       isOpen={isOpen}
       openDrawer={openDrawer}
       openAddSimpleRestroomModal={openAddSimpleRestroomModal}

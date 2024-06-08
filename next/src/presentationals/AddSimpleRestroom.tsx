@@ -62,6 +62,46 @@ const AddSimpleRestroom: React.FC<AddSimpleRestroomProps> = ({
             onSubmit={handleSubmit(onSubmit)}
             spacing={1.5}
           >
+            <input
+              type="file"
+              id="file"
+              ref={(e) => {
+                register.ref(e) // ref関数でフォームに入力した値を管理
+                if (e) fileInput.current = e
+              }}
+              accept="image/*"
+              style={{ display: 'none' }}
+              {...register.rest}
+              onChange={onChange}
+            />
+            <Button
+              variant="contained"
+              type="button"
+              sx={{ fontWeight: 'bold', color: 'white' }}
+              onClick={selectImageFile}
+            >
+              📁 ファイルから選択
+            </Button>
+            <div
+              style={{
+                padding: '1em',
+                border: '1px dotted #ccc',
+                minHeight: '200px',
+                background: '#eee',
+              }}
+            >
+              {fileName && (
+                <>
+                  <Button onClick={resetImageFile}>❌ CLOSE</Button>
+                  <img
+                    src={imageData}
+                    style={{ margin: 'auto', maxWidth: '100%' }}
+                    alt="Selected"
+                  />
+                  <Typography>{fileName}</Typography>
+                </>
+              )}
+            </div>
             <Controller
               name="name"
               control={control}
@@ -178,46 +218,19 @@ const AddSimpleRestroom: React.FC<AddSimpleRestroomProps> = ({
                 </Grid>
               </Grid>
             </Box>
-            <input
-              type="file"
-              id="file"
-              ref={(e) => {
-                register.ref(e) // ref関数でフォームに入力した値を管理
-                if (e) fileInput.current = e
-              }}
-              accept="image/*"
-              style={{ display: 'none' }}
-              {...register.rest}
-              onChange={onChange}
-            />
-            <Button
-              variant="contained"
-              type="button"
-              sx={{ fontWeight: 'bold', color: 'white' }}
-              onClick={selectImageFile}
-            >
-              📁 ファイルから選択
-            </Button>
-            <div
-              style={{
-                padding: '1em',
-                border: '1px dotted #ccc',
-                minHeight: '200px',
-                background: '#eee',
-              }}
-            >
-              {fileName && (
-                <>
-                  <Button onClick={resetImageFile}>❌ CLOSE</Button>
-                  <img
-                    src={imageData}
-                    style={{ margin: 'auto', maxWidth: '100%' }}
-                    alt="Selected"
-                  />
-                  <Typography>{fileName}</Typography>
-                </>
+            <Controller
+              name="evaluation"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  type="number"
+                  label="評価"
+                  sx={{ backgroundColor: 'white' }}
+                  style={{ display: 'none' }}
+                />
               )}
-            </div>
+            />
             <Controller
               name="latitude"
               control={control}

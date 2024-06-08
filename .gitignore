@@ -1,3 +1,6 @@
 next/node_modules/
 next/next.config.js
 next/.env.*
+next/.next/*
+python/*
+rails/db/seed.rb

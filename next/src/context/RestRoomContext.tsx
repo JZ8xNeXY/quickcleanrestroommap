@@ -13,6 +13,7 @@ interface Restroom {
   diaperChangingStation: boolean
   powderCorner: boolean
   strollerAccessible: boolean
+  evaluation: number
   image: string
 }
 
@@ -35,6 +36,7 @@ const defaultRestroom: Restroom = {
   diaperChangingStation: false,
   powderCorner: false,
   strollerAccessible: false,
+  evaluation: 0,
 }
 
 const RestroomContext = createContext<RestroomContextProps | undefined>(

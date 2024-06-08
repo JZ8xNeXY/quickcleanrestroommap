@@ -32,7 +32,7 @@ class Api::V1::PostsController < ApplicationController
     if post.destroy
       render json: post, status: :ok
     else
-      ender json: { errors: post.errors.full_messages }, status: :unprocessable_entity
+      render json: { errors: post.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
@@ -41,6 +41,6 @@ class Api::V1::PostsController < ApplicationController
   def post_params
     params.require(:post).permit(:name, :address, :content, :latitude, :longitude,
                                  :nursing_room, :anyone_toilet, :diaper_changing_station,
-                                 :powder_corner, :stroller_accessible, :image)
+                                 :powder_corner, :stroller_accessible, :evaluation, :image)
   end
 end

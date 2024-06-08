@@ -2,6 +2,7 @@
 import CloseIcon from '@mui/icons-material/Close'
 import { Box, Button, Modal, Typography } from '@mui/material'
 import React from 'react'
+import ReactStarsRating from 'react-awesome-stars-rating'
 import buttonStyle from '@/styles/buttonStyle'
 import changeFontSize from '@/styles/changeFontSize'
 import {
@@ -13,7 +14,15 @@ import {
 } from '@/styles/facilityStyles'
 import modalStyle from '@/styles/modalStyles'
 
+interface UserProps {
+  email: string
+  id: number
+  isFetched: boolean
+  isSignedIn: boolean
+}
+
 interface DisplayModalWindowProps {
+  user: UserProps
   openModalWindow: boolean
   closeModalWindow: () => void
   name: string
@@ -26,11 +35,13 @@ interface DisplayModalWindowProps {
   diaperChangingStation?: boolean
   powderCorner?: boolean
   strollerAccessible?: boolean
+  evaluation: number
   image: string
   openEditRestroomModalWindow: () => void
 }
 
 const DisplayModalWindow: React.FC<DisplayModalWindowProps> = ({
+  user,
   openModalWindow,
   closeModalWindow,
   name,
@@ -41,6 +52,7 @@ const DisplayModalWindow: React.FC<DisplayModalWindowProps> = ({
   diaperChangingStation,
   powderCorner,
   strollerAccessible,
+  evaluation,
   image,
   openEditRestroomModalWindow,
 }) => {
@@ -81,17 +93,20 @@ const DisplayModalWindow: React.FC<DisplayModalWindowProps> = ({
         >
           <Typography sx={{ ...changeFontSize(name) }}>{name}</Typography>
         </Box>
-        <Box sx={{ display: 'flex', justifyContent: 'right', mt: 0 }}>
-          <Button
-            sx={buttonStyle}
-            onClick={() => {
-              closeModalWindow()
-              openEditRestroomModalWindow()
-            }}
-          >
-            編集する
-          </Button>
-        </Box>
+        {user.isFetched &&
+          (user.isSignedIn ? (
+            <Box sx={{ display: 'flex', justifyContent: 'right', mt: 0 }}>
+              <Button
+                sx={buttonStyle}
+                onClick={() => {
+                  closeModalWindow()
+                  openEditRestroomModalWindow()
+                }}
+              >
+                編集する
+              </Button>
+            </Box>
+          ) : null)}
         <Box sx={{ mt: 1 }}>
           <Typography variant="h6" sx={{ fontWeight: 'bold', mt: 1 }}>
             住所
@@ -120,7 +135,7 @@ const DisplayModalWindow: React.FC<DisplayModalWindowProps> = ({
             )}
             {diaperChangingStation && (
               <Typography sx={diaperChangingStationStyle}>
-                オムツ交換代
+                オムツ交換台
               </Typography>
             )}
             {powderCorner && (
@@ -131,15 +146,27 @@ const DisplayModalWindow: React.FC<DisplayModalWindowProps> = ({
             )}
           </Box>
           <Typography variant="h6" sx={{ fontWeight: 'bold', mt: 1 }}>
-            レビュー
+            評価
           </Typography>
-          <Typography sx={{ ml: 2 }}>
-            平均4.7 ⭐️⭐️⭐️⭐️⭐️ ( <u>3件の評価をみる</u> )
-          </Typography>
+          {/* <Typography sx={{ ml: 2 }}>評価:{evaluation}</Typography> */}
+          <Box sx={{ ml: 2 }}>
+            <ReactStarsRating isEdit={false} value={evaluation} />
+          </Box>
         </Box>
-        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+        {/* <Box sx={{ display: 'flex', justifyContent: 'center' }}>
           <Button sx={buttonStyle} onClick={closeModalWindow}>
             評価する
+          </Button>
+        </Box> */}
+        <Box sx={{ textAlign: 'center', mt: 4 }}>
+          <Button
+            variant="contained"
+            color="primary"
+            href="https://docs.google.com/forms/d/e/1FAIpQLSekveKygTBRldu2AcRV97sUq5RXS7K4qq_k0DLKuT_Skcv48g/viewform"
+            target="_blank"
+            sx={{ color: 'white', textTransform: 'none' }}
+          >
+            お問い合わせはこちら ＞
           </Button>
         </Box>
       </Box>
