@@ -3,9 +3,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       get "health_check", to: "health_check#index"
       resources :posts, only: [:index, :show, :create, :update, :destroy]
-      mount_devise_token_auth_for 'User', at: 'auth', controllers: {
-        registrations: 'api/v1/registrations'
-      }
+      mount_devise_token_auth_for 'User', at: 'auth'
 
       namespace :current do
         resource :user, only: [:show]

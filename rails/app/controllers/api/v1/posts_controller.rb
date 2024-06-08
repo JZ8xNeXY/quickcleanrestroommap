@@ -1,7 +1,13 @@
 class Api::V1::PostsController < ApplicationController
   def index
+    logger.info "Fetching posts from the database..."
     posts = Post.all
+    logger.info "Successfully fetched posts: #{posts.inspect}"
     render json: posts
+  rescue StandardError => e
+    logger.error "PostsController#index error: #{e.message}"
+    logger.error e.backtrace.join("\n")
+    render json: { error: 'Internal Server Error' }, status: :internal_server_error
   end
 
   def show
@@ -32,7 +38,7 @@ class Api::V1::PostsController < ApplicationController
     if post.destroy
       render json: post, status: :ok
     else
-      ender json: { errors: post.errors.full_messages }, status: :unprocessable_entity
+      render json: { errors: post.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
