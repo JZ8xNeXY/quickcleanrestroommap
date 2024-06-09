@@ -135,7 +135,11 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
 
   const convertDMSToDD = (dmsArray: number[], direction: string) => {
     const [degrees, minutes, seconds] = dmsArray
-    let dd = degrees + minutes / 60 + seconds / 3600
+    let dd = degrees + minutes / 60 + seconds / 3600 //度分秒を十進法に変換 どうして誤差が出る
+
+    // 小数点以下の精度を増やして誤差を減らす
+    dd = parseFloat(dd.toFixed(10))
+
     if (direction === 'S' || direction === 'W') {
       dd *= -1
     }
