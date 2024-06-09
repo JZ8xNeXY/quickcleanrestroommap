@@ -82,7 +82,7 @@ const AddSimpleRestroom: React.FC<AddSimpleRestroomProps> = ({
             >
               📁 ファイルから選択
             </Button>
-            <div
+            <Box
               style={{
                 padding: '1em',
                 border: '1px dotted #ccc',
@@ -101,7 +101,7 @@ const AddSimpleRestroom: React.FC<AddSimpleRestroomProps> = ({
                   <Typography>{fileName}</Typography>
                 </>
               )}
-            </div>
+            </Box>
             <Controller
               name="name"
               control={control}
