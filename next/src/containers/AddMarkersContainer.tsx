@@ -42,17 +42,15 @@ const AddMarkersContainer: NextPage<AddMarkersProps> = ({ map }) => {
     lng: number
   }>()
 
-  const showGeolocationButton = useRef<HTMLButtonElement>(null)
-
-  const FindCurrentLocation = () => {
-    if (map) {
-      userGeoLocation({ map, setCurrentUserPos })
-    }
-  }
-
   const markersRef = useRef<google.maps.marker.AdvancedMarkerElement[]>([])
 
   useEffect(() => {
+    const FindCurrentLocation = () => {
+      if (map) {
+        userGeoLocation({ map, setCurrentUserPos })
+      }
+    }
+
     const addMarkers = async () => {
       if (map && data) {
         markersRef.current.forEach((marker) => (marker.map = null))
@@ -105,22 +103,10 @@ const AddMarkersContainer: NextPage<AddMarkersProps> = ({ map }) => {
 
     addMarkers()
 
-    if (map && showGeolocationButton.current) {
-      const controlPosition = google.maps.ControlPosition.TOP_CENTER
-      map.controls[controlPosition].push(showGeolocationButton.current)
-
-      return () => {
-        const controls = map.controls[controlPosition]
-        for (let i = 0; i < controls.getLength(); i++) {
-          // eslint-disable-next-line react-hooks/exhaustive-deps
-          if (controls.getAt(i) === showGeolocationButton.current) {
-            controls.removeAt(i)
-            break
-          }
-        }
-      }
+    if (map) {
+      FindCurrentLocation()
     }
-  }, [map, data, selectedRestroom, setSelectedRestroom])
+  }, [map, data, setSelectedRestroom])
 
   return (
     <AddMarkers
@@ -130,8 +116,6 @@ const AddMarkersContainer: NextPage<AddMarkersProps> = ({ map }) => {
       closeModalWindow={closeModalWindow}
       selectedRestroom={selectedRestroom}
       currentUserPos={currentUserPos}
-      FindCurrentLocation={FindCurrentLocation}
-      showGeolocationButton={showGeolocationButton}
       map={map}
     />
   )
