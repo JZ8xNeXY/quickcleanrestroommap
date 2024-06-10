@@ -162,7 +162,6 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
     setIsLoading(true)
     const imageBase64 = await encodeImageToBase64(file)
     const result = await chatgpt(imageBase64)
-    console.log(result)
     setIsLoading(false)
     if (result == 0) {
       setWarningImageMessage('トイレの画像をアップロードしてください')
