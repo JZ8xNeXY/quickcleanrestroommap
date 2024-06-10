@@ -30,7 +30,8 @@ interface AddSimpleRestroomProps {
   register: any
   fileInput: MutableRefObject<HTMLInputElement | null> //更新可能
   onChange: any
-  warningMessage: string
+  warningImageMessage: string
+  warningCoordMessage: string
   isLoading: boolean
 }
 
@@ -47,7 +48,8 @@ const AddSimpleRestroom: React.FC<AddSimpleRestroomProps> = ({
   register,
   fileInput,
   onChange,
-  warningMessage,
+  warningImageMessage,
+  warningCoordMessage,
   isLoading,
 }) => {
   return (
@@ -62,9 +64,14 @@ const AddSimpleRestroom: React.FC<AddSimpleRestroomProps> = ({
               トイレ情報を登録する
             </Typography>
           </Box>
-          {warningMessage && (
+          {warningImageMessage && (
             <Alert severity="warning" sx={{ mb: 2 }}>
-              {warningMessage}
+              {warningImageMessage}
+            </Alert>
+          )}
+          {warningCoordMessage && (
+            <Alert severity="warning" sx={{ mb: 2 }}>
+              {warningCoordMessage}
             </Alert>
           )}
           <Stack

@@ -65,7 +65,8 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
   const [imageToiletCleanness, setImageToiletCleanness] = useState<number>(0)
   const [imageLatitude, setImageLatitude] = useState('')
   const [imageLongitude, setImageLongitude] = useState('')
-  const [warningMessage, setWarningMessage] = useState('')
+  const [warningImageMessage, setWarningImageMessage] = useState('')
+  const [warningCoordMessage, setWarningCoordMessage] = useState('')
   const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
@@ -126,11 +127,14 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
           // 正しい型の引数を渡す
           const longitude = convertDMSToDD(gpsData[4], gpsData[3])
           setImageLongitude(longitude.toString())
+          setWarningCoordMessage('')
         } else {
           console.log('No GPS data found')
+          setWarningCoordMessage('緯度経度を読み込めません')
         }
       } else {
         console.log('No EXIF data found')
+        setWarningCoordMessage('緯度経度を読み込めません')
       }
     })
   }
@@ -161,10 +165,9 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
     console.log(result)
     setIsLoading(false)
     if (result == 0) {
-      console.log('トイレの画像をアップロードしてください')
-      setWarningMessage('トイレの画像をアップロードしてください')
+      setWarningImageMessage('トイレの画像をアップロードしてください')
     } else {
-      setWarningMessage('')
+      setWarningImageMessage('')
     }
     setImageToiletCleanness(result)
   }
@@ -237,7 +240,8 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
       register={{ ...rest, ref }}
       fileInput={fileInput}
       onChange={onChange} //ファイル分割用に追加
-      warningMessage={warningMessage}
+      warningImageMessage={warningImageMessage}
+      warningCoordMessage={warningCoordMessage}
       isLoading={isLoading}
     />
   )
