@@ -1,4 +1,4 @@
-import axios, { AxiosResponse, AxiosError } from 'axios'
+import axios, { AxiosError } from 'axios'
 import loadImage from 'blueimp-load-image'
 import { useState, useEffect, useRef, MutableRefObject } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
@@ -214,8 +214,7 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
 
     axios
       .post(getUrl, formData, { headers })
-      .then((res: AxiosResponse) => {
-        console.log('Data submitted successfully', res.data)
+      .then(() => {
         mutate(getUrl)
         resetModal()
       })
