@@ -10,6 +10,7 @@ export const initMap = async (
       mapId: 'DEMO_MAP_ID',
       maxZoom: 25,
       center: { lat: 35.681236, lng: 139.767125 },
+      mapTypeId: 'roadmap',
     })
 
     setMap(map)
