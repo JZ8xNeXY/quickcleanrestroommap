@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @next/next/no-img-element */
-import { LoadingButton } from '@mui/lab'
 import {
   Box,
   Button,
@@ -85,15 +84,15 @@ const AddSimpleRestroom: React.FC<AddSimpleRestroomProps> = ({
               {...register.rest}
               onChange={onChange}
             />
-            <LoadingButton
+            <Button
               variant="contained"
               type="button"
-              loading={isLoading}
+              disabled={isLoading}
               sx={{ fontWeight: 'bold', color: 'white' }}
               onClick={selectImageFile}
             >
-              📁 ファイルから選択
-            </LoadingButton>
+              {isLoading ? '画像を確認中...' : '📁 ファイルから選択'}
+            </Button>
             <Box
               style={{
                 padding: '1em',
