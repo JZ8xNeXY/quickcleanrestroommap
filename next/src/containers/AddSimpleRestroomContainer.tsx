@@ -66,6 +66,7 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
   const [imageLatitude, setImageLatitude] = useState('')
   const [imageLongitude, setImageLongitude] = useState('')
   const [warningMessage, setWarningMessage] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     setValue('evaluation', imageToiletCleanness)
@@ -154,9 +155,11 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
   }
 
   const evaluateToiletCleanness = async (file: File) => {
+    setIsLoading(true)
     const imageBase64 = await encodeImageToBase64(file)
     const result = await chatgpt(imageBase64)
     console.log(result)
+    setIsLoading(false)
     if (result == 0) {
       console.log('トイレの画像をアップロードしてください')
       setWarningMessage('トイレの画像をアップロードしてください')
@@ -234,7 +237,8 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
       register={{ ...rest, ref }}
       fileInput={fileInput}
       onChange={onChange} //ファイル分割用に追加
-      warningMessage={warningMessage} // 追加
+      warningMessage={warningMessage}
+      isLoading={isLoading}
     />
   )
 }

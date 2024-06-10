@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @next/next/no-img-element */
+import { LoadingButton } from '@mui/lab'
 import {
   Box,
   Button,
@@ -31,6 +32,7 @@ interface AddSimpleRestroomProps {
   fileInput: MutableRefObject<HTMLInputElement | null> //更新可能
   onChange: any
   warningMessage: string
+  isLoading: boolean
 }
 
 const AddSimpleRestroom: React.FC<AddSimpleRestroomProps> = ({
@@ -47,6 +49,7 @@ const AddSimpleRestroom: React.FC<AddSimpleRestroomProps> = ({
   fileInput,
   onChange,
   warningMessage,
+  isLoading,
 }) => {
   return (
     <Modal open={open} onClose={onClose}>
@@ -82,14 +85,15 @@ const AddSimpleRestroom: React.FC<AddSimpleRestroomProps> = ({
               {...register.rest}
               onChange={onChange}
             />
-            <Button
+            <LoadingButton
               variant="contained"
               type="button"
+              loading={isLoading}
               sx={{ fontWeight: 'bold', color: 'white' }}
               onClick={selectImageFile}
             >
               📁 ファイルから選択
-            </Button>
+            </LoadingButton>
             <Box
               style={{
                 padding: '1em',
