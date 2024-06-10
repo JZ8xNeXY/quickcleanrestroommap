@@ -1,4 +1,4 @@
-import axios, { AxiosResponse, AxiosError } from 'axios'
+import axios, { AxiosError } from 'axios'
 import { useState, useEffect, useRef, MutableRefObject } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { mutate } from 'swr'
@@ -158,8 +158,7 @@ const AddRestroomContainer: React.FC<AddRestroomProps> = ({
 
       axios
         .post(getUrl, formData, { headers })
-        .then((res: AxiosResponse) => {
-          console.log('Data submitted successfully', res.data)
+        .then(() => {
           mutate(getUrl)
           resetModal()
         })
