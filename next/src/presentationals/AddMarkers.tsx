@@ -1,4 +1,4 @@
-import { Box, Button } from '@mui/material'
+import { Box } from '@mui/material'
 import CalculateAndDisplayRoute from './CalculateAndDisplayRoute'
 import DisplayModalWindowContainer from '@/containers/DisplayModalWindowContainer'
 
@@ -28,8 +28,6 @@ interface AddMarkersProps {
   closeModalWindow: () => void
   selectedRestroom: Restroom
   currentUserPos: { lat: number; lng: number } | undefined
-  FindCurrentLocation: () => void
-  showGeolocationButton: React.RefObject<HTMLButtonElement>
   map: google.maps.Map | null
 }
 
@@ -40,8 +38,6 @@ const AddMarkers: React.FC<AddMarkersProps> = ({
   closeModalWindow,
   selectedRestroom,
   currentUserPos,
-  FindCurrentLocation,
-  showGeolocationButton,
   map,
 }) => {
   if (error) return <Box>An error has occurred.</Box>
@@ -75,29 +71,6 @@ const AddMarkers: React.FC<AddMarkersProps> = ({
             map={map}
           />
         )}
-      <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-        <Button
-          ref={showGeolocationButton}
-          onClick={FindCurrentLocation}
-          sx={{
-            height: '60px',
-            fontSize: '16px',
-            color: '#FFFFFF',
-            fontWeight: 'bold',
-            bgcolor: '#4CAF50',
-            pt: 2,
-            pb: 2,
-            pl: 4,
-            pr: 4,
-            mt: 2,
-            ':hover': {
-              backgroundColor: '#006400',
-            },
-          }}
-        >
-          現在地を表示する
-        </Button>
-      </Box>
     </>
   )
 }

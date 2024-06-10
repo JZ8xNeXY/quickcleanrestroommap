@@ -91,7 +91,9 @@ const DisplayModalWindow: React.FC<DisplayModalWindowProps> = ({
             mt: 2,
           }}
         >
-          <Typography sx={{ ...changeFontSize(name) }}>{name}</Typography>
+          <Typography sx={{ ...changeFontSize(name) }}>
+            {name ? name : 'ー'}
+          </Typography>
         </Box>
         {user.isFetched &&
           (user.isSignedIn ? (
@@ -111,11 +113,11 @@ const DisplayModalWindow: React.FC<DisplayModalWindowProps> = ({
           <Typography variant="h6" sx={{ fontWeight: 'bold', mt: 1 }}>
             住所
           </Typography>
-          <Typography sx={{ ml: 2 }}>{address}</Typography>
+          <Typography sx={{ ml: 2 }}>{address ? address : 'ー'}</Typography>
           <Typography variant="h6" sx={{ fontWeight: 'bold', mt: 1 }}>
             コメント
           </Typography>
-          <Typography sx={{ ml: 2 }}>{content}</Typography>
+          <Typography sx={{ ml: 2 }}>{content ? content : 'ー'}</Typography>
           <Typography variant="h6" sx={{ fontWeight: 'bold', mt: 1 }}>
             設備情報
           </Typography>
@@ -127,6 +129,13 @@ const DisplayModalWindow: React.FC<DisplayModalWindowProps> = ({
               flexWrap: 'wrap',
             }}
           >
+            <Typography sx={{ ml: 2 }}>
+              {!nursingRoom &&
+                !anyoneToilet &&
+                !diaperChangingStation &&
+                !powderCorner &&
+                !strollerAccessible && <Typography>ー</Typography>}
+            </Typography>
             {nursingRoom && (
               <Typography sx={nursingRoomStyle}>授乳室</Typography>
             )}

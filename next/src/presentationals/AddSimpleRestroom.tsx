@@ -11,6 +11,7 @@ import {
   FormControlLabel,
   Checkbox,
   Grid,
+  Alert,
 } from '@mui/material'
 import { MutableRefObject } from 'react'
 import { Controller } from 'react-hook-form'
@@ -29,6 +30,9 @@ interface AddSimpleRestroomProps {
   register: any
   fileInput: MutableRefObject<HTMLInputElement | null> //更新可能
   onChange: any
+  warningImageMessage: string
+  warningCoordMessage: string
+  isLoading: boolean
 }
 
 const AddSimpleRestroom: React.FC<AddSimpleRestroomProps> = ({
@@ -44,6 +48,9 @@ const AddSimpleRestroom: React.FC<AddSimpleRestroomProps> = ({
   register,
   fileInput,
   onChange,
+  warningImageMessage,
+  warningCoordMessage,
+  isLoading,
 }) => {
   return (
     <Modal open={open} onClose={onClose}>
@@ -57,6 +64,16 @@ const AddSimpleRestroom: React.FC<AddSimpleRestroomProps> = ({
               トイレ情報を登録する
             </Typography>
           </Box>
+          {warningImageMessage && (
+            <Alert severity="warning" sx={{ mb: 2 }}>
+              {warningImageMessage}
+            </Alert>
+          )}
+          {warningCoordMessage && (
+            <Alert severity="warning" sx={{ mb: 2 }}>
+              {warningCoordMessage}
+            </Alert>
+          )}
           <Stack
             component="form"
             onSubmit={handleSubmit(onSubmit)}
@@ -77,12 +94,13 @@ const AddSimpleRestroom: React.FC<AddSimpleRestroomProps> = ({
             <Button
               variant="contained"
               type="button"
+              disabled={isLoading}
               sx={{ fontWeight: 'bold', color: 'white' }}
               onClick={selectImageFile}
             >
-              📁 ファイルから選択
+              {isLoading ? '画像を確認中...' : '📁 ファイルから選択'}
             </Button>
-            <div
+            <Box
               style={{
                 padding: '1em',
                 border: '1px dotted #ccc',
@@ -101,7 +119,7 @@ const AddSimpleRestroom: React.FC<AddSimpleRestroomProps> = ({
                   <Typography>{fileName}</Typography>
                 </>
               )}
-            </div>
+            </Box>
             <Controller
               name="name"
               control={control}

@@ -40,7 +40,6 @@ const Header: React.FC<HeaderProps> = ({
   setOpenAddSimpleRestroomModal,
   list,
 }) => {
-  console.log(user)
   return (
     <AppBar
       position="static"

@@ -11,6 +11,7 @@ import {
   FormControlLabel,
   Checkbox,
   Grid,
+  Alert,
 } from '@mui/material'
 import { MutableRefObject } from 'react'
 import { Controller } from 'react-hook-form'
@@ -30,6 +31,8 @@ interface AddRestroomProps {
   register: any
   fileInput: MutableRefObject<HTMLInputElement | null> //更新可能
   onChange: any
+  warningMessage: string
+  isLoading: boolean
 }
 
 const AddRestroom: React.FC<AddRestroomProps> = ({
@@ -46,6 +49,8 @@ const AddRestroom: React.FC<AddRestroomProps> = ({
   register,
   fileInput,
   onChange,
+  warningMessage,
+  isLoading,
 }) => {
   return (
     <Modal open={open} onClose={onClose}>
@@ -59,6 +64,11 @@ const AddRestroom: React.FC<AddRestroomProps> = ({
               トイレ情報を登録する
             </Typography>
           </Box>
+          {warningMessage && (
+            <Alert severity="warning" sx={{ mb: 2 }}>
+              {warningMessage}
+            </Alert>
+          )}
           <Stack
             component="form"
             onSubmit={handleSubmit(onSubmit)}
@@ -79,10 +89,11 @@ const AddRestroom: React.FC<AddRestroomProps> = ({
             <Button
               variant="contained"
               type="button"
+              disabled={isLoading}
               sx={{ fontWeight: 'bold', color: 'white' }}
               onClick={selectImageFile}
             >
-              📁 ファイルから選択
+              {isLoading ? '画像を確認中...' : '📁 ファイルから選択'}
             </Button>
             <div
               style={{

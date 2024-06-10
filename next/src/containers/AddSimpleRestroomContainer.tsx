@@ -1,4 +1,4 @@
-import axios, { AxiosResponse, AxiosError } from 'axios'
+import axios, { AxiosError } from 'axios'
 import loadImage from 'blueimp-load-image'
 import { useState, useEffect, useRef, MutableRefObject } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
@@ -65,6 +65,9 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
   const [imageToiletCleanness, setImageToiletCleanness] = useState<number>(0)
   const [imageLatitude, setImageLatitude] = useState('')
   const [imageLongitude, setImageLongitude] = useState('')
+  const [warningImageMessage, setWarningImageMessage] = useState('')
+  const [warningCoordMessage, setWarningCoordMessage] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     setValue('evaluation', imageToiletCleanness)
@@ -124,18 +127,25 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
           // 正しい型の引数を渡す
           const longitude = convertDMSToDD(gpsData[4], gpsData[3])
           setImageLongitude(longitude.toString())
+          setWarningCoordMessage('')
         } else {
           console.log('No GPS data found')
+          setWarningCoordMessage('緯度経度を読み込めません')
         }
       } else {
         console.log('No EXIF data found')
+        setWarningCoordMessage('緯度経度を読み込めません')
       }
     })
   }
 
   const convertDMSToDD = (dmsArray: number[], direction: string) => {
     const [degrees, minutes, seconds] = dmsArray
-    let dd = degrees + minutes / 60 + seconds / 3600
+    let dd = degrees + minutes / 60 + seconds / 3600 //度分秒を十進法に変換 どうして誤差が出る
+
+    // 小数点以下の精度を増やして誤差を減らす
+    dd = parseFloat(dd.toFixed(10))
+
     if (direction === 'S' || direction === 'W') {
       dd *= -1
     }
@@ -149,9 +159,15 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
   }
 
   const evaluateToiletCleanness = async (file: File) => {
+    setIsLoading(true)
     const imageBase64 = await encodeImageToBase64(file)
     const result = await chatgpt(imageBase64)
-    console.log(result)
+    setIsLoading(false)
+    if (result == 0) {
+      setWarningImageMessage('トイレの画像をアップロードしてください')
+    } else {
+      setWarningImageMessage('')
+    }
     setImageToiletCleanness(result)
   }
 
@@ -198,8 +214,7 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
 
     axios
       .post(getUrl, formData, { headers })
-      .then((res: AxiosResponse) => {
-        console.log('Data submitted successfully', res.data)
+      .then(() => {
         mutate(getUrl)
         resetModal()
       })
@@ -223,6 +238,9 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
       register={{ ...rest, ref }}
       fileInput={fileInput}
       onChange={onChange} //ファイル分割用に追加
+      warningImageMessage={warningImageMessage}
+      warningCoordMessage={warningCoordMessage}
+      isLoading={isLoading}
     />
   )
 }

@@ -1,4 +1,4 @@
-import axios, { AxiosResponse, AxiosError } from 'axios'
+import axios, { AxiosError } from 'axios'
 import { useState, useEffect, useRef, MutableRefObject } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { mutate } from 'swr'
@@ -53,6 +53,8 @@ const AddRestroomContainer: React.FC<AddRestroomProps> = ({
   const [fileName, setFileName] = useState('')
   const [imageData, setImageData] = useState('')
   const [imageToiletCleanness, setImageToiletCleanness] = useState<number>(0)
+  const [warningMessage, setWarningMessage] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     setValue('evaluation', imageToiletCleanness)
@@ -99,9 +101,17 @@ const AddRestroomContainer: React.FC<AddRestroomProps> = ({
   }
 
   const evaluateToiletCleanness = async (file: File) => {
+    setIsLoading(true)
     const imageBase64 = await encodeImageToBase64(file)
     const result = await chatgpt(imageBase64)
     console.log(result)
+    setIsLoading(false)
+    if (result == 0) {
+      console.log('トイレの画像をアップロードしてください')
+      setWarningMessage('トイレの画像をアップロードしてください')
+    } else {
+      setWarningMessage('')
+    }
     setImageToiletCleanness(result)
   }
 
@@ -148,8 +158,7 @@ const AddRestroomContainer: React.FC<AddRestroomProps> = ({
 
       axios
         .post(getUrl, formData, { headers })
-        .then((res: AxiosResponse) => {
-          console.log('Data submitted successfully', res.data)
+        .then(() => {
           mutate(getUrl)
           resetModal()
         })
@@ -175,6 +184,8 @@ const AddRestroomContainer: React.FC<AddRestroomProps> = ({
       register={{ ...rest, ref }}
       fileInput={fileInput}
       onChange={onChange} //ファイル分割用に追加
+      warningMessage={warningMessage}
+      isLoading={isLoading}
     />
   )
 }
