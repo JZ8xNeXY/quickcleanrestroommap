@@ -30,7 +30,6 @@ const CurrentUserFetch = () => {
           })
         })
         .catch((err: AxiosError<{ error: string }>) => {
-          console.log(err.message)
           setUser({
             ...user,
             isFetched: true,
