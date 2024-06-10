@@ -1,4 +1,4 @@
-import axios, { AxiosResponse, AxiosError } from 'axios'
+import axios, { AxiosError } from 'axios'
 import { useState, useRef, MutableRefObject } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { mutate } from 'swr'
@@ -141,8 +141,7 @@ const EditRestroomContainer: React.FC<EditRestroomProps> = ({
 
       axios
         .put(editUrl, formData, { headers })
-        .then((res: AxiosResponse) => {
-          console.log('Data Edited successfully', res.data)
+        .then(() => {
           mutate(getUrl)
           resetModal()
         })
@@ -162,8 +161,7 @@ const EditRestroomContainer: React.FC<EditRestroomProps> = ({
 
     axios
       .delete(deleteUrl, { headers })
-      .then((res: AxiosResponse) => {
-        console.log('Data deleted successfully', res.data)
+      .then(() => {
         mutate(getUrl)
         resetModal()
       })
