@@ -11,6 +11,7 @@ import {
   FormControlLabel,
   Checkbox,
   Grid,
+  Alert,
 } from '@mui/material'
 import { MutableRefObject } from 'react'
 import { Controller } from 'react-hook-form'
@@ -29,6 +30,7 @@ interface AddSimpleRestroomProps {
   register: any
   fileInput: MutableRefObject<HTMLInputElement | null> //更新可能
   onChange: any
+  warningMessage: string
 }
 
 const AddSimpleRestroom: React.FC<AddSimpleRestroomProps> = ({
@@ -44,6 +46,7 @@ const AddSimpleRestroom: React.FC<AddSimpleRestroomProps> = ({
   register,
   fileInput,
   onChange,
+  warningMessage,
 }) => {
   return (
     <Modal open={open} onClose={onClose}>
@@ -57,6 +60,11 @@ const AddSimpleRestroom: React.FC<AddSimpleRestroomProps> = ({
               トイレ情報を登録する
             </Typography>
           </Box>
+          {warningMessage && (
+            <Alert severity="warning" sx={{ mb: 2 }}>
+              {warningMessage}
+            </Alert>
+          )}
           <Stack
             component="form"
             onSubmit={handleSubmit(onSubmit)}
