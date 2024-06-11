@@ -155,7 +155,7 @@ const DisplayModalWindow: React.FC<DisplayModalWindowProps> = ({
             )}
           </Box>
           <Typography variant="h6" sx={{ fontWeight: 'bold', mt: 1 }}>
-            評価
+            清潔度
           </Typography>
           {/* <Typography sx={{ ml: 2 }}>評価:{evaluation}</Typography> */}
           <Box sx={{ ml: 2 }}>

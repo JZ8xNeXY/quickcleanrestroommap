@@ -101,10 +101,9 @@ const AddMarkersContainer: NextPage<AddMarkersProps> = ({ map }) => {
       }
     }
 
-    addMarkers()
-
     if (map) {
       FindCurrentLocation()
+      addMarkers()
     }
   }, [map, data, setSelectedRestroom])
 

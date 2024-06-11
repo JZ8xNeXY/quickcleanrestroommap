@@ -3,6 +3,7 @@ export const initMap = async (
   setMap: React.Dispatch<React.SetStateAction<google.maps.Map | null>>,
 ) => {
   const mapElement = document.getElementById('map')
+  if (!mapElement) return
 
   if (mapElement) {
     const map = new google.maps.Map(mapElement, {

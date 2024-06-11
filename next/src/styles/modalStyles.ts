@@ -6,9 +6,9 @@ const modalStyle = {
   width: {
     xs: '90%',
     sm: '65%',
-    md: '40%',
-    lg: '30%',
-    xl: '25%',
+    md: '46%',
+    lg: '38%',
+    xl: '28%',
   },
   height: '80%',
   bgcolor: '#F9F9F9',
