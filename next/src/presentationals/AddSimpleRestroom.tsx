@@ -31,6 +31,7 @@ interface AddSimpleRestroomProps {
   fileInput: MutableRefObject<HTMLInputElement | null> //更新可能
   onChange: any
   warningImageMessage: string
+  confirmImageMessage: string
   warningCoordMessage: string
   isLoading: boolean
 }
@@ -49,6 +50,7 @@ const AddSimpleRestroom: React.FC<AddSimpleRestroomProps> = ({
   fileInput,
   onChange,
   warningImageMessage,
+  confirmImageMessage,
   warningCoordMessage,
   isLoading,
 }) => {
@@ -67,6 +69,11 @@ const AddSimpleRestroom: React.FC<AddSimpleRestroomProps> = ({
           {warningImageMessage && (
             <Alert severity="warning" sx={{ mb: 2 }}>
               {warningImageMessage}
+            </Alert>
+          )}
+          {confirmImageMessage && (
+            <Alert severity="success" sx={{ mb: 2 }}>
+              {confirmImageMessage}
             </Alert>
           )}
           {warningCoordMessage && (

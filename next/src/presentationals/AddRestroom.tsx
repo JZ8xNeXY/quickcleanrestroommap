@@ -31,7 +31,8 @@ interface AddRestroomProps {
   register: any
   fileInput: MutableRefObject<HTMLInputElement | null> //更新可能
   onChange: any
-  warningMessage: string
+  warningImageMessage: string
+  confirmImageMessage: string
   isLoading: boolean
 }
 
@@ -49,7 +50,8 @@ const AddRestroom: React.FC<AddRestroomProps> = ({
   register,
   fileInput,
   onChange,
-  warningMessage,
+  warningImageMessage,
+  confirmImageMessage,
   isLoading,
 }) => {
   return (
@@ -64,9 +66,14 @@ const AddRestroom: React.FC<AddRestroomProps> = ({
               トイレ情報を登録する
             </Typography>
           </Box>
-          {warningMessage && (
+          {warningImageMessage && (
             <Alert severity="warning" sx={{ mb: 2 }}>
-              {warningMessage}
+              {warningImageMessage}
+            </Alert>
+          )}
+          {confirmImageMessage && (
+            <Alert severity="success" sx={{ mb: 2 }}>
+              {confirmImageMessage}
             </Alert>
           )}
           <Stack
