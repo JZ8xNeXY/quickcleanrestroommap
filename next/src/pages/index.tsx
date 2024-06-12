@@ -6,6 +6,7 @@ import AddRestroomContainer from '@/containers/AddRestroomContainer'
 import { RestroomProvider } from '@/context/RestRoomContext'
 import { RightClickMapHandler } from '@/utils/RightClickMapHandler'
 import { loadGoogleMapsAPI } from '@/utils/loadGoogleMapsAPI'
+import { userGeoLocation } from '@/utils/userGeoLocation'
 
 const Index: NextPage = () => {
   const [map, setMap] = useState<google.maps.Map | null>(null)
@@ -23,6 +24,7 @@ const Index: NextPage = () => {
   useEffect(() => {
     if (map) {
       RightClickMapHandler({ map, setMap, setOpenAddRestroomModal, setCoords })
+      userGeoLocation({ map, setCurrentUserPos: () => {} })
     }
   }, [map])
 

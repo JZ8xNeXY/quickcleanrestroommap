@@ -50,7 +50,12 @@ const AddMarkersContainer: NextPage<AddMarkersProps> = ({ map }) => {
         userGeoLocation({ map, setCurrentUserPos })
       }
     }
+    if (map) {
+      FindCurrentLocation()
+    }
+  }, [map])
 
+  useEffect(() => {
     const addMarkers = async () => {
       if (map && data) {
         markersRef.current.forEach((marker) => (marker.map = null))
@@ -101,10 +106,8 @@ const AddMarkersContainer: NextPage<AddMarkersProps> = ({ map }) => {
       }
     }
 
-    addMarkers()
-
     if (map) {
-      FindCurrentLocation()
+      addMarkers()
     }
   }, [map, data, setSelectedRestroom])
 

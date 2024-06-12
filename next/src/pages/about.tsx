@@ -33,36 +33,52 @@ const About: NextPage = () => {
   }, [])
 
   return (
-    <Container maxWidth="xl" sx={{ px: 2, mt: 2 }}>
+    <Container
+      maxWidth="md"
+      sx={{ px: { xs: 2, md: 4 }, mt: { xs: 2, md: 4 } }}
+    >
       <Box sx={{ textAlign: 'center', mt: 2 }}>
         <Typography
           variant="h3"
           component="h3"
-          sx={{ fontWeight: 'bold', color: '#3f51b5', fontSize: '36px', mb: 3 }}
+          sx={{
+            fontWeight: 'bold',
+            color: '#3f51b5',
+            fontSize: { xs: '26px', md: '36px' },
+            mb: { xs: 2, md: 3 },
+          }}
         >
           きれいなトイレを見つけよう
         </Typography>
         <Typography
           variant="body1"
           component="p"
-          sx={{ color: 'black', fontSize: '20px', lineHeight: 1.8, mb: 2 }}
+          sx={{
+            textAlign: 'left',
+            ml: { xs: 0, md: '20%' },
+            color: 'black',
+            fontSize: { xs: '16px', md: '20px' },
+            lineHeight: 1.8,
+            mb: { xs: 1, md: 2 },
+          }}
         >
-          Quick Clean Restroom Mapは、あなたの近くの清潔で
-          <br />
-          安全なトイレを簡単に見つけることができるアプリです。
+          Quick Clean Restroom
+          Mapは、あなたの近くの清潔で安全なトイレを簡単に見つけることができるアプリです。
         </Typography>
         <Typography
           variant="body1"
           component="p"
-          sx={{ color: 'black', fontSize: '20px', lineHeight: 1.8 }}
+          sx={{
+            textAlign: 'left',
+            ml: { xs: 0, md: '20%' },
+            color: 'black',
+            fontSize: { xs: '16px', md: '20px' },
+            lineHeight: 1.8,
+          }}
         >
-          <br />
-          外出先でのトイレ探しにもう悩む必要はありません。
-          <br />
-          このアプリがあれば、快適で綺麗なトイレをすぐに見つけることができます。
+          外出先でのトイレ探しにもう悩む必要はありません。このアプリがあれば、快適で綺麗なトイレをすぐに見つけることができます。
         </Typography>
       </Box>
-
       <Box sx={{ textAlign: 'center', mt: 10 }}>
         <Typography variant="h6" component="p">
           \ P O I N T /
@@ -92,7 +108,7 @@ const About: NextPage = () => {
                 <Typography
                   variant="body1"
                   component="p"
-                  sx={{ textAlign: 'center', color: 'black' }}
+                  sx={{ textAlign: 'left', color: 'black' }}
                 >
                   あなたの現在位置から近い清潔なトイレをすぐに見つけることができます。
                   駅、ショッピングセンター、オフィスビルなどのトイレを紹介しています。
@@ -121,7 +137,7 @@ const About: NextPage = () => {
                 <Typography
                   variant="body1"
                   component="p"
-                  sx={{ textAlign: 'center', color: 'black' }}
+                  sx={{ textAlign: 'left', color: 'black' }}
                 >
                   ナビゲーション機能を使って、迷うことなく直接トイレまで案内します。
                   歩行者向けや公共交通機関を使ったルートのオプションも提供します。
@@ -150,7 +166,7 @@ const About: NextPage = () => {
                 <Typography
                   variant="body1"
                   component="p"
-                  sx={{ textAlign: 'center', color: 'black' }}
+                  sx={{ textAlign: 'left', color: 'black' }}
                 >
                   自分が訪れたきれいなトイレを新たに登録することができます。
                   また、自動でトイレの清潔さを評価する機能を搭載しています。

@@ -31,6 +31,7 @@ interface AddSimpleRestroomProps {
   fileInput: MutableRefObject<HTMLInputElement | null> //更新可能
   onChange: any
   warningImageMessage: string
+  confirmImageMessage: string
   warningCoordMessage: string
   isLoading: boolean
 }
@@ -49,6 +50,7 @@ const AddSimpleRestroom: React.FC<AddSimpleRestroomProps> = ({
   fileInput,
   onChange,
   warningImageMessage,
+  confirmImageMessage,
   warningCoordMessage,
   isLoading,
 }) => {
@@ -67,6 +69,11 @@ const AddSimpleRestroom: React.FC<AddSimpleRestroomProps> = ({
           {warningImageMessage && (
             <Alert severity="warning" sx={{ mb: 2 }}>
               {warningImageMessage}
+            </Alert>
+          )}
+          {confirmImageMessage && (
+            <Alert severity="success" sx={{ mb: 2 }}>
+              {confirmImageMessage}
             </Alert>
           )}
           {warningCoordMessage && (
@@ -98,7 +105,9 @@ const AddSimpleRestroom: React.FC<AddSimpleRestroomProps> = ({
               sx={{ fontWeight: 'bold', color: 'white' }}
               onClick={selectImageFile}
             >
-              {isLoading ? '画像を確認中...' : '📁 ファイルから選択'}
+              {isLoading
+                ? 'トイレの状況を確認中...'
+                : '📁 ファイルから画像を選択'}
             </Button>
             <Box
               style={{
@@ -159,17 +168,15 @@ const AddSimpleRestroom: React.FC<AddSimpleRestroomProps> = ({
             <Typography
               component="p"
               sx={{
-                fontSize: 16,
+                fontSize: 20,
                 color: 'black',
-                fontWeight: 'bold',
               }}
-              style={{ display: 'none' }}
             >
-              施設情報
+              設備有無
             </Typography>
             <Box>
               <Grid container spacing={0.1}>
-                <Grid item xs={6}>
+                <Grid item xs={10}>
                   <Controller
                     name="nursing_room"
                     control={control}
@@ -182,7 +189,7 @@ const AddSimpleRestroom: React.FC<AddSimpleRestroomProps> = ({
                     )}
                   />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={10}>
                   <Controller
                     name="anyone_toilet"
                     control={control}
@@ -195,7 +202,7 @@ const AddSimpleRestroom: React.FC<AddSimpleRestroomProps> = ({
                     )}
                   />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={10}>
                   <Controller
                     name="diaper_changing_station"
                     control={control}
@@ -208,7 +215,7 @@ const AddSimpleRestroom: React.FC<AddSimpleRestroomProps> = ({
                     )}
                   />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={10}>
                   <Controller
                     name="powder_corner"
                     control={control}
@@ -221,7 +228,7 @@ const AddSimpleRestroom: React.FC<AddSimpleRestroomProps> = ({
                     )}
                   />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={10}>
                   <Controller
                     name="stroller_accessible"
                     control={control}

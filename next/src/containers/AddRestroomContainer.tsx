@@ -53,7 +53,8 @@ const AddRestroomContainer: React.FC<AddRestroomProps> = ({
   const [fileName, setFileName] = useState('')
   const [imageData, setImageData] = useState('')
   const [imageToiletCleanness, setImageToiletCleanness] = useState<number>(0)
-  const [warningMessage, setWarningMessage] = useState('')
+  const [warningImageMessage, setWarningImageMessage] = useState('')
+  const [confirmImageMessage, setConfirmMessage] = useState('')
   const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
@@ -108,9 +109,12 @@ const AddRestroomContainer: React.FC<AddRestroomProps> = ({
     setIsLoading(false)
     if (result == 0) {
       console.log('トイレの画像をアップロードしてください')
-      setWarningMessage('トイレの画像をアップロードしてください')
+      setWarningImageMessage('トイレの画像をアップロードしてください')
     } else {
-      setWarningMessage('')
+      setWarningImageMessage('')
+    }
+    if (result >= 1) {
+      setConfirmMessage('トイレの画像を確認しました')
     }
     setImageToiletCleanness(result)
   }
@@ -184,7 +188,8 @@ const AddRestroomContainer: React.FC<AddRestroomProps> = ({
       register={{ ...rest, ref }}
       fileInput={fileInput}
       onChange={onChange} //ファイル分割用に追加
-      warningMessage={warningMessage}
+      warningImageMessage={warningImageMessage}
+      confirmImageMessage={confirmImageMessage}
       isLoading={isLoading}
     />
   )

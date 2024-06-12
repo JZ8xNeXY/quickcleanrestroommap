@@ -66,6 +66,7 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
   const [imageLatitude, setImageLatitude] = useState('')
   const [imageLongitude, setImageLongitude] = useState('')
   const [warningImageMessage, setWarningImageMessage] = useState('')
+  const [confirmImageMessage, setConfirmMessage] = useState('')
   const [warningCoordMessage, setWarningCoordMessage] = useState('')
   const [isLoading, setIsLoading] = useState(false)
 
@@ -168,6 +169,9 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
     } else {
       setWarningImageMessage('')
     }
+    if (result >= 1) {
+      setConfirmMessage('トイレの画像を確認しました')
+    }
     setImageToiletCleanness(result)
   }
 
@@ -239,6 +243,7 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
       fileInput={fileInput}
       onChange={onChange} //ファイル分割用に追加
       warningImageMessage={warningImageMessage}
+      confirmImageMessage={confirmImageMessage}
       warningCoordMessage={warningCoordMessage}
       isLoading={isLoading}
     />
