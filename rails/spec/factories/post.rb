@@ -11,7 +11,7 @@ FactoryBot.define do
     powder_corner { Faker::Number.between(from: 0, to: 1) }
     stroller_accessible { Faker::Number.between(from: 0, to: 1) }
 
-    after(:build) do |facility|
+    after(:build) do |_facility|
       post.image.attach(io: File.open('public/images/test.jpeg'), filename: 'test.jpeg')
     end
   end
