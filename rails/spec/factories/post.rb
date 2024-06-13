@@ -10,9 +10,11 @@ FactoryBot.define do
     diaper_changing_station { Faker::Number.between(from: 0, to: 1) }
     powder_corner { Faker::Number.between(from: 0, to: 1) }
     stroller_accessible { Faker::Number.between(from: 0, to: 1) }
+    evaluation { Faker::Number.between(from: 1, to: 5) }
 
-    after(:build) do |_facility|
-      post.image.attach(io: File.open('public/images/test.jpeg'), filename: 'test.jpeg')
+
+    after(:build) do |post|
+      post.image.attach(io: File.open('public/test.jpeg'), filename: 'test.jpeg')
     end
   end
 end
