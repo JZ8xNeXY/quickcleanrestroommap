@@ -27,7 +27,6 @@ require 'rspec/rails'
 
 I18n.locale = "en"
 
-end
 begin
   ActiveRecord::Migration.maintain_test_schema!
 rescue ActiveRecord::PendingMigrationError => e
