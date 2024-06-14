@@ -1,14 +1,8 @@
 module Api
   module V1
     class RegistrationsController < DeviseTokenAuth::RegistrationsController
-      before_action :ensure_admin!, only: [:create]
-
-      private
-
-      def ensure_admin!
-        unless current_user
-          render json: { error: 'Unauthorized' }, status: :unauthorized
-        end
+      def create
+        render json: { error: 'User registration is not allowed' }, status: :forbidden
       end
     end
   end

@@ -1,13 +1,19 @@
-require 'rails_helper'
+RSpec.describe 'Api::V1::Registrations', type: :request do
+  describe 'POST api/v1/auth' do
+    subject { post(api_v1_user_registration_path, params: valid_attributes) }
 
-RSpec.describe 'Api::V1::Posts', type: :request do
-  describe 'GET api/v1/posts' do
-    subject { get(api_v1_posts_path) }
+    let(:valid_attributes) do
+      {
+        email: 'test@example.com',
+        password: 'password'
+      }
+    end
 
-    it '正常にレスポンスが返る' do
+    it '新規ユーザーの登録ができないこと' do
       subject
       res = JSON.parse(response.body)
-      expect(response).to have_http_status(:success)
+      expect(res['error']).to eq 'User registration is not allowed'
+      expect(response).to have_http_status(:forbidden)
     end
   end
 end

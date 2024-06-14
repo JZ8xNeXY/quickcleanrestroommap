@@ -12,7 +12,6 @@ FactoryBot.define do
     stroller_accessible { Faker::Number.between(from: 0, to: 1) }
     evaluation { Faker::Number.between(from: 1, to: 5) }
 
-
     after(:build) do |post|
       post.image.attach(io: File.open('public/test.jpeg'), filename: 'test.jpeg')
     end
