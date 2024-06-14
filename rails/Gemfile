@@ -46,11 +46,16 @@ group :development, :test do
   gem "pry-rails"
   # テストフレームワーク rspec を導入する
   gem 'rspec-rails'
+  gem 'factory_bot_rails'
+  gem 'faker'
   # rubocop を使えるようにする。
   gem "rubocop-faker"
   gem "rubocop-rails"
   gem "rubocop-rspec"
 
 end
+
+gem 'mini_magick'
+gem 'image_processing', '~> 1.2'
 
 gem "aws-sdk-s3", require: false

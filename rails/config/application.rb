@@ -36,5 +36,6 @@ module Myapp
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
     config.i18n.default_locale = :ja
+    config.active_storage.variant_processor = :mini_magick
   end
 end
