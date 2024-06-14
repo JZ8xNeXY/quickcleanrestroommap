@@ -48,35 +48,19 @@ const About: NextPage = () => {
             mb: { xs: 2, md: 3 },
           }}
         >
+          Quick Clean Restroom Map で
+        </Typography>
+        <Typography
+          variant="h3"
+          component="h3"
+          sx={{
+            fontWeight: 'bold',
+            color: '#3f51b5',
+            fontSize: { xs: '26px', md: '36px' },
+            mb: { xs: 2, md: 3 },
+          }}
+        >
           きれいなトイレを見つけよう
-        </Typography>
-        <Typography
-          variant="body1"
-          component="p"
-          sx={{
-            textAlign: 'left',
-            ml: { xs: 0, md: '20%' },
-            color: 'black',
-            fontSize: { xs: '16px', md: '20px' },
-            lineHeight: 1.8,
-            mb: { xs: 1, md: 2 },
-          }}
-        >
-          Quick Clean Restroom
-          Mapは、あなたの近くの清潔で安全なトイレを簡単に見つけることができるアプリです。
-        </Typography>
-        <Typography
-          variant="body1"
-          component="p"
-          sx={{
-            textAlign: 'left',
-            ml: { xs: 0, md: '20%' },
-            color: 'black',
-            fontSize: { xs: '16px', md: '20px' },
-            lineHeight: 1.8,
-          }}
-        >
-          外出先でのトイレ探しにもう悩む必要はありません。このアプリがあれば、快適で綺麗なトイレをすぐに見つけることができます。
         </Typography>
       </Box>
       <Box sx={{ textAlign: 'center', mt: 10 }}>
