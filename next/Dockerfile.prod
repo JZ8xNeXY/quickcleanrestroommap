@@ -14,9 +14,6 @@ RUN npm ci
 # Copy all files
 COPY . .
 
-# Verify the installation of react-awesome-stars-rating
-RUN npm list react-awesome-stars-rating
-
 # Build the Next.js app
 RUN npm run build
 
