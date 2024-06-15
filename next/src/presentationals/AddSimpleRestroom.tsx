@@ -95,6 +95,7 @@ const AddSimpleRestroom: React.FC<AddSimpleRestroomProps> = ({
               }}
               accept="image/*"
               style={{ display: 'none' }}
+              capture="environment"
               {...register.rest}
               onChange={onChange}
             />
