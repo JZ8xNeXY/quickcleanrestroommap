@@ -15,6 +15,15 @@ RUN npm ci
 COPY . .
 
 # Build the Next.js app
+ARG NEXT_PUBLIC_API_BASE_URL
+ARG NEXT_PUBLIC_GOOGLE_MAP_KEY
+ARG NEXT_PUBLIC_OPENAI_API_KEY
+
+RUN echo "NEXT_PUBLIC_API_BASE_URL=$NEXT_PUBLIC_API_BASE_URL" >> .env.production
+RUN echo "NEXT_PUBLIC_GOOGLE_MAP_KEY=$NEXT_PUBLIC_GOOGLE_MAP_KEY" >> .env.production
+RUN echo "NEXT_PUBLIC_OPENAI_API_KEY=$NEXT_PUBLIC_OPENAI_API_KEY" >> .env.production
+
+# Build the Next.js app
 RUN npm run build
 
 # --- Run Stage ---
