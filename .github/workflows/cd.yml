@@ -55,11 +55,19 @@ jobs:
       id: build-image
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        NEXT_PUBLIC_API_BASE_URL: ${{ secrets.NEXT_PUBLIC_API_BASE_URL }}
+        NEXT_PUBLIC_GOOGLE_MAP_KEY: ${{ secrets.NEXT_PUBLIC_GOOGLE_MAP_KEY }}
+        NEXT_PUBLIC_OPENAI_API_KEY: ${{ secrets.NEXT_PUBLIC_OPENAI_API_KEY }}
+        NEXT_PUBLIC_DOMAINS: ${{ secrets.NEXT_PUBLIC_DOMAINS }}
         IMAGE_TAG: ${{ github.sha }}
       run: |
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY_RAILS:$IMAGE_TAG -f ./rails/Dockerfile.prod ./rails
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY_RAILS:$IMAGE_TAG
-        echo "image=$ECR_REGISTRY/$ECR_REPOSITORY_RAILS:$IMAGE_TAG" >> $GITHUB_OUTPUT
+        # Create .env.production file
+        echo "NEXT_PUBLIC_API_BASE_URL=${NEXT_PUBLIC_API_BASE_URL}" > .env.production
+        echo "NEXT_PUBLIC_GOOGLE_MAP_KEY=${NEXT_PUBLIC_GOOGLE_MAP_KEY}" >> .env.production
+        echo "NEXT_PUBLIC_OPENAI_API_KEY=${NEXT_PUBLIC_OPENAI_API_KEY}" >> .env.production
+
+        # Create next.config.js file
+        echo "module.exports = { images: { domains: [${NEXT_PUBLIC_DOMAINS//,/\",\"}] } };" > next.config.js
 
     - name: Fill in the new image ID in the Amazon ECS task definition
       id: task-def
