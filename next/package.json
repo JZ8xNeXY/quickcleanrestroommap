@@ -30,7 +30,7 @@
     "react-hook-form": "^7.46.0",
     "swr": "^2.2.2",
     "typescript": "5.4.5",
-    "react-awesome-stars-rating": "^2.0.0" 
+    "react-awesome-stars-rating": "0.16.2" 
   },
   "devDependencies": {
     "@emotion/babel-plugin": "^11.11.0",
