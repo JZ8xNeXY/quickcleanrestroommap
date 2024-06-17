@@ -19,18 +19,18 @@ ARG NEXT_PUBLIC_API_BASE_URL
 ARG NEXT_PUBLIC_GOOGLE_MAP_KEY
 ARG NEXT_PUBLIC_OPENAI_API_KEY
 
-# Echo the build arguments to verify they are set
-RUN echo "NEXT_PUBLIC_API_BASE_URL=${NEXT_PUBLIC_API_BASE_URL}" \
-  && echo "NEXT_PUBLIC_GOOGLE_MAP_KEY=${NEXT_PUBLIC_GOOGLE_MAP_KEY}" \
-  && echo "NEXT_PUBLIC_OPENAI_API_KEY=${NEXT_PUBLIC_OPENAI_API_KEY}"
+# # Echo the build arguments to verify they are set
+# RUN echo "NEXT_PUBLIC_API_BASE_URL=${NEXT_PUBLIC_API_BASE_URL}" \
+#   && echo "NEXT_PUBLIC_GOOGLE_MAP_KEY=${NEXT_PUBLIC_GOOGLE_MAP_KEY}" \
+#   && echo "NEXT_PUBLIC_OPENAI_API_KEY=${NEXT_PUBLIC_OPENAI_API_KEY}"
 
 
 ENV NEXT_PUBLIC_API_BASE_URL=${NEXT_PUBLIC_API_BASE_URL}
 ENV NEXT_PUBLIC_GOOGLE_MAP_KEY=${NEXT_PUBLIC_GOOGLE_MAP_KEY}
 ENV NEXT_PUBLIC_OPENAI_API_KEY=${NEXT_PUBLIC_OPENAI_API_KEY}
 
-# Display the content of .env.production
-RUN cat .env.production
+# # Display the content of .env.production
+# RUN cat .env.production
 
 # Build the Next.js app
 RUN npm run build
