@@ -13,11 +13,11 @@ env:
   AWS_REGION: ap-northeast-1
   ECS_CLUSTER: quickcleanrestrooms-cluster
   ECS_SERVICE_BACKEND: quickcleanrestrooms-backend-service
-  ECS_SERVICE_FRONTEND: quickcleanrestrooms-frontend-service2
+  ECS_SERVICE_FRONTEND: quickcleanrestrooms-frontend-service
   ECS_TASK_DEFINITION_BACKEND: ./rails/task-definition.json
   ECS_TASK_DEFINITION_FRONTEND: ./next/task-definition.json
-  ECR_REPOSITORY_RAILS: quickcleanrestroom-rails
-  ECR_REPOSITORY_NEXT: quickcleanrestroommap-next
+  ECR_REPOSITORY_RAILS: quickcleanrestrooms
+  ECR_REPOSITORY_NEXT: quickcleanrestrooms-next
   CONTAINER_NAME_RAILS: rails
   CONTAINER_NAME_NEXT: next
 
@@ -57,10 +57,7 @@ jobs:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         IMAGE_TAG: ${{ github.sha }}
       run: |
-        docker build --build-arg NEXT_PUBLIC_API_BASE_URL=${{ secrets.NEXT_PUBLIC_API_BASE_URL }} \
-          --build-arg NEXT_PUBLIC_GOOGLE_MAP_KEY=${{ secrets.NEXT_PUBLIC_GOOGLE_MAP_KEY }} \
-          --build-arg NEXT_PUBLIC_OPENAI_API_KEY=${{ secrets.NEXT_PUBLIC_OPENAI_API_KEY }} \
-          -t $ECR_REGISTRY/$ECR_REPOSITORY_NEXT:$IMAGE_TAG -f ./next/Dockerfile.prod ./next
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY_RAILS:$IMAGE_TAG -f ./rails/Dockerfile.prod ./rails
         docker push $ECR_REGISTRY/$ECR_REPOSITORY_RAILS:$IMAGE_TAG
         echo "image=$ECR_REGISTRY/$ECR_REPOSITORY_RAILS:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
@@ -79,6 +76,7 @@ jobs:
         service: ${{ env.ECS_SERVICE_BACKEND }}
         cluster: ${{ env.ECS_CLUSTER }}
         wait-for-service-stability: true
+
   # 処理③ Railsの自動デプロイ。動作には ci のクリアが必要
   deploy-next:
     needs: [ci]
@@ -96,6 +94,13 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ env.AWS_REGION }}
     
+    - name: Create .env.production file
+      run: |
+        echo "NEXT_PUBLIC_API_BASE_URL=${{ secrets.NEXT_PUBLIC_API_BASE_URL }}" >> .env.production
+        echo "NEXT_PUBLIC_GOOGLE_MAP_KEY=${{ secrets.NEXT_PUBLIC_GOOGLE_MAP_KEY }}" >> .env.production
+        echo "NEXT_PUBLIC_OPENAI_API_KEY=${{ secrets.NEXT_PUBLIC_OPENAI_API_KEY }}" >> .env.production
+    
+
     - name: Login to Amazon ECR
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
@@ -106,10 +111,7 @@ jobs:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         IMAGE_TAG: ${{ github.sha }}
       run: |
-        docker build --build-arg NEXT_PUBLIC_API_BASE_URL=${{ secrets.NEXT_PUBLIC_API_BASE_URL }} \
-            --build-arg NEXT_PUBLIC_GOOGLE_MAP_KEY=${{ secrets.NEXT_PUBLIC_GOOGLE_MAP_KEY }} \
-            --build-arg NEXT_PUBLIC_OPENAI_API_KEY=${{ secrets.NEXT_PUBLIC_OPENAI_API_KEY }} \
-            -t $ECR_REGISTRY/$ECR_REPOSITORY_NEXT:$IMAGE_TAG -f ./next/Dockerfile.prod ./next
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY_NEXT:$IMAGE_TAG -f ./next/Dockerfile.prod ./next
         docker push $ECR_REGISTRY/$ECR_REPOSITORY_NEXT:$IMAGE_TAG
         echo "image=$ECR_REGISTRY/$ECR_REPOSITORY_NEXT:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
