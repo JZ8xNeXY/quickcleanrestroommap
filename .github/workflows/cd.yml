@@ -23,51 +23,51 @@ jobs:
   ci:
     uses: ./.github/workflows/ci.yml
 
-  # deploy-rails:
-  #   needs: [ci]
-  #   runs-on: ubuntu-latest
-  #   environment: production
+  deploy-rails:
+    needs: [ci]
+    runs-on: ubuntu-latest
+    environment: production
 
-  #   steps:
-  #   - name: Checkout
-  #     uses: actions/checkout@v4
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
 
-  #   - name: Configure AWS credentials
-  #     uses: aws-actions/configure-aws-credentials@v1
-  #     with:
-  #       aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-  #       aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  #       aws-region: ${{ env.AWS_REGION }}
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
 
-  #   - name: Login to Amazon ECR
-  #     id: login-ecr
-  #     uses: aws-actions/amazon-ecr-login@v1
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
 
-  #   - name: Build, tag, and push image to Amazon ECR
-  #     id: build-image
-  #     env:
-  #       ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-  #       IMAGE_TAG: ${{ github.sha }}
-  #     run: |
-  #       docker build -t $ECR_REGISTRY/$ECR_REPOSITORY_RAILS:$IMAGE_TAG -f ./rails/Dockerfile.prod ./rails
-  #       docker push $ECR_REGISTRY/$ECR_REPOSITORY_RAILS:$IMAGE_TAG
-  #       echo "image=$ECR_REGISTRY/$ECR_REPOSITORY_RAILS:$IMAGE_TAG" >> $GITHUB_OUTPUT
+    - name: Build, tag, and push image to Amazon ECR
+      id: build-image
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        IMAGE_TAG: ${{ github.sha }}
+      run: |
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY_RAILS:$IMAGE_TAG -f ./rails/Dockerfile.prod ./rails
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY_RAILS:$IMAGE_TAG
+        echo "image=$ECR_REGISTRY/$ECR_REPOSITORY_RAILS:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
-  #   - name: Fill in the new image ID in the Amazon ECS task definition
-  #     id: task-def
-  #     uses: aws-actions/amazon-ecs-render-task-definition@v1
-  #     with:
-  #       task-definition: ${{ env.ECS_TASK_DEFINITION_BACKEND }}
-  #       container-name: ${{ env.CONTAINER_NAME_RAILS }}
-  #       image: ${{ steps.build-image.outputs.image }}
+    - name: Fill in the new image ID in the Amazon ECS task definition
+      id: task-def
+      uses: aws-actions/amazon-ecs-render-task-definition@v1
+      with:
+        task-definition: ${{ env.ECS_TASK_DEFINITION_BACKEND }}
+        container-name: ${{ env.CONTAINER_NAME_RAILS }}
+        image: ${{ steps.build-image.outputs.image }}
 
-  #   - name: Deploy Amazon ECS task definition
-  #     uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-  #     with:
-  #       task-definition: ${{ steps.task-def.outputs.task-definition }}
-  #       service: ${{ env.ECS_SERVICE_BACKEND }}
-  #       cluster: ${{ env.ECS_CLUSTER }}
-  #       wait-for-service-stability: true
+    - name: Deploy Amazon ECS task definition
+      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+      with:
+        task-definition: ${{ steps.task-def.outputs.task-definition }}
+        service: ${{ env.ECS_SERVICE_BACKEND }}
+        cluster: ${{ env.ECS_CLUSTER }}
+        wait-for-service-stability: true
 
   deploy-next:
     needs: [ci]
@@ -84,12 +84,6 @@ jobs:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ env.AWS_REGION }}
-    
-    # - name: Create .env.production file
-    #   run: |
-    #     echo "NEXT_PUBLIC_API_BASE_URL=${{ secrets.NEXT_PUBLIC_API_BASE_URL }}" >> ./next/.env.production
-    #     echo "NEXT_PUBLIC_GOOGLE_MAP_KEY=${{ secrets.NEXT_PUBLIC_GOOGLE_MAP_KEY }}" >> ./next/.env.production
-    #     echo "NEXT_PUBLIC_OPENAI_API_KEY=${{ secrets.NEXT_PUBLIC_OPENAI_API_KEY }}" >> ./next/.env.production
 
     - name: Login to Amazon ECR
       id: login-ecr
