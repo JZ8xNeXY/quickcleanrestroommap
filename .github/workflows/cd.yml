@@ -91,9 +91,6 @@ jobs:
         echo "NEXT_PUBLIC_GOOGLE_MAP_KEY=${{ secrets.NEXT_PUBLIC_GOOGLE_MAP_KEY }}" >> ./next/.env.production
         echo "NEXT_PUBLIC_OPENAI_API_KEY=${{ secrets.NEXT_PUBLIC_OPENAI_API_KEY }}" >> ./next/.env.production
 
-    - name: Verify .env.production content
-      run: cat ./next/.env.production
-
     - name: Login to Amazon ECR
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
