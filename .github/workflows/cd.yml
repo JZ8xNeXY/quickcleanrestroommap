@@ -16,8 +16,8 @@ env:
   ECS_SERVICE_FRONTEND: quickcleanrestrooms-frontend-service
   ECS_TASK_DEFINITION_BACKEND: ./rails/task-definition.json
   ECS_TASK_DEFINITION_FRONTEND: ./next/task-definition.json
-  ECR_REPOSITORY_RAILS: quickcleanrestrooms
-  ECR_REPOSITORY_NEXT: quickcleanrestrooms-next
+  ECR_REPOSITORY_RAILS: quickcleanrestroom-rails
+  ECR_REPOSITORY_NEXT: quickcleanrestroommap-next
   CONTAINER_NAME_RAILS: rails
   CONTAINER_NAME_NEXT: next
 
@@ -96,9 +96,9 @@ jobs:
     
     - name: Create .env.production file
       run: |
-        echo "NEXT_PUBLIC_API_BASE_URL=${{ secrets.NEXT_PUBLIC_API_BASE_URL }}" >> .env.production
-        echo "NEXT_PUBLIC_GOOGLE_MAP_KEY=${{ secrets.NEXT_PUBLIC_GOOGLE_MAP_KEY }}" >> .env.production
-        echo "NEXT_PUBLIC_OPENAI_API_KEY=${{ secrets.NEXT_PUBLIC_OPENAI_API_KEY }}" >> .env.production
+        echo "NEXT_PUBLIC_API_BASE_URL=${{ secrets.NEXT_PUBLIC_API_BASE_URL }}" >> ./next/.env.production
+        echo "NEXT_PUBLIC_GOOGLE_MAP_KEY=${{ secrets.NEXT_PUBLIC_GOOGLE_MAP_KEY }}" >> ./next/.env.production
+        echo "NEXT_PUBLIC_OPENAI_API_KEY=${{ secrets.NEXT_PUBLIC_OPENAI_API_KEY }}" >> ./next/.env.production
     
 
     - name: Login to Amazon ECR
