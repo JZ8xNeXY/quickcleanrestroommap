@@ -24,10 +24,10 @@ const PrivacyPolicy: NextPage = () => {
         </Typography>
         <Box component="ul" sx={{ pl: 4, mb: 2 }}>
           <Typography component="li">
-            外部サービスでお客様が利用するID、その他外部サービスのプライバシー設定によりお客様が連携先に開示を認めた情報
+            ・外部サービスでお客様が利用するID、その他外部サービスのプライバシー設定によりお客様が連携先に開示を認めた情報
           </Typography>
           <Typography component="li">
-            Cookie(クッキー)を用いて生成された識別情報
+            ・Cookie(クッキー)を用いて生成された識別情報
           </Typography>
         </Box>
         <Typography variant="h6" component="h2" gutterBottom>
@@ -38,20 +38,20 @@ const PrivacyPolicy: NextPage = () => {
         </Typography>
         <Box component="ul" sx={{ pl: 4, mb: 2 }}>
           <Typography component="li">
-            お客様の本サービスの利用履歴を管理するため
+            ・お客様の本サービスの利用履歴を管理するため
           </Typography>
           <Typography component="li">
-            お客様からのお問い合わせに対応するため
+            ・お客様からのお問い合わせに対応するため
           </Typography>
           <Typography component="li">
-            本サービスの規約や法令に違反する行為に対応するため
+            ・本サービスの規約や法令に違反する行為に対応するため
           </Typography>
           <Typography component="li">
-            本サービスの変更、提供中止、終了、契約解除をご連絡するため
+            ・本サービスの変更、提供中止、終了、契約解除をご連絡するため
           </Typography>
-          <Typography component="li">本規約の変更等を通知するため</Typography>
+          <Typography component="li">・本規約の変更等を通知するため</Typography>
           <Typography component="li">
-            以上の他、本サービスの提供、維持、保護及び改善のため
+            ・以上の他、本サービスの提供、維持、保護及び改善のため
           </Typography>
         </Box>
         <Typography variant="h6" component="h2" gutterBottom>
@@ -68,13 +68,13 @@ const PrivacyPolicy: NextPage = () => {
         </Typography>
         <Box component="ul" sx={{ pl: 4, mb: 2 }}>
           <Typography component="li">
-            個人データの取扱いを外部に委託する場合
+            ・個人データの取扱いを外部に委託する場合
           </Typography>
           <Typography component="li">
-            事業パートナーと共同利用する場合（具体的な共同利用がある場合は、その内容を別途公表します。）
+            ・事業パートナーと共同利用する場合（具体的な共同利用がある場合は、その内容を別途公表します。）
           </Typography>
           <Typography component="li">
-            その他、法律によって合法的に第三者提供が許されている場合
+            ・その他、法律によって合法的に第三者提供が許されている場合
           </Typography>
         </Box>
         <Typography variant="h6" component="h2" gutterBottom>
