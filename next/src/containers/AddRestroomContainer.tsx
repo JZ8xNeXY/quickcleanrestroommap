@@ -105,10 +105,8 @@ const AddRestroomContainer: React.FC<AddRestroomProps> = ({
     setIsLoading(true)
     const imageBase64 = await encodeImageToBase64(file)
     const result = await chatgpt(imageBase64)
-    console.log(result)
     setIsLoading(false)
     if (result == 0) {
-      console.log('トイレの画像をアップロードしてください')
       setWarningImageMessage('トイレの画像をアップロードしてください')
     } else {
       setWarningImageMessage('')
@@ -126,7 +124,13 @@ const AddRestroomContainer: React.FC<AddRestroomProps> = ({
 
   const onSubmit: SubmitHandler<AddRestroomFormData> = (data) => {
     if (coords) {
+      if (!fileInput.current?.files || fileInput.current.files.length === 0) {
+        setWarningImageMessage('トイレの画像をアップロードしてください')
+        return
+      }
+
       const formData = new FormData()
+
       formData.append('post[name]', data.name)
       formData.append('post[address]', data.address)
       formData.append('post[content]', data.content)
