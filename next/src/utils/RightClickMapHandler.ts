@@ -48,9 +48,11 @@ export const RightClickMapHandler = ({
         <button id="openModalButton" 
                 style="background-color: #4CAF50;
                 color: white; border: none;
-                padding: 10px 20px; 
+                font-weight:bold;
+                padding: 10px 20px;
+                border-radius:5px;
                 cursor: pointer;">
-          ここを登録する
+          ここを登録する >
         </button>
       </div>`
 

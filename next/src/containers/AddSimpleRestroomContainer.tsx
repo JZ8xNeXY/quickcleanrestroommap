@@ -171,6 +171,9 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
     }
     if (result >= 1) {
       setConfirmMessage('トイレの画像を確認しました')
+      setTimeout(() => {
+        setConfirmMessage('')
+      }, 5000)
     }
     setImageToiletCleanness(result)
   }
@@ -181,6 +184,11 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
   }
 
   const onSubmit: SubmitHandler<AddSimpleRestroomFormData> = (data) => {
+    if (!fileInput.current?.files || fileInput.current.files.length === 0) {
+      setWarningImageMessage('トイレの画像をアップロードしてください')
+      return
+    }
+
     const formData = new FormData()
     formData.append('post[name]', data.name)
     formData.append('post[address]', data.address)

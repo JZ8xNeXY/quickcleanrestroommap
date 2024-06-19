@@ -25,45 +25,45 @@ const TermOfUse: NextPage = () => {
         </Typography>
         <Box component="ul" sx={{ pl: 4, mb: 2 }}>
           <Typography component="li">
-            法令または公序良俗に違反する行為
+            ・法令または公序良俗に違反する行為
           </Typography>
           <Typography component="li">犯罪行為に関連する行為</Typography>
           <Typography component="li">
-            本サービスの内容等、本サービスに含まれる著作権、商標権ほか知的財産権を侵害する行為
+            ・本サービスの内容等、本サービスに含まれる著作権、商標権ほか知的財産権を侵害する行為
           </Typography>
           <Typography component="li">
-            本サービス、ほかのユーザー、またはその他第三者のサーバーまたはネットワークの機能を破壊したり、妨害したりする行為
+            ・本サービス、ほかのユーザー、またはその他第三者のサーバーまたはネットワークの機能を破壊したり、妨害したりする行為
           </Typography>
           <Typography component="li">
-            本サービスによって得られた情報を商業的に利用する行為
+            ・本サービスによって得られた情報を商業的に利用する行為
           </Typography>
           <Typography component="li">
-            本サービスの運営を妨害するおそれのある行為
+            ・本サービスの運営を妨害するおそれのある行為
           </Typography>
           <Typography component="li">
-            不正アクセスをし、またはこれを試みる行為
+            ・不正アクセスをし、またはこれを試みる行為
           </Typography>
           <Typography component="li">
-            他のユーザーに関する個人情報等を収集または蓄積する行為
+            ・他のユーザーに関する個人情報等を収集または蓄積する行為
           </Typography>
           <Typography component="li">
-            不正な目的を持って本サービスを利用する行為
+            ・不正な目的を持って本サービスを利用する行為
           </Typography>
           <Typography component="li">
-            本サービスの他のユーザーまたはその他の第三者に不利益、損害、不快感を与える行為
+            ・本サービスの他のユーザーまたはその他の第三者に不利益、損害、不快感を与える行為
           </Typography>
           <Typography component="li">他のユーザーに成りすます行為</Typography>
           <Typography component="li">
-            本サービスが許諾しない本サービス上での宣伝、広告、勧誘、または営業行為
+            ・本サービスが許諾しない本サービス上での宣伝、広告、勧誘、または営業行為
           </Typography>
           <Typography component="li">
-            面識のない異性との出会いを目的とした行為
+            ・面識のない異性との出会いを目的とした行為
           </Typography>
           <Typography component="li">
-            本サービスのサービスに関連して、反社会的勢力に対して直接または間接に利益を供与する行為
+            ・本サービスのサービスに関連して、反社会的勢力に対して直接または間接に利益を供与する行為
           </Typography>
           <Typography component="li">
-            その他、本サービスが不適切と判断する行為
+            ・その他、本サービスが不適切と判断する行為
           </Typography>
         </Box>
         <Typography variant="h6" component="h2" gutterBottom>
@@ -74,16 +74,16 @@ const TermOfUse: NextPage = () => {
         </Typography>
         <Box component="ul" sx={{ pl: 4, mb: 2 }}>
           <Typography component="li">
-            本サービスにかかるコンピュータシステムの保守点検または更新を行う場合
+            ・本サービスにかかるコンピュータシステムの保守点検または更新を行う場合
           </Typography>
           <Typography component="li">
-            地震、落雷、火災、停電または天災などの不可抗力により、本サービスの提供が困難となった場合
+            ・地震、落雷、火災、停電または天災などの不可抗力により、本サービスの提供が困難となった場合
           </Typography>
           <Typography component="li">
-            コンピュータまたは通信回線等が事故により停止した場合
+            ・コンピュータまたは通信回線等が事故により停止した場合
           </Typography>
           <Typography component="li">
-            その他、本サービスが本サービスの提供が困難と判断した場合
+            ・その他、本サービスが本サービスの提供が困難と判断した場合
           </Typography>
         </Box>
         <Typography variant="body1" paragraph>
@@ -97,19 +97,19 @@ const TermOfUse: NextPage = () => {
         </Typography>
         <Box component="ul" sx={{ pl: 4, mb: 2 }}>
           <Typography component="li">
-            本規約のいずれかの条項に違反した場合
+            ・本規約のいずれかの条項に違反した場合
           </Typography>
           <Typography component="li">
-            登録事項に虚偽の事実があることが判明した場合
+            ・登録事項に虚偽の事実があることが判明した場合
           </Typography>
           <Typography component="li">
-            本サービスからの連絡に対し，一定期間返答がない場合
+            ・本サービスからの連絡に対し，一定期間返答がない場合
           </Typography>
           <Typography component="li">
-            本サービスについて，最終の利用から一定期間利用がない場合
+            ・本サービスについて，最終の利用から一定期間利用がない場合
           </Typography>
           <Typography component="li">
-            その他，本サービスの利用を適当でないと判断した場合
+            ・その他，本サービスの利用を適当でないと判断した場合
           </Typography>
         </Box>
         <Typography variant="body1" paragraph>
@@ -120,13 +120,13 @@ const TermOfUse: NextPage = () => {
         </Typography>
         <Box component="ul" sx={{ pl: 4, mb: 2 }}>
           <Typography component="li">
-            本サービスに事実上または法律上の瑕疵（安全性，信頼性，正確性，完全性，有効性，特定の目的への適合性，セキュリティなどに関する欠陥，エラーやバグ，権利侵害などを含みます。）がないことを明示的にも黙示的にも保証しておりません。
+            ・本サービスに事実上または法律上の瑕疵（安全性，信頼性，正確性，完全性，有効性，特定の目的への適合性，セキュリティなどに関する欠陥，エラーやバグ，権利侵害などを含みます。）がないことを明示的にも黙示的にも保証しておりません。
           </Typography>
           <Typography component="li">
-            本サービスに起因してユーザーに生じたあらゆる損害について，故意又は重過失による場合を除き，一切の責任を負いません。ただし，本サービスに関する本サービスとユーザーとの間の契約（本規約を含みます。）が消費者契約法に定める消費者契約となる場合，この免責規定は適用されません。
+            ・本サービスに起因してユーザーに生じたあらゆる損害について，故意又は重過失による場合を除き，一切の責任を負いません。ただし，本サービスに関する本サービスとユーザーとの間の契約（本規約を含みます。）が消費者契約法に定める消費者契約となる場合，この免責規定は適用されません。
           </Typography>
           <Typography component="li">
-            前項ただし書に定める場合であっても，過失（重過失を除きます。）による債務不履行または不法行為によりユーザーに生じた損害のうち特別な事情から生じた損害（ユーザーが損害発生につき予見し，または予見し得た場合を含みます。）について一切の責任を負いません。また，過失（重過失を除きます。）による債務不履行または不法行為によりユーザーに生じた損害の賠償は，ユーザーから当該損害が発生した月に受領した利用料の額を上限とします。
+            ・前項ただし書に定める場合であっても，過失（重過失を除きます。）による債務不履行または不法行為によりユーザーに生じた損害のうち特別な事情から生じた損害（ユーザーが損害発生につき予見し，または予見し得た場合を含みます。）について一切の責任を負いません。また，過失（重過失を除きます。）による債務不履行または不法行為によりユーザーに生じた損害の賠償は，ユーザーから当該損害が発生した月に受領した利用料の額を上限とします。
           </Typography>
         </Box>
         <Typography variant="h6" component="h2" gutterBottom>
@@ -143,10 +143,10 @@ const TermOfUse: NextPage = () => {
         </Typography>
         <Box component="ul" sx={{ pl: 4, mb: 2 }}>
           <Typography component="li">
-            本規約の変更がユーザーの一般の利益に適合するとき。
+            ・本規約の変更がユーザーの一般の利益に適合するとき。
           </Typography>
           <Typography component="li">
-            本規約の変更が本サービス利用契約の目的に反せず、かつ、変更の必要性、変更後の内容の相当性その他の変更に係る事情に照らして合理的なものであるとき。
+            ・本規約の変更が本サービス利用契約の目的に反せず、かつ、変更の必要性、変更後の内容の相当性その他の変更に係る事情に照らして合理的なものであるとき。
           </Typography>
         </Box>
         <Typography variant="body1" paragraph>
