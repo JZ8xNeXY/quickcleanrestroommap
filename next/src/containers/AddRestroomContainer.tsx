@@ -113,6 +113,9 @@ const AddRestroomContainer: React.FC<AddRestroomProps> = ({
     }
     if (result >= 1) {
       setConfirmMessage('トイレの画像を確認しました')
+      setTimeout(() => {
+        setConfirmMessage('')
+      }, 5000) // 5秒後にメッセージを消す
     }
     setImageToiletCleanness(result)
   }
