@@ -256,7 +256,6 @@ const AddSimpleRestroom: React.FC<AddSimpleRestroomProps> = ({
                 <TextField
                   {...field}
                   type="number"
-                  a
                   label="評価"
                   sx={{ backgroundColor: 'white' }}
                   style={{ display: 'none' }}
