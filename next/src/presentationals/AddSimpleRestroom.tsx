@@ -109,6 +109,11 @@ const AddSimpleRestroom: React.FC<AddSimpleRestroomProps> = ({
               {isLoading
                 ? 'トイレの状況を確認中...'
                 : '📁 ファイルから画像を選択'}
+              <span
+                style={{ color: 'white', fontSize: '15px', marginLeft: '5px' }}
+              >
+                (必須)
+              </span>
             </Button>
             <Box
               style={{
@@ -251,6 +256,7 @@ const AddSimpleRestroom: React.FC<AddSimpleRestroomProps> = ({
                 <TextField
                   {...field}
                   type="number"
+                  a
                   label="評価"
                   sx={{ backgroundColor: 'white' }}
                   style={{ display: 'none' }}
