@@ -70,7 +70,7 @@ const CalculateAndDisplayRoute: NextPage<CalculateAndDisplayRouteProps> = (
               font-weight:bold;
               border-radius: 5px; 
               text-decoration: none;">
-              GoogleMapアプリで案内する >
+              GoogleMapで案内する >
               </a>
               </div>`,
               position: midLatLng,
