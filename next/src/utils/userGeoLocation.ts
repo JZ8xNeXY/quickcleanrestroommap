@@ -65,6 +65,7 @@ export const userGeoLocation = ({
           position: tokyoStationPos,
           title: 'Your Location',
           content: userPosImg,
+          zIndex: 1,
         })
 
         setCurrentUserPos(tokyoStationPos)
