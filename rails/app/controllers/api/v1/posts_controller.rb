@@ -15,7 +15,6 @@ class Api::V1::PostsController < ApplicationController
       render json: @post, status: :created
     else
       render json: { errors: @post.errors.full_messages }, status: :unprocessable_entity
-      puts(@post.errors.full_messages)
     end
   end
 
