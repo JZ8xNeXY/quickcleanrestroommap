@@ -116,7 +116,6 @@ const AddRestroomContainer: React.FC<AddRestroomProps> = ({
       setTimeout(() => {
         setConfirmMessage('')
       }, 5000)
-      console.log(result)
       setImageToiletCleanness(result)
     }
     setImageToiletCleanness(result)
