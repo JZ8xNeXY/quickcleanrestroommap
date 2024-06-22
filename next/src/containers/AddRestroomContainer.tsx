@@ -116,6 +116,8 @@ const AddRestroomContainer: React.FC<AddRestroomProps> = ({
       setTimeout(() => {
         setConfirmMessage('')
       }, 5000)
+      console.log(result)
+      setImageToiletCleanness(result)
     }
     setImageToiletCleanness(result)
   }
@@ -172,6 +174,7 @@ const AddRestroomContainer: React.FC<AddRestroomProps> = ({
         .then(() => {
           mutate(getUrl)
           resetModal()
+          setImageToiletCleanness(0)
         })
         .catch((e: AxiosError<{ error: string }>) => {
           console.error(`Request failed with status code ${e.response?.status}`)
