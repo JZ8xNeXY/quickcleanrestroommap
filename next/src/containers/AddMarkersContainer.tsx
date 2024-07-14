@@ -5,7 +5,6 @@ import useSWR from 'swr'
 import { supabase } from '../utils/supabase'
 import { useRestroomContext } from '@/context/RestRoomContext'
 import AddMarkers from '@/presentationals/AddMarkers'
-// import { fetcher } from '@/utils'
 import { userGeoLocation } from '@/utils/userGeoLocation'
 
 interface AddMarkersProps {
@@ -30,9 +29,6 @@ interface Restroom {
 }
 
 const AddMarkersContainer: NextPage<AddMarkersProps> = ({ map }) => {
-  // const url = process.env.NEXT_PUBLIC_API_BASE_URL + '/posts'
-  // const { data, error } = useSWR(url, fetcher, { revalidateOnFocus: false })
-
   const fetchPosts = async () => {
     const { data, error } = await supabase.from('posts').select('*')
     if (error) {
@@ -87,8 +83,6 @@ const AddMarkersContainer: NextPage<AddMarkersProps> = ({ map }) => {
           restroomImg.alt = restroom.name
           restroomImg.width = 75
           restroomImg.height = 75
-
-          console.log(restroom.imageUrl)
 
           const marker = new AdvancedMarkerElement({
             map,
