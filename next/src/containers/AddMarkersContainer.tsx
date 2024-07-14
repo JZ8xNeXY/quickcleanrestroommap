@@ -2,6 +2,7 @@ import camelcaseKeys from 'camelcase-keys'
 import type { NextPage } from 'next'
 import { useEffect, useState, useRef } from 'react'
 import useSWR from 'swr'
+import { supabase } from '../utils/supabase'
 import { useRestroomContext } from '@/context/RestRoomContext'
 import AddMarkers from '@/presentationals/AddMarkers'
 import { fetcher } from '@/utils'
@@ -29,8 +30,20 @@ interface Restroom {
 }
 
 const AddMarkersContainer: NextPage<AddMarkersProps> = ({ map }) => {
-  const url = process.env.NEXT_PUBLIC_API_BASE_URL + '/posts'
-  const { data, error } = useSWR(url, fetcher, { revalidateOnFocus: false })
+  // const url = process.env.NEXT_PUBLIC_API_BASE_URL + '/posts'
+  // const { data, error } = useSWR(url, fetcher, { revalidateOnFocus: false })
+
+  const fetchPosts = async () => {
+    const { data, error } = await supabase.from('posts').select('*')
+    console.log(data)
+    if (error) {
+      throw new Error(error.message)
+    }
+  }
+
+  const { data, error } = useSWR('fetchPosts', fetchPosts, {
+    revalidateOnFocus: false,
+  })
 
   const { selectedRestroom, setSelectedRestroom } = useRestroomContext()
 
