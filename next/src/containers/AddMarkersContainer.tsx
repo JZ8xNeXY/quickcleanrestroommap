@@ -2,9 +2,9 @@ import camelcaseKeys from 'camelcase-keys'
 import type { NextPage } from 'next'
 import { useEffect, useState, useRef } from 'react'
 import useSWR from 'swr'
+import { supabase } from '../utils/supabase'
 import { useRestroomContext } from '@/context/RestRoomContext'
 import AddMarkers from '@/presentationals/AddMarkers'
-import { fetcher } from '@/utils'
 import { userGeoLocation } from '@/utils/userGeoLocation'
 
 interface AddMarkersProps {
@@ -29,8 +29,18 @@ interface Restroom {
 }
 
 const AddMarkersContainer: NextPage<AddMarkersProps> = ({ map }) => {
-  const url = process.env.NEXT_PUBLIC_API_BASE_URL + '/posts'
-  const { data, error } = useSWR(url, fetcher, { revalidateOnFocus: false })
+  //supabaseからの読込
+  const fetchPosts = async () => {
+    const { data, error } = await supabase.from('posts').select('*')
+    if (error) {
+      throw new Error(error.message)
+    }
+    return data
+  }
+
+  const { data, error } = useSWR('fetchPosts', fetchPosts, {
+    revalidateOnFocus: false,
+  })
 
   const { selectedRestroom, setSelectedRestroom } = useRestroomContext()
 
@@ -97,7 +107,7 @@ const AddMarkersContainer: NextPage<AddMarkersProps> = ({ map }) => {
               powderCorner: restroom.powderCorner,
               strollerAccessible: restroom.strollerAccessible,
               evaluation: restroom.evaluation,
-              image: restroom.image,
+              image: restroom.imageUrl,
             })
           })
 
