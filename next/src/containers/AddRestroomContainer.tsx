@@ -2,6 +2,7 @@ import axios, { AxiosError } from 'axios'
 import { useState, useEffect, useRef, MutableRefObject } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { mutate } from 'swr'
+import { supabase } from '../utils/supabase'
 import AddRestroom from '@/presentationals/AddRestroom'
 import { chatgpt, encodeImageToBase64 } from '@/utils/chatgptAPI'
 
@@ -126,7 +127,7 @@ const AddRestroomContainer: React.FC<AddRestroomProps> = ({
     evaluateToiletCleanness(file)
   }
 
-  const onSubmit: SubmitHandler<AddRestroomFormData> = (data) => {
+  const onSubmit: SubmitHandler<AddRestroomFormData> = async (data) => {
     if (coords) {
       if (!fileInput.current?.files || fileInput.current.files.length === 0) {
         setWarningImageMessage('トイレの画像をアップロードしてください')
@@ -165,20 +166,49 @@ const AddRestroomContainer: React.FC<AddRestroomProps> = ({
         formData.append('post[image]', fileInput.current.files[0])
       }
 
-      const getUrl = process.env.NEXT_PUBLIC_API_BASE_URL + '/posts'
-      const headers = { 'Content-Type': 'multipart/form-data' }
+      const postData = {
+        name: data.name,
+        address: data.address,
+        content: data.content,
+        latitude: coords.lat,
+        longitude: coords.lng,
+        nursing_room: data.nursing_room ?? false,
+        anyone_toilet: data.anyone_toilet ?? false,
+        diaper_changing_station: data.diaper_changing_station ?? false,
+        powder_corner: data.powder_corner ?? false,
+        stroller_accessible: data.stroller_accessible ?? false,
+        evaluation: data.evaluation,
+        image_url:
+          'https://quickcleanrestroommap.s3.ap-northeast-1.amazonaws.com/rv25o15gae86ctnd0vczyqgpbiay',
+      }
 
-      axios
-        .post(getUrl, formData, { headers })
-        .then(() => {
-          mutate(getUrl)
-          resetModal()
-          setImageToiletCleanness(0)
-        })
-        .catch((e: AxiosError<{ error: string }>) => {
-          console.error(`Request failed with status code ${e.response?.status}`)
-          console.error(e.message)
-        })
+      // const getUrl = process.env.NEXT_PUBLIC_API_BASE_URL + '/posts'
+      // const headers = { 'Content-Type': 'multipart/form-data' }
+
+      // axios
+      //   .post(getUrl, formData, { headers })
+      //   .then(() => {
+      //     mutate(getUrl)
+      //     resetModal()
+      //     setImageToiletCleanness(0)
+      //   })
+      //   .catch((e: AxiosError<{ error: string }>) => {
+      //     console.error(`Request failed with status code ${e.response?.status}`)
+      //     console.error(e.message)
+      //   })
+      try {
+        const { data, error } = await supabase.from('posts').insert([postData])
+
+        if (error) {
+          throw new Error(error.message)
+        }
+
+        console.log('Data written to Supabase:')
+        resetModal() 
+        setImageToiletCleanness(0) 
+      } catch (error) {
+        console.error('Request failed:', error.message)
+      }
     }
   }
 

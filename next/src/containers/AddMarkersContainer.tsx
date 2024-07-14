@@ -29,6 +29,7 @@ interface Restroom {
 }
 
 const AddMarkersContainer: NextPage<AddMarkersProps> = ({ map }) => {
+  //supabaseからの読込
   const fetchPosts = async () => {
     const { data, error } = await supabase.from('posts').select('*')
     if (error) {
