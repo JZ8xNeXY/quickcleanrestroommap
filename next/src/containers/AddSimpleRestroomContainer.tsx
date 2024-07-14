@@ -1,8 +1,9 @@
-import axios, { AxiosError } from 'axios'
+import AWS from 'aws-sdk'
 import loadImage from 'blueimp-load-image'
 import { useState, useEffect, useRef, MutableRefObject } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { mutate } from 'swr'
+import { supabase } from '../utils/supabase'
 import AddSimpleRestroom from '@/presentationals/AddSimpleRestroom'
 import { chatgpt, encodeImageToBase64 } from '@/utils/chatgptAPI'
 
@@ -69,17 +70,19 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
   const [confirmImageMessage, setConfirmMessage] = useState('')
   const [warningCoordMessage, setWarningCoordMessage] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const [imageUrl, setImageUrl] = useState<string | null>(null) //S3のURL
 
   useEffect(() => {
     setValue('evaluation', imageToiletCleanness)
   }, [imageToiletCleanness, setValue])
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files
     if (!files || files.length <= 0) return
     showImageFileName(files)
-    onChangeShowExifData(e)
-    onChangeEvaluateToiletCleanness(files)
+    await onChangeShowExifData(e)
+    await onChangeEvaluateToiletCleanness(files)
+    await onChangeUploadFileToS3(files)
   }
 
   // ref関数 react-hook-formが管理できるようになる
@@ -183,57 +186,78 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
     evaluateToiletCleanness(file)
   }
 
-  const onSubmit: SubmitHandler<AddSimpleRestroomFormData> = (data) => {
+  const s3 = new AWS.S3({
+    accessKeyId: process.env.NEXT_PUBLIC_AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY,
+    region: process.env.NEXT_PUBLIC_AWS_REGION,
+  })
+
+  const uploadFileToS3 = async (file: File) => {
+    const fileName = `${Date.now()}-${file.name}`
+    const params = {
+      Bucket: 'quickcleanrestroommap',
+      Key: fileName,
+      Body: file,
+      ContentType: file.type,
+    }
+
+    try {
+      const { Location } = await s3.upload(params).promise()
+      setImageUrl(Location) // 画像URLをステートに保存
+    } catch (error) {
+      console.error('Error uploading file to S3:', error)
+      throw new Error('Failed to upload file to S3')
+    }
+  }
+
+  const onChangeUploadFileToS3 = async (files: FileList) => {
+    const file = files[0]
+    await uploadFileToS3(file)
+  }
+
+  const onSubmit: SubmitHandler<AddSimpleRestroomFormData> = async (data) => {
     if (!fileInput.current?.files || fileInput.current.files.length === 0) {
       setWarningImageMessage('トイレの画像をアップロードしてください')
       return
     }
 
-    const formData = new FormData()
-    formData.append('post[name]', data.name)
-    formData.append('post[address]', data.address)
-    formData.append('post[content]', data.content)
-    formData.append('post[latitude]', imageLatitude ? imageLatitude : '0')
-    formData.append('post[longitude]', imageLongitude ? imageLongitude : '0')
-    formData.append(
-      'post[nursing_room]',
-      (data.nursing_room ?? false).toString(),
-    )
-    formData.append(
-      'post[anyone_toilet]',
-      (data.anyone_toilet ?? false).toString(),
-    )
-    formData.append(
-      'post[diaper_changing_station]',
-      (data.diaper_changing_station ?? false).toString(),
-    )
-    formData.append(
-      'post[powder_corner]',
-      (data.powder_corner ?? false).toString(),
-    )
-    formData.append(
-      'post[stroller_accessible]',
-      (data.stroller_accessible ?? false).toString(),
-    )
-    formData.append('post[evaluation]', data.evaluation.toString())
-
-    if (fileInput.current?.files && fileInput.current.files[0]) {
-      formData.append('post[image]', fileInput.current.files[0])
+    const postData = {
+      name: data.name,
+      address: data.address,
+      content: data.content,
+      latitude: coords.lat,
+      longitude: coords.lng,
+      nursing_room: data.nursing_room ?? false,
+      anyone_toilet: data.anyone_toilet ?? false,
+      diaper_changing_station: data.diaper_changing_station ?? false,
+      powder_corner: data.powder_corner ?? false,
+      stroller_accessible: data.stroller_accessible ?? false,
+      evaluation: data.evaluation,
+      image_url: imageUrl,
     }
 
-    const getUrl = process.env.NEXT_PUBLIC_API_BASE_URL + '/posts'
-    const headers = { 'Content-Type': 'multipart/form-data' }
+    try {
+      const { error } = await supabase.from('posts').insert([postData])
 
-    axios
-      .post(getUrl, formData, { headers })
-      .then(() => {
-        mutate(getUrl)
-        resetModal()
-      })
-      .catch((e: AxiosError<{ error: string }>) => {
-        console.error(`Request failed with status code ${e.response?.status}`)
-        console.error(e.message)
-      })
+      if (error) {
+        throw new Error(error.message)
+      }
+
+      const fetchPosts = async () => {
+        const { data, error } = await supabase.from('posts').select('*')
+        if (error) {
+          throw new Error(error.message)
+        }
+        return data
+      }
+
+      const posts = await fetchPosts()
+      mutate('fetchPosts', posts, false)
+      resetModal()
+      setImageToiletCleanness(0)
+    } catch (error) {
+      console.error('Request failed:', error.message)
+    }
   }
 
   return (
