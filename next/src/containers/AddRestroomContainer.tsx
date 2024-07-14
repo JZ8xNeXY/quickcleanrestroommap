@@ -1,5 +1,4 @@
 import AWS from 'aws-sdk'
-import axios, { AxiosError } from 'axios'
 import { useState, useEffect, useRef, MutableRefObject } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { mutate } from 'swr'
@@ -182,13 +181,12 @@ const AddRestroomContainer: React.FC<AddRestroomProps> = ({
       }
 
       try {
-        const { data, error } = await supabase.from('posts').insert([postData])
+        const { error } = await supabase.from('posts').insert([postData])
 
         if (error) {
           throw new Error(error.message)
         }
 
-        //supabaseからの読込
         const fetchPosts = async () => {
           const { data, error } = await supabase.from('posts').select('*')
           if (error) {
@@ -197,8 +195,8 @@ const AddRestroomContainer: React.FC<AddRestroomProps> = ({
           return data
         }
 
-        console.log('Data written to Supabase:')
-        mutate('fetchPosts')
+        const posts = await fetchPosts()
+        mutate('fetchPosts', posts, false)
         resetModal()
         setImageToiletCleanness(0)
       } catch (error) {
