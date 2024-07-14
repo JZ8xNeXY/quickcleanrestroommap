@@ -134,38 +134,6 @@ const AddRestroomContainer: React.FC<AddRestroomProps> = ({
         return
       }
 
-      const formData = new FormData()
-
-      formData.append('post[name]', data.name)
-      formData.append('post[address]', data.address)
-      formData.append('post[content]', data.content)
-      formData.append('post[latitude]', coords.lat.toString())
-      formData.append('post[longitude]', coords.lng.toString())
-      formData.append(
-        'post[nursing_room]',
-        (data.nursing_room ?? false).toString(),
-      )
-      formData.append(
-        'post[anyone_toilet]',
-        (data.anyone_toilet ?? false).toString(),
-      )
-      formData.append(
-        'post[diaper_changing_station]',
-        (data.diaper_changing_station ?? false).toString(),
-      )
-      formData.append(
-        'post[powder_corner]',
-        (data.powder_corner ?? false).toString(),
-      )
-      formData.append(
-        'post[stroller_accessible]',
-        (data.stroller_accessible ?? false).toString(),
-      )
-      formData.append('post[evaluation]', data.evaluation.toString())
-      if (fileInput.current?.files && fileInput.current.files[0]) {
-        formData.append('post[image]', fileInput.current.files[0])
-      }
-
       const postData = {
         name: data.name,
         address: data.address,
@@ -182,20 +150,6 @@ const AddRestroomContainer: React.FC<AddRestroomProps> = ({
           'https://quickcleanrestroommap.s3.ap-northeast-1.amazonaws.com/rv25o15gae86ctnd0vczyqgpbiay',
       }
 
-      // const getUrl = process.env.NEXT_PUBLIC_API_BASE_URL + '/posts'
-      // const headers = { 'Content-Type': 'multipart/form-data' }
-
-      // axios
-      //   .post(getUrl, formData, { headers })
-      //   .then(() => {
-      //     mutate(getUrl)
-      //     resetModal()
-      //     setImageToiletCleanness(0)
-      //   })
-      //   .catch((e: AxiosError<{ error: string }>) => {
-      //     console.error(`Request failed with status code ${e.response?.status}`)
-      //     console.error(e.message)
-      //   })
       try {
         const { data, error } = await supabase.from('posts').insert([postData])
 
@@ -203,9 +157,19 @@ const AddRestroomContainer: React.FC<AddRestroomProps> = ({
           throw new Error(error.message)
         }
 
+        //supabaseからの読込
+        const fetchPosts = async () => {
+          const { data, error } = await supabase.from('posts').select('*')
+          if (error) {
+            throw new Error(error.message)
+          }
+          return data
+        }
+
         console.log('Data written to Supabase:')
-        resetModal() 
-        setImageToiletCleanness(0) 
+        mutate('fetchPosts')
+        resetModal()
+        setImageToiletCleanness(0)
       } catch (error) {
         console.error('Request failed:', error.message)
       }
