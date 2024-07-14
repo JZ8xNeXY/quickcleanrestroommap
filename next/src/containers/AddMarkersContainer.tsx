@@ -74,8 +74,6 @@ const AddMarkersContainer: NextPage<AddMarkersProps> = ({ map }) => {
         markersRef.current.forEach((marker) => (marker.map = null))
         markersRef.current = []
 
-        console.log(data)
-
         const restrooms: Restroom[] = data ? camelcaseKeys(data) : []
 
         console.log(restrooms)
@@ -89,6 +87,8 @@ const AddMarkersContainer: NextPage<AddMarkersProps> = ({ map }) => {
           restroomImg.alt = restroom.name
           restroomImg.width = 75
           restroomImg.height = 75
+
+          console.log(restroom.imageUrl)
 
           const marker = new AdvancedMarkerElement({
             map,
@@ -113,7 +113,7 @@ const AddMarkersContainer: NextPage<AddMarkersProps> = ({ map }) => {
               powderCorner: restroom.powderCorner,
               strollerAccessible: restroom.strollerAccessible,
               evaluation: restroom.evaluation,
-              image: restroom.image,
+              image: restroom.imageUrl,
             })
           })
 

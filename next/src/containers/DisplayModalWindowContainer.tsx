@@ -43,6 +43,7 @@ const DisplayModalWindowContainer: React.FC<
   const openEditRestroomModalWindow = () => setEditModalWindow(true)
   const closeEditRestroomModalWindow = () => setEditModalWindow(false)
 
+  console.log(image)
   return (
     <>
       <EditRestroomContainer

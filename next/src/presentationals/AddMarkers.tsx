@@ -43,6 +43,7 @@ const AddMarkers: React.FC<AddMarkersProps> = ({
   if (error) return <Box>An error has occurred.</Box>
   if (!data) return <Box>Loading...</Box>
 
+  console.log(data.image)
   return (
     <>
       <DisplayModalWindowContainer
