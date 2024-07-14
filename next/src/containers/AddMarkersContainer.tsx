@@ -5,7 +5,7 @@ import useSWR from 'swr'
 import { supabase } from '../utils/supabase'
 import { useRestroomContext } from '@/context/RestRoomContext'
 import AddMarkers from '@/presentationals/AddMarkers'
-import { fetcher } from '@/utils'
+// import { fetcher } from '@/utils'
 import { userGeoLocation } from '@/utils/userGeoLocation'
 
 interface AddMarkersProps {
@@ -35,10 +35,10 @@ const AddMarkersContainer: NextPage<AddMarkersProps> = ({ map }) => {
 
   const fetchPosts = async () => {
     const { data, error } = await supabase.from('posts').select('*')
-    console.log(data)
     if (error) {
       throw new Error(error.message)
     }
+    return data
   }
 
   const { data, error } = useSWR('fetchPosts', fetchPosts, {
@@ -74,8 +74,11 @@ const AddMarkersContainer: NextPage<AddMarkersProps> = ({ map }) => {
         markersRef.current.forEach((marker) => (marker.map = null))
         markersRef.current = []
 
+        console.log(data)
+
         const restrooms: Restroom[] = data ? camelcaseKeys(data) : []
 
+        console.log(restrooms)
         const { AdvancedMarkerElement } = (await google.maps.importLibrary(
           'marker',
         )) as google.maps.MarkerLibrary
