@@ -1,10 +1,10 @@
 import { LoadingButton } from '@mui/lab'
 import { Box, Container, TextField, Typography, Stack } from '@mui/material'
-import axios, { AxiosResponse, AxiosError } from 'axios'
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { useForm, SubmitHandler, Controller } from 'react-hook-form'
+import { supabase } from '@/utils/supabase'
 
 type SignInFormData = {
   email: string
@@ -33,22 +33,27 @@ const SignIn: NextPage = () => {
     },
   }
 
-  const onSubmit: SubmitHandler<SignInFormData> = (data) => {
-    setIsLoading(true)
-    const url = process.env.NEXT_PUBLIC_API_BASE_URL + '/auth/sign_in'
-    const headers = { 'Content-Type': 'application/json' }
+  const signIn = async (email: string, password: string) => {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    })
+    if (error != null) {
+      throw new Error(error.message)
+    }
+    return data.user
+  }
 
-    axios({ method: 'POST', url: url, data: data, headers: headers })
-      .then((res: AxiosResponse) => {
-        localStorage.setItem('access-token', res.headers['access-token'])
-        localStorage.setItem('client', res.headers['client'])
-        localStorage.setItem('uid', res.headers['uid'])
-        router.push('/')
-      })
-      .catch((e: AxiosError<{ error: string }>) => {
-        console.log(e.message)
-        setIsLoading(false)
-      })
+  const onSubmit: SubmitHandler<SignInFormData> = async (data) => {
+    setIsLoading(true)
+    try {
+      const user = await signIn(data.email, data.password)
+      console.log(user)
+      router.push('/')
+    } catch (e: any) {
+      console.error(e.message)
+      setIsLoading(false)
+    }
   }
 
   return (

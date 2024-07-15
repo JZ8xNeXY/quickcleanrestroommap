@@ -83,54 +83,19 @@ const EditRestroomContainer: React.FC<EditRestroomProps> = ({
 
   const onSubmit: SubmitHandler<EditRestroomFormData> = (data) => {
     if (selectedRestroom.latitude && selectedRestroom.longitude) {
-      const formData = new FormData()
-      formData.append(
-        'post[name]',
-        data.name !== undefined ? data.name : selectedRestroom.name,
-      )
-      formData.append(
-        'post[address]',
-        data.address !== undefined ? data.address : selectedRestroom.address,
-      )
-      formData.append(
-        'post[content]',
-        data.content !== undefined ? data.content : selectedRestroom.content,
-      )
-      formData.append('post[latitude]', selectedRestroom.latitude.toString())
-      formData.append('post[longitude]', selectedRestroom.longitude.toString())
-      formData.append(
-        'post[nursing_room]',
-        data.nursing_room !== undefined
-          ? data.nursing_room.toString()
-          : selectedRestroom.nursingRoom.toString(),
-      )
-      formData.append(
-        'post[anyone_toilet]',
-        data.anyone_toilet !== undefined
-          ? data.anyone_toilet.toString()
-          : selectedRestroom.anyoneToilet.toString(),
-      )
-      formData.append(
-        'post[diaper_changing_station]',
-        data.diaper_changing_station !== undefined
-          ? data.diaper_changing_station.toString()
-          : selectedRestroom.diaperChangingStation.toString(),
-      )
-      formData.append(
-        'post[powder_corner]',
-        data.powder_corner !== undefined
-          ? data.powder_corner.toString()
-          : selectedRestroom.powderCorner.toString(),
-      )
-      formData.append(
-        'post[stroller_accessible]',
-        data.stroller_accessible !== undefined
-          ? data.stroller_accessible.toString()
-          : selectedRestroom.strollerAccessible.toString(),
-      )
-
-      if (fileInput.current?.files && fileInput.current.files[0]) {
-        formData.append('post[image]', fileInput.current.files[0])
+      const postData = {
+        name: data.name,
+        address: data.address,
+        content: data.content,
+        latitude: coords.lat,
+        longitude: coords.lng,
+        nursing_room: data.nursing_room ?? false,
+        anyone_toilet: data.anyone_toilet ?? false,
+        diaper_changing_station: data.diaper_changing_station ?? false,
+        powder_corner: data.powder_corner ?? false,
+        stroller_accessible: data.stroller_accessible ?? false,
+        evaluation: data.evaluation,
+        image_url: imageUrl,
       }
 
       const editUrl =
