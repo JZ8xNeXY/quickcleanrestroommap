@@ -1,6 +1,7 @@
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
+import { supabase } from '@/utils/supabase'
 import { useUserState } from '@/utils/useGlobalState'
 
 const SignOut: NextPage = () => {
@@ -8,14 +9,23 @@ const SignOut: NextPage = () => {
   const [, setUser] = useUserState()
 
   useEffect(() => {
-    localStorage.clear()
-    setUser({
-      id: 0,
-      email: '',
-      isSignedIn: false,
-      isFetched: true,
-    })
-    router.push('/')
+    const signOut = async () => {
+      const { error } = await supabase.auth.signOut()
+      if (error != null) {
+        console.error('Error signing out:', error.message)
+      } else {
+        localStorage.clear()
+        setUser({
+          id: 0,
+          email: '',
+          isSignedIn: false,
+          isFetched: true,
+        })
+        router.push('/')
+      }
+    }
+
+    signOut()
   }, [router, setUser])
 
   return <></>
