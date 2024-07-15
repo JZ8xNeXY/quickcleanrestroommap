@@ -201,7 +201,11 @@ const AddRestroomContainer: React.FC<AddRestroomProps> = ({
         resetModal()
         setImageToiletCleanness(0)
       } catch (error) {
-        console.error('Request failed:', error.message)
+        if (error instanceof Error) {
+          console.error('Request failed:', error.message)
+        } else {
+          console.error('Request failed:', error)
+        }
       }
     }
   }
