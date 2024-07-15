@@ -61,7 +61,7 @@ const SignIn: NextPage = () => {
       const user = await signIn(data.email, data.password)
       setCurrentUser(user)
       router.push('/')
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       console.error(e.message)
       setIsLoading(false)
