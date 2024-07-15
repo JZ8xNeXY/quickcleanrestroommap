@@ -122,14 +122,14 @@ const EditRestroomContainer: React.FC<EditRestroomProps> = ({
         content: data.content || selectedRestroom.content,
         latitude: selectedRestroom.latitude,
         longitude: selectedRestroom.longitude,
-        nursing_room: data.nursing_room ?? selectedRestroom.nursing_room,
-        anyone_toilet: data.anyone_toilet ?? selectedRestroom.anyone_toilet,
+        nursing_room: data.nursing_room ?? selectedRestroom.nursingRoom,
+        anyone_toilet: data.anyone_toilet ?? selectedRestroom.anyoneToilet,
         diaper_changing_station:
           data.diaper_changing_station ??
-          selectedRestroom.diaper_changing_station,
-        powder_corner: data.powder_corner ?? selectedRestroom.powder_corner,
+          selectedRestroom.diaperChangingStation,
+        powder_corner: data.powder_corner ?? selectedRestroom.powderCorner,
         stroller_accessible:
-          data.stroller_accessible ?? selectedRestroom.stroller_accessible,
+          data.stroller_accessible ?? selectedRestroom.strollerAccessible,
         image: imageUrl || selectedRestroom.image,
       }
 
