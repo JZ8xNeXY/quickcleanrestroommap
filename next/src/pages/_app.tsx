@@ -2,8 +2,9 @@ import { CacheProvider, EmotionCache } from '@emotion/react'
 import CssBaseline from '@mui/material/CssBaseline'
 import { ThemeProvider } from '@mui/material/styles'
 import { AppProps } from 'next/app'
-import CurrentUserFetch from '@/containers/CurrentUserFetchContainer'
 import HeaderContainer from '@/containers/HeaderContainer'
+import { RestroomProvider } from '@/context/RestRoomContext'
+import { SessionProvider } from '@/context/SessionContext'
 import Footer from '@/presentationals/Footer'
 
 import createEmotionCache from '@/styles/createEmotionCache'
@@ -23,11 +24,14 @@ export default function MyApp(props: MyAppProps): JSX.Element {
     <CacheProvider value={emotionCache}>
       <ThemeProvider theme={theme}>
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-        <CssBaseline />
-        <CurrentUserFetch />
-        <HeaderContainer />
-        <Component {...pageProps} />
-        <Footer />
+        <SessionProvider>
+          <RestroomProvider>
+            <CssBaseline />
+            <HeaderContainer />
+            <Component {...pageProps} />
+            <Footer />
+          </RestroomProvider>
+        </SessionProvider>
       </ThemeProvider>
     </CacheProvider>
   )

@@ -243,7 +243,7 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
         throw new Error(error.message)
       }
 
-      const fetchPosts = async () => {
+      const createPosts = async () => {
         const { data, error } = await supabase.from('posts').select('*')
         if (error) {
           throw new Error(error.message)
@@ -251,8 +251,8 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
         return data
       }
 
-      const posts = await fetchPosts()
-      mutate('fetchPosts', posts, false)
+      const posts = await createPosts()
+      mutate('createPosts', posts, false)
       resetModal()
       setImageToiletCleanness(0)
     } catch (error) {

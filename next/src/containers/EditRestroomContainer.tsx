@@ -1,7 +1,8 @@
-import axios, { AxiosError } from 'axios'
+import AWS from 'aws-sdk'
 import { useState, useRef, MutableRefObject } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
-import { mutate } from 'swr'
+import useSWR, { mutate } from 'swr'
+import { supabase } from '../utils/supabase'
 import { useRestroomContext } from '@/context/RestRoomContext'
 import EditRestroom from '@/presentationals/EditRestroom'
 
@@ -41,11 +42,13 @@ const EditRestroomContainer: React.FC<EditRestroomProps> = ({
 
   const [fileName, setFileName] = useState('')
   const [imageData, setImageData] = useState('')
+  const [setImageUrl] = useState<string | null>(null) //S3のURL
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files
     if (!files || files.length <= 0) return
     showImageFileName(files)
+    await onChangeUploadFileToS3(files)
   }
 
   // ref関数 react-hook-formが管理できるようになる
@@ -81,94 +84,102 @@ const EditRestroomContainer: React.FC<EditRestroomProps> = ({
     onClose()
   }
 
-  const onSubmit: SubmitHandler<EditRestroomFormData> = (data) => {
-    if (selectedRestroom.latitude && selectedRestroom.longitude) {
-      const formData = new FormData()
-      formData.append(
-        'post[name]',
-        data.name !== undefined ? data.name : selectedRestroom.name,
-      )
-      formData.append(
-        'post[address]',
-        data.address !== undefined ? data.address : selectedRestroom.address,
-      )
-      formData.append(
-        'post[content]',
-        data.content !== undefined ? data.content : selectedRestroom.content,
-      )
-      formData.append('post[latitude]', selectedRestroom.latitude.toString())
-      formData.append('post[longitude]', selectedRestroom.longitude.toString())
-      formData.append(
-        'post[nursing_room]',
-        data.nursing_room !== undefined
-          ? data.nursing_room.toString()
-          : selectedRestroom.nursingRoom.toString(),
-      )
-      formData.append(
-        'post[anyone_toilet]',
-        data.anyone_toilet !== undefined
-          ? data.anyone_toilet.toString()
-          : selectedRestroom.anyoneToilet.toString(),
-      )
-      formData.append(
-        'post[diaper_changing_station]',
-        data.diaper_changing_station !== undefined
-          ? data.diaper_changing_station.toString()
-          : selectedRestroom.diaperChangingStation.toString(),
-      )
-      formData.append(
-        'post[powder_corner]',
-        data.powder_corner !== undefined
-          ? data.powder_corner.toString()
-          : selectedRestroom.powderCorner.toString(),
-      )
-      formData.append(
-        'post[stroller_accessible]',
-        data.stroller_accessible !== undefined
-          ? data.stroller_accessible.toString()
-          : selectedRestroom.strollerAccessible.toString(),
-      )
+  const s3 = new AWS.S3({
+    accessKeyId: process.env.NEXT_PUBLIC_AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY,
+    region: process.env.NEXT_PUBLIC_AWS_REGION,
+  })
 
-      if (fileInput.current?.files && fileInput.current.files[0]) {
-        formData.append('post[image]', fileInput.current.files[0])
-      }
+  const uploadFileToS3 = async (file: File) => {
+    const fileName = `${Date.now()}-${file.name}`
+    const params = {
+      Bucket: 'quickcleanrestroommap',
+      Key: fileName,
+      Body: file,
+      ContentType: file.type,
+    }
 
-      const editUrl =
-        process.env.NEXT_PUBLIC_API_BASE_URL + '/posts/' + selectedRestroom.id
-      const headers = { 'Content-Type': 'multipart/form-data' }
-
-      const getUrl = process.env.NEXT_PUBLIC_API_BASE_URL + '/posts'
-
-      axios
-        .put(editUrl, formData, { headers })
-        .then(() => {
-          mutate(getUrl)
-          resetModal()
-        })
-        .catch((e: AxiosError<{ error: string }>) => {
-          console.error(`Request failed with status code ${e.response?.status}`)
-          console.error(e.message)
-        })
+    try {
+      const { Location } = await s3.upload(params).promise()
+      setImageUrl(Location) // 画像URLをステートに保存
+    } catch (error) {
+      console.error('Error uploading file to S3:', error)
+      throw new Error('Failed to upload file to S3')
     }
   }
 
-  const onDelete = () => {
-    const deleteUrl =
-      process.env.NEXT_PUBLIC_API_BASE_URL + '/posts/' + selectedRestroom.id
-    const headers = { 'Content-Type': 'application/json' }
+  const onChangeUploadFileToS3 = async (files: FileList) => {
+    const file = files[0]
+    await uploadFileToS3(file)
+  }
 
-    const getUrl = process.env.NEXT_PUBLIC_API_BASE_URL + '/posts'
+  const onSubmit: SubmitHandler<EditRestroomFormData> = async (data) => {
+    if (selectedRestroom.latitude && selectedRestroom.longitude) {
+      const postData = {
+        id: selectedRestroom.id,
+        name: data.name || selectedRestroom.name,
+        address: data.address || selectedRestroom.address,
+        content: data.content || selectedRestroom.content,
+        latitude: selectedRestroom.latitude,
+        longitude: selectedRestroom.longitude,
+        nursing_room: data.nursing_room ?? selectedRestroom.nursing_room,
+        anyone_toilet: data.anyone_toilet ?? selectedRestroom.anyone_toilet,
+        diaper_changing_station:
+          data.diaper_changing_station ??
+          selectedRestroom.diaper_changing_station,
+        powder_corner: data.powder_corner ?? selectedRestroom.powder_corner,
+        stroller_accessible:
+          data.stroller_accessible ?? selectedRestroom.stroller_accessible,
+        image_url: data.imageUrl ?? selectedRestroom.image_url,
+      }
 
-    axios
-      .delete(deleteUrl, { headers })
-      .then(() => {
-        mutate(getUrl)
+      try {
+        const { error, status } = await supabase
+          .from('posts')
+          .update(postData)
+          .eq('id', selectedRestroom.id)
+
+        if (error) {
+          console.error('Supabase Error:', error)
+          console.error('Status Code:', status)
+          throw new Error(error.message)
+        }
+
+        await mutate('fetchPosts') // キャッシュを再取得して更新
         resetModal()
-      })
-      .catch((e: AxiosError<{ error: string }>) => {
-        console.error(`Request failed with status code ${e.response?.status}`)
-        console.error(e.message)
-      })
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (error: any) {
+        console.error('Request failed:', error)
+      }
+    }
+  }
+
+  //supabaseからの読込
+  const fetchPosts = async () => {
+    const { data, error } = await supabase.from('posts').select('*')
+    if (error) {
+      throw new Error(error.message)
+    }
+    return data
+  }
+
+  const { error } = useSWR('fetchPosts', fetchPosts, {
+    revalidateOnFocus: false,
+  })
+
+  if (error) {
+    console.error('Error fetching posts:', error)
+  }
+
+  const onDelete = async () => {
+    const { error } = await supabase
+      .from('posts')
+      .delete()
+      .eq('id', selectedRestroom.id)
+    await mutate('fetchPosts')
+    resetModal()
+    if (error != null) throw new Error(error.message)
+    return true
   }
 
   return (

@@ -2,14 +2,14 @@ import CloseIcon from '@mui/icons-material/Close'
 import { Box, List, ListItem, ListItemText } from '@mui/material'
 import Link from 'next/link'
 import React, { useState } from 'react'
+import { useSessionContext } from '@/context/SessionContext'
 import Header from '@/presentationals/Header'
-import { useUserState } from '@/utils/useGlobalState'
 
 const HeaderContainer = () => {
-  const [user] = useUserState()
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [openAddSimpleRestroomModal, setOpenAddSimpleRestroomModal] =
     useState(false)
+  const { currentUser } = useSessionContext()
 
   const openDrawer =
     (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
@@ -60,7 +60,7 @@ const HeaderContainer = () => {
 
   return (
     <Header
-      user={user}
+      user={currentUser}
       isOpen={isOpen}
       openDrawer={openDrawer}
       openAddSimpleRestroomModal={openAddSimpleRestroomModal}
