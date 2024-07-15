@@ -21,7 +21,7 @@ interface UserProps {
 }
 
 interface HeaderProps {
-  user: UserProps
+  currentUser: UserProps
   isOpen: boolean
   openDrawer: (
     open: boolean,
