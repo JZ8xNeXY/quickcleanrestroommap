@@ -14,7 +14,7 @@ interface Restroom {
   powderCorner: boolean
   strollerAccessible: boolean
   evaluation: number
-  imageUrl: string
+  image: string
 }
 
 interface RestroomContextProps {
@@ -27,7 +27,7 @@ const defaultRestroom: Restroom = {
   name: '',
   address: '',
   content: '',
-  imageUrl: '',
+  image: '',
   latitude: 0,
   longitude: 0,
   createdAt: '',
