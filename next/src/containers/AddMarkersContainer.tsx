@@ -107,7 +107,7 @@ const AddMarkersContainer: NextPage<AddMarkersProps> = ({ map }) => {
               powderCorner: restroom.powderCorner,
               strollerAccessible: restroom.strollerAccessible,
               evaluation: restroom.evaluation,
-              image: restroom.imageUrl,
+              image: restroom.image,
             })
           })
 

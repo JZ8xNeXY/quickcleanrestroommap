@@ -70,7 +70,7 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
   const [confirmImageMessage, setConfirmMessage] = useState('')
   const [warningCoordMessage, setWarningCoordMessage] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-  const [imageUrl, setImageUrl] = useState<string | null>(null) //S3のURL
+  const [image, setImage] = useState<string | null>(null) //S3のURL
 
   useEffect(() => {
     setValue('evaluation', imageToiletCleanness)
@@ -203,7 +203,7 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
 
     try {
       const { Location } = await s3.upload(params).promise()
-      setImageUrl(Location) // 画像URLをステートに保存
+      setImage(Location) // 画像URLをステートに保存
     } catch (error) {
       console.error('Error uploading file to S3:', error)
       throw new Error('Failed to upload file to S3')
@@ -233,7 +233,7 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
       powder_corner: data.powder_corner ?? false,
       stroller_accessible: data.stroller_accessible ?? false,
       evaluation: data.evaluation,
-      image_url: imageUrl,
+      image: image,
     }
 
     try {
@@ -256,7 +256,11 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
       resetModal()
       setImageToiletCleanness(0)
     } catch (error) {
-      console.error('Request failed:', error.message)
+      if (error instanceof Error) {
+        console.error('Request failed:', error.message)
+      } else {
+        console.error('Request failed:', error)
+      }
     }
   }
 

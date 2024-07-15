@@ -177,7 +177,7 @@ const AddRestroomContainer: React.FC<AddRestroomProps> = ({
         powder_corner: data.powder_corner ?? false,
         stroller_accessible: data.stroller_accessible ?? false,
         evaluation: data.evaluation,
-        image_url: imageUrl,
+        image: imageUrl,
       }
 
       try {
@@ -201,7 +201,11 @@ const AddRestroomContainer: React.FC<AddRestroomProps> = ({
         resetModal()
         setImageToiletCleanness(0)
       } catch (error) {
-        console.error('Request failed:', error.message)
+        if (error instanceof Error) {
+          console.error('Request failed:', error.message)
+        } else {
+          console.error('Request failed:', error)
+        }
       }
     }
   }

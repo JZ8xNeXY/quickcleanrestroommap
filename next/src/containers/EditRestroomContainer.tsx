@@ -42,7 +42,7 @@ const EditRestroomContainer: React.FC<EditRestroomProps> = ({
 
   const [fileName, setFileName] = useState('')
   const [imageData, setImageData] = useState('')
-  const [setImageUrl] = useState<string | null>(null) //S3のURL
+  const [imageUrl, setImageUrl] = useState<string | null>(null) //S3のURL
 
   const onChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files
@@ -122,15 +122,15 @@ const EditRestroomContainer: React.FC<EditRestroomProps> = ({
         content: data.content || selectedRestroom.content,
         latitude: selectedRestroom.latitude,
         longitude: selectedRestroom.longitude,
-        nursing_room: data.nursing_room ?? selectedRestroom.nursing_room,
-        anyone_toilet: data.anyone_toilet ?? selectedRestroom.anyone_toilet,
+        nursing_room: data.nursing_room ?? selectedRestroom.nursingRoom,
+        anyone_toilet: data.anyone_toilet ?? selectedRestroom.anyoneToilet,
         diaper_changing_station:
           data.diaper_changing_station ??
-          selectedRestroom.diaper_changing_station,
-        powder_corner: data.powder_corner ?? selectedRestroom.powder_corner,
+          selectedRestroom.diaperChangingStation,
+        powder_corner: data.powder_corner ?? selectedRestroom.powderCorner,
         stroller_accessible:
-          data.stroller_accessible ?? selectedRestroom.stroller_accessible,
-        image_url: data.imageUrl ?? selectedRestroom.image_url,
+          data.stroller_accessible ?? selectedRestroom.strollerAccessible,
+        image: imageUrl || selectedRestroom.image,
       }
 
       try {

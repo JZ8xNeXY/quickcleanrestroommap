@@ -47,7 +47,7 @@ const SignIn: NextPage = () => {
     }
     setUser({
       ...user,
-      id: data.user?.id || 0,
+      id: Number(data.user?.id) || 0,
       email: data.user?.email || '',
       isSignedIn: true,
       isFetched: true,
@@ -61,7 +61,8 @@ const SignIn: NextPage = () => {
       const user = await signIn(data.email, data.password)
       setCurrentUser(user)
       router.push('/')
-    } catch (e: string) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (e: any) {
       console.error(e.message)
       setIsLoading(false)
     }
