@@ -118,46 +118,41 @@ const EditRestroomContainer: React.FC<EditRestroomProps> = ({
     console.log(selectedRestroom)
     if (selectedRestroom.latitude && selectedRestroom.longitude) {
       const postData = {
-        ...selectedRestroom,
-        name: data.name,
-        address: data.address,
-        content: data.content,
+        id: selectedRestroom.id,
+        name: data.name || selectedRestroom.name,
+        address: data.address || selectedRestroom.address,
+        content: data.content || selectedRestroom.content,
         latitude: selectedRestroom.latitude,
         longitude: selectedRestroom.longitude,
-        nursing_room: data.nursing_room ?? false,
-        anyone_toilet: data.anyone_toilet ?? false,
-        diaper_changing_station: data.diaper_changing_station ?? false,
-        powder_corner: data.powder_corner ?? false,
-        stroller_accessible: data.stroller_accessible ?? false,
-        image_url: imageUrl,
+        nursing_room: data.nursing_room ?? selectedRestroom.nursing_room,
+        anyone_toilet: data.anyone_toilet ?? selectedRestroom.anyone_toilet,
+        diaper_changing_station:
+          data.diaper_changing_station ??
+          selectedRestroom.diaper_changing_station,
+        powder_corner: data.powder_corner ?? selectedRestroom.powder_corner,
+        stroller_accessible:
+          data.stroller_accessible ?? selectedRestroom.stroller_accessible,
+        image_url: data.imageUrl ?? selectedRestroom.image_url,
       }
 
       console.log(postData)
 
       try {
-        const { error } = await supabase.from('posts').update([postData])
+        const { error, status } = await supabase
+          .from('posts')
+          .update(postData)
+          .eq('id', selectedRestroom.id)
 
         if (error) {
+          console.error('Supabase Error:', error)
+          console.error('Status Code:', status)
           throw new Error(error.message)
         }
 
-        const updatePosts = async () => {
-          const { error } = await supabase
-            .from('posts')
-            .update(postData)
-            .eq('id', data.id)
-
-          if (error) {
-            throw new Error(error.message)
-          }
-          return data
-        }
-
-        const posts = await updatePosts()
-        mutate('updatePosts', posts, false)
+        await mutate('fetchPosts') // キャッシュを再取得して更新
         resetModal()
-      } catch (error) {
-        console.error('Request failed:', error.message)
+      } catch (error: any) {
+        console.error('Request failed:', error)
       }
     }
   }
