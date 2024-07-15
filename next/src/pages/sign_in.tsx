@@ -5,6 +5,7 @@ import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { useForm, SubmitHandler, Controller } from 'react-hook-form'
 import { supabase } from '@/utils/supabase'
+import { useUserState } from '@/utils/useGlobalState'
 
 type SignInFormData = {
   email: string
@@ -13,6 +14,7 @@ type SignInFormData = {
 
 const SignIn: NextPage = () => {
   const router = useRouter()
+  const [user, setUser] = useUserState()
   const [isLoading, setIsLoading] = useState(false)
 
   const { handleSubmit, control } = useForm<SignInFormData>({
@@ -41,6 +43,14 @@ const SignIn: NextPage = () => {
     if (error != null) {
       throw new Error(error.message)
     }
+    setUser({
+      ...user,
+      id: data.user?.id || 0,
+      email: data.user?.email || '',
+      isSignedIn: true,
+      isFetched: true,
+    })
+    console.log(user)
     return data.user
   }
 
