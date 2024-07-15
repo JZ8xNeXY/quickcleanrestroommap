@@ -233,7 +233,7 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
       powder_corner: data.powder_corner ?? false,
       stroller_accessible: data.stroller_accessible ?? false,
       evaluation: data.evaluation,
-      image_url: imageUrl,
+      image: imageUrl,
     }
 
     try {
