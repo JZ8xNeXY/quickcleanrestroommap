@@ -116,10 +116,7 @@ const Header: React.FC<HeaderProps> = ({
               </Link>
             </Box>
             <Box>
-              {user.isFetched &&
-                (user.isSignedIn ? (
-                  <Box sx={{ ml: 10 }}> 管理者権限でログイン中 </Box>
-                ) : null)}
+              {user && <Box sx={{ ml: 10 }}> 管理者権限でログイン中 </Box>}
             </Box>
           </Box>
           <Box>

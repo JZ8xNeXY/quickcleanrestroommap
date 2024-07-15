@@ -195,7 +195,8 @@ const AddRestroomContainer: React.FC<AddRestroomProps> = ({
           return data
         }
 
-        const posts = await createPosts()
+        await createPosts()
+
         mutate('fetchPosts')
         resetModal()
         setImageToiletCleanness(0)

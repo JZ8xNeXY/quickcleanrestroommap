@@ -4,6 +4,7 @@ import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { useForm, SubmitHandler, Controller } from 'react-hook-form'
+import { useSessionContext } from '@/context/SessionContext'
 import { supabase } from '@/utils/supabase'
 import { useUserState } from '@/utils/useGlobalState'
 
@@ -16,6 +17,7 @@ const SignIn: NextPage = () => {
   const router = useRouter()
   const [user, setUser] = useUserState()
   const [isLoading, setIsLoading] = useState(false)
+  const { setCurrentUser } = useSessionContext()
 
   const { handleSubmit, control } = useForm<SignInFormData>({
     defaultValues: { email: '', password: '' },
@@ -50,7 +52,6 @@ const SignIn: NextPage = () => {
       isSignedIn: true,
       isFetched: true,
     })
-    console.log(user)
     return data.user
   }
 
@@ -58,9 +59,9 @@ const SignIn: NextPage = () => {
     setIsLoading(true)
     try {
       const user = await signIn(data.email, data.password)
-      console.log(user)
+      setCurrentUser(user)
       router.push('/')
-    } catch (e: any) {
+    } catch (e: string) {
       console.error(e.message)
       setIsLoading(false)
     }

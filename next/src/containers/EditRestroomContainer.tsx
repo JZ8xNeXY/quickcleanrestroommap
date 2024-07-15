@@ -1,5 +1,4 @@
 import AWS from 'aws-sdk'
-import axios, { AxiosError } from 'axios'
 import { useState, useRef, MutableRefObject } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import useSWR, { mutate } from 'swr'
@@ -43,7 +42,7 @@ const EditRestroomContainer: React.FC<EditRestroomProps> = ({
 
   const [fileName, setFileName] = useState('')
   const [imageData, setImageData] = useState('')
-  const [imageUrl, setImageUrl] = useState<string | null>(null) //S3のURL
+  const [setImageUrl] = useState<string | null>(null) //S3のURL
 
   const onChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files
@@ -115,7 +114,6 @@ const EditRestroomContainer: React.FC<EditRestroomProps> = ({
   }
 
   const onSubmit: SubmitHandler<EditRestroomFormData> = async (data) => {
-    console.log(selectedRestroom)
     if (selectedRestroom.latitude && selectedRestroom.longitude) {
       const postData = {
         id: selectedRestroom.id,
@@ -135,8 +133,6 @@ const EditRestroomContainer: React.FC<EditRestroomProps> = ({
         image_url: data.imageUrl ?? selectedRestroom.image_url,
       }
 
-      console.log(postData)
-
       try {
         const { error, status } = await supabase
           .from('posts')
@@ -151,6 +147,7 @@ const EditRestroomContainer: React.FC<EditRestroomProps> = ({
 
         await mutate('fetchPosts') // キャッシュを再取得して更新
         resetModal()
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (error: any) {
         console.error('Request failed:', error)
       }
@@ -166,9 +163,13 @@ const EditRestroomContainer: React.FC<EditRestroomProps> = ({
     return data
   }
 
-  const { data, error } = useSWR('fetchPosts', fetchPosts, {
+  const { error } = useSWR('fetchPosts', fetchPosts, {
     revalidateOnFocus: false,
   })
+
+  if (error) {
+    console.error('Error fetching posts:', error)
+  }
 
   const onDelete = async () => {
     const { error } = await supabase
