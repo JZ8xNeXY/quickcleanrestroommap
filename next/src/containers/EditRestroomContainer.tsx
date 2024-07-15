@@ -42,7 +42,7 @@ const EditRestroomContainer: React.FC<EditRestroomProps> = ({
 
   const [fileName, setFileName] = useState('')
   const [imageData, setImageData] = useState('')
-  const [imageUrl, setImageUrl] = useState<string | null>(null)  //S3のURL
+  const [imageUrl, setImageUrl] = useState<string | null>(null) //S3のURL
 
   const onChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files
@@ -130,7 +130,7 @@ const EditRestroomContainer: React.FC<EditRestroomProps> = ({
         powder_corner: data.powder_corner ?? selectedRestroom.powder_corner,
         stroller_accessible:
           data.stroller_accessible ?? selectedRestroom.stroller_accessible,
-          image: imageUrl || selectedRestroom.image,,
+        image: imageUrl || selectedRestroom.image,
       }
 
       try {
