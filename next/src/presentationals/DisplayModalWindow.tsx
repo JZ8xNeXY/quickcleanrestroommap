@@ -95,8 +95,8 @@ const DisplayModalWindow: React.FC<DisplayModalWindowProps> = ({
             {name ? name : 'ー'}
           </Typography>
         </Box>
-        {user.isFetched &&
-          (user.isSignedIn ? (
+        {user &&
+          (user ? (
             <Box sx={{ display: 'flex', justifyContent: 'right', mt: 0 }}>
               <Button
                 sx={buttonStyle}

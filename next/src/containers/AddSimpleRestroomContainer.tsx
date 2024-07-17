@@ -79,10 +79,16 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
   const onChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files
     if (!files || files.length <= 0) return
-    showImageFileName(files)
-    await onChangeShowExifData(e)
-    await onChangeEvaluateToiletCleanness(files)
-    await onChangeUploadFileToS3(files)
+    try {
+      showImageFileName(files)
+      await onChangeShowExifData(e)
+      const isOk = await onChangeEvaluateToiletCleanness(files)
+      if (isOk) {
+        await onChangeUploadFileToS3(files)
+      }
+    } catch (error) {
+      console.error('Error processing file:', error)
+    }
   }
 
   // ref関数 react-hook-formが管理できるようになる
@@ -156,34 +162,46 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
     return dd
   }
 
-  const onChangeShowExifData = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeShowExifData = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     if (!e.target.files) return
     const file = e.target.files[0]
-    getExifData(file)
+    await getExifData(file)
   }
 
   const evaluateToiletCleanness = async (file: File) => {
     setIsLoading(true)
-    const imageBase64 = await encodeImageToBase64(file)
-    const result = await chatgpt(imageBase64)
-    setIsLoading(false)
-    if (result == 0) {
-      setWarningImageMessage('トイレの画像をアップロードしてください')
-    } else {
-      setWarningImageMessage('')
+    try {
+      const imageBase64 = await encodeImageToBase64(file)
+      const result = await chatgpt(imageBase64)
+      setIsLoading(false)
+      if (result == 0) {
+        setWarningImageMessage('トイレの画像をアップロードしてください')
+      } else {
+        setWarningImageMessage('')
+      }
+      if (result >= 1) {
+        setConfirmMessage('トイレの画像を確認しました')
+        setTimeout(() => {
+          setConfirmMessage('')
+        }, 5000)
+        setImageToiletCleanness(result)
+        return true
+      }
+      setImageToiletCleanness(result)
+      return false
+    } catch (error) {
+      setIsLoading(false)
+      console.error('Error evaluating toilet cleanness:', error)
+      setWarningImageMessage('トイレの清潔度の評価に失敗しました')
+      return false
     }
-    if (result >= 1) {
-      setConfirmMessage('トイレの画像を確認しました')
-      setTimeout(() => {
-        setConfirmMessage('')
-      }, 5000)
-    }
-    setImageToiletCleanness(result)
   }
 
-  const onChangeEvaluateToiletCleanness = (files: FileList) => {
+  const onChangeEvaluateToiletCleanness = async (files: FileList) => {
     const file = files[0]
-    evaluateToiletCleanness(file)
+    return await evaluateToiletCleanness(file)
   }
 
   const s3 = new AWS.S3({

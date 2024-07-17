@@ -17,7 +17,7 @@ const SignIn: NextPage = () => {
   const router = useRouter()
   const [user, setUser] = useUserState()
   const [isLoading, setIsLoading] = useState(false)
-  const { setCurrentUser } = useSessionContext()
+  const { currentUser, setCurrentUser } = useSessionContext()
 
   const { handleSubmit, control } = useForm<SignInFormData>({
     defaultValues: { email: '', password: '' },
@@ -60,6 +60,7 @@ const SignIn: NextPage = () => {
     try {
       const user = await signIn(data.email, data.password)
       setCurrentUser(user)
+      console.log(currentUser)
       router.push('/')
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {

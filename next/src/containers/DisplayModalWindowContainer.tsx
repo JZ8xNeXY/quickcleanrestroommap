@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import EditRestroomContainer from './EditRestroomContainer'
+import { useSessionContext } from '@/context/SessionContext'
 import DisplayModalWindow from '@/presentationals/DisplayModalWindow'
-import { useUserState } from '@/utils/useGlobalState'
 
 interface DisplayModalWindowContainerProps {
   openModalWindow: boolean
@@ -38,7 +38,7 @@ const DisplayModalWindowContainer: React.FC<
   evaluation,
   image,
 }) => {
-  const [user] = useUserState()
+  const { currentUser } = useSessionContext()
   const [editModalWindow, setEditModalWindow] = useState(false)
   const openEditRestroomModalWindow = () => setEditModalWindow(true)
   const closeEditRestroomModalWindow = () => setEditModalWindow(false)
@@ -50,7 +50,7 @@ const DisplayModalWindowContainer: React.FC<
         onClose={closeEditRestroomModalWindow}
       />
       <DisplayModalWindow
-        user={user}
+        user={currentUser}
         openModalWindow={openModalWindow}
         closeModalWindow={closeModalWindow}
         name={name}

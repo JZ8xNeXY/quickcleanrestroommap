@@ -5,6 +5,7 @@ import React, {
   ReactNode,
   useEffect,
 } from 'react'
+import { supabase } from '@/utils/supabase'
 
 interface SessionContextProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -23,10 +24,16 @@ export const SessionProvider: React.FC<{ children: ReactNode }> = ({
 
   // ページロード時にローカルストレージからセッション情報を読み込む
   useEffect(() => {
-    const savedUser = localStorage.getItem('currentUser')
-    if (savedUser) {
-      setCurrentUser(JSON.parse(savedUser))
+    const getCurrentUser = async () => {
+      const { data, error } = await supabase.auth.getUser()
+      if (error) {
+        console.error('Error fetching user:', error)
+        return
+      }
+      setCurrentUser(data.user)
     }
+
+    getCurrentUser()
   }, [])
 
   // currentUserが変更された時にローカルストレージに保存する
