@@ -96,20 +96,15 @@ https://qiita.com/JZ8xNeXY/items/d5f66eb1d48689fb4cfc
 
 
 # 主な使用技術
-| カテゴリー              | 使用技術                                     |
-|-----------------------|--------------------------------------------|
-| フロントエンド          | TypeScript 5.4.5                           |
-|                       | Next.js 14.2.3                             |
-|                       | React 18.3.1                               |
-| バックエンド            | Ruby 3.2.0                                 |
-|                       | Ruby on Rails 7.0.8.3 (API モード)          |
-| インフラ               | ECS(Fargete)                               |
-| DB                    | RDS(MYSQL)                                 |
-| 認証                   |  devise_token_auth                         |
-| CI/CD                 | GitHub Actions                             |
-| 開発環境               | Docker                                     |
-| API                   | GoogleMapsAPI                              |
-|                       | OpenAPI                                    |
+| カテゴリー      | 使用技術                                      |
+|-----------------|-----------------------------------------------|
+| フロントエンド  | React 18.3.1<br>Next.js 14.2.3<br>TypeScript 5.4.5  |
+| バックエンド DB   |Supabase |
+| インフラ        | Vercel                                  |
+| 認証            | Jwt                             |
+| CI           | GitHub Actions                                |
+| 開発環境        | Docker                                        |
+| API             | GoogleMapsAPI <br> OpenAPI 
 
 
 
@@ -119,7 +114,9 @@ https://qiita.com/JZ8xNeXY/items/d5f66eb1d48689fb4cfc
 コンポーネント化により、コードの再利用と保守がしやすくなりました。各UI要素を独立した部品として分けることで、複数るファイルを同時に作業しやすくなり、新機能を追加する際の手間が減りました。また、Reactを使うことで、JavaScriptよりもシンプルにコードを書くことができ、開発がスムーズになりました。
 
 ### バックエンド（Rails）
-「設定より規約」の原則を採用し、ウェブアプリケーションの開発が迅速に行えるようにしました。フロントエンドを重視するため、バックエンドの設定を簡素化し、標準的な構成を利用することで、開発スピードを向上させました。
+・コスト効率: オープンソースで基本機能が無料のため、運用コストを大幅に削減できます。
+・リアルタイムデータベース: PostgreSQLベースのリアルタイムデータベースを提供し、即時性の高いアプリケーションが構築可能です。
+・簡単なセットアップと統合: バックエンドのセットアップが簡単で、フロントエンドとの連携がシンプルです。
 
 ### API（Google Maps／GPT-4o)
 マップ機能にはGoogle Maps APIを利用しました。これにより、高精度な地図データを提供し、ユーザーがトイレの場所を簡単に見つけられるようにしました。
@@ -128,11 +125,8 @@ https://qiita.com/JZ8xNeXY/items/d5f66eb1d48689fb4cfc
 ### 開発環境(Docker)
 開発環境の一貫性を保つためにDockerを使用しました。Docker Composeを使うことで、複数のコンテナを簡単に管理し、開発環境と本番環境を同じ設定にすることができます。これにより、環境設定の手間が省け、開発者が効率的に作業できるようになりました。
 
-### 自動デプロイ（Github Actions)
-GithubActionsを活用して、ECSへの自動デプロイを実現しました。フロントエンドとバックエンドの2つのコンテナを効率的に管理し、デプロイのプロセスを自動化することで、運用の効率が上がり、信頼性も向上しました。これにより、開発から本番環境への移行がスムーズになりました。
-
 ### インフラ
-![component.png](https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/917693/2f3608a4-89e1-ef99-e336-85ffce70f55b.png)
+![component_supabase.drawio.png](https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/917693/9188d26c-cbd1-8517-483c-52fa603bd06d.png)
 
 # 機能要件
 * マップ表示機能: ユーザーが現在地周辺（GPSで位置情報を取得）の綺麗なトイレをマップ上で確認

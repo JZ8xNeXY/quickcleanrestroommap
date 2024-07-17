@@ -1,27 +1,4 @@
 services:
-  db:
-    image: mysql:8.0.32
-    environment:
-      MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: quickcleanrestroom_development
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
-    ports:
-      - "3307:3306"
-    volumes:
-      - mysql_data:/var/lib/mysql
-  rails:
-    build:
-      context: ./rails
-    command: bash -c "tail -f log/development.log"
-    volumes:
-      - ./rails:/myapp
-    ports:
-      - 3000:3000
-    depends_on:
-      - db
-    tty: true
-    stdin_open: true
   next:
     build:
       dockerfile: ./next/Dockerfile
@@ -31,5 +8,3 @@ services:
       - ./next:/app
     ports:
       - "8000:3000"
-volumes:
-  mysql_data:
