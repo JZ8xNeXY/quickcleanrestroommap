@@ -80,9 +80,11 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
     const files = e.target.files
     if (!files || files.length <= 0) return
     showImageFileName(files)
-    await onChangeShowExifData(e)
-    await onChangeEvaluateToiletCleanness(files)
-    await onChangeUploadFileToS3(files)
+    onChangeShowExifData(e)
+    const isOk = await onChangeEvaluateToiletCleanness(files)
+    if (isOk) {
+      await onChangeUploadFileToS3(files)
+    }
   }
 
   // ref関数 react-hook-formが管理できるようになる
@@ -177,8 +179,10 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
       setTimeout(() => {
         setConfirmMessage('')
       }, 5000)
+      return true
     }
     setImageToiletCleanness(result)
+    return false
   }
 
   const onChangeEvaluateToiletCleanness = (files: FileList) => {
