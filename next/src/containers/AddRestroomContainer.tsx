@@ -67,8 +67,10 @@ const AddRestroomContainer: React.FC<AddRestroomProps> = ({
     const files = e.target.files
     if (!files || files.length <= 0) return
     showImageFileName(files)
-    await onChangeEvaluateToiletCleanness(files)
-    await onChangeUploadFileToS3(files)
+    const isOk = await onChangeEvaluateToiletCleanness(files)
+    if (isOk) {
+      await onChangeUploadFileToS3(files)
+    }
   }
 
   // ref関数 react-hook-formが管理できるようになる
@@ -120,13 +122,15 @@ const AddRestroomContainer: React.FC<AddRestroomProps> = ({
         setConfirmMessage('')
       }, 5000)
       setImageToiletCleanness(result)
+      return true
     }
     setImageToiletCleanness(result)
+    return false
   }
 
-  const onChangeEvaluateToiletCleanness = (files: FileList) => {
+  const onChangeEvaluateToiletCleanness = async (files: FileList) => {
     const file = files[0]
-    evaluateToiletCleanness(file)
+    return await evaluateToiletCleanness(file)
   }
 
   const s3 = new AWS.S3({
