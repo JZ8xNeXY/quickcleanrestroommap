@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const API_URL = 'https://api.openai.com/v1/'
-const MODEL = 'gpt-4o'
+const MODEL = 'gpt-4o-mini'
 const API_KEY = process.env.NEXT_PUBLIC_OPENAI_API_KEY
 
 // 画像をそのまま送れないので画像をBase64エンコード（テキストに変換）する関数
