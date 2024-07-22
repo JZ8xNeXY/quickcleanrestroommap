@@ -374,10 +374,10 @@
   resolved "https://registry.npmjs.org/@next/swc-linux-arm64-musl/-/swc-linux-arm64-musl-14.2.3.tgz"
   integrity sha512-0D4/oMM2Y9Ta3nGuCcQN8jjJjmDPYpHX9OJzqk42NZGJocU2MqhBq5tWkJrUQOQY9N+In9xOdymzapM09GeiZw==
 
-"@next/third-parties@^14.2.5":
-  version "14.2.5"
-  resolved "https://registry.npmjs.org/@next/third-parties/-/third-parties-14.2.5.tgz"
-  integrity sha512-PDRJm8RZ3rnGNporHKjcdCeZqoW8iJ5uP0clo1Z08TqJiQzuntJ66zrGYCJyqTakx62UJNOp73YsQCFo6kbYYg==
+"@next/third-parties@^15.0.0-canary.76":
+  version "15.0.0-canary.76"
+  resolved "https://registry.npmjs.org/@next/third-parties/-/third-parties-15.0.0-canary.76.tgz"
+  integrity sha512-aoJ5Bsyg+SHzvtUXcMzYx8bkIsLlVRp1GCbA1/L7JIVuFqEBaz1gYK/pc1Oc761TWNaNRNOev+jZX/TqMYp50Q==
   dependencies:
     third-party-capital "1.0.20"
 

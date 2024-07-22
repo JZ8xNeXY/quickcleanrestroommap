@@ -17,7 +17,7 @@
     "@mui/icons-material": "^5.14.7",
     "@mui/lab": "^5.0.0-alpha.142",
     "@mui/material": "^5.14.7",
-    "@next/third-parties": "^14.2.5",
+    "@next/third-parties": "^15.0.0-canary.76",
     "@supabase/supabase-js": "^2.44.3",
     "@types/google.maps": "^3.55.9",
     "@types/node": "20.12.12",
