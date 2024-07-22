@@ -27,7 +27,7 @@ export default function MyApp(props: MyAppProps): JSX.Element {
 
   const router = useRouter()
   useEffect(() => {
-    const handleRouterChange = (url: string) => {
+    const handleRouterChange = (url: any) => {
       gtag.pageview(url)
     }
     router.events.on('routeChangeComplete', handleRouterChange)
@@ -35,10 +35,6 @@ export default function MyApp(props: MyAppProps): JSX.Element {
       router.events.off('routeChangeComplete', handleRouterChange)
     }
   }, [router.events])
-
-  useEffect(() => {
-    console.log(`GA_MEASUREMENT_ID: ${gtag.GA_MEASUREMENT_ID}`)
-  }, [])
 
   return (
     <>
