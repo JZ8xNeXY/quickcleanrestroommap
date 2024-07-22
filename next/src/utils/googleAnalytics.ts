@@ -5,9 +5,9 @@ declare global {
   }
 }
 
-// export const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_ID
+export const GA_MEASUREMENT_ID = 'G-47ZGSE8C4V'
 export const pageview = (url: string) => {
-  window.gtag('config', 'G-47ZGSE8C4V', {
+  window.gtag('config', GA_MEASUREMENT_ID, {
     page_path: url,
   })
 }
