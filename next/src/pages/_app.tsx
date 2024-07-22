@@ -36,6 +36,10 @@ export default function MyApp(props: MyAppProps): JSX.Element {
     }
   }, [router.events])
 
+  useEffect(() => {
+    console.log(`GA_MEASUREMENT_ID: ${gtag.GA_MEASUREMENT_ID}`)
+  }, [])
+
   return (
     <>
       <Script
