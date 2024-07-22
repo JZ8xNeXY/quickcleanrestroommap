@@ -24,6 +24,7 @@ interface MyAppProps extends AppProps {
 export default function MyApp(props: MyAppProps): JSX.Element {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props
   const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_ID
+  console.log(GA_MEASUREMENT_ID)
 
   return (
     <>
