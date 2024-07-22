@@ -44,7 +44,7 @@ export default function MyApp(props: MyAppProps): JSX.Element {
           </SessionProvider>
         </ThemeProvider>
       </CacheProvider>{' '}
-      {GA_MEASUREMENT_ID && <GoogleAnalytics gaId="G-47ZGSE8C4V" />}
+      <GoogleAnalytics gaId="G-47ZGSE8C4V" />
     </>
   )
 }
