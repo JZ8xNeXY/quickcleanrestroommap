@@ -1,19 +1,15 @@
 import { CacheProvider, EmotionCache } from '@emotion/react'
 import CssBaseline from '@mui/material/CssBaseline'
 import { ThemeProvider } from '@mui/material/styles'
-import { GoogleAnalytics } from '@next/third-parties/google'
 import { AppProps } from 'next/app'
-import { useEffect } from 'react'
+import Script from 'next/script'
 import HeaderContainer from '@/containers/HeaderContainer'
 import { RestroomProvider } from '@/context/RestRoomContext'
 import { SessionProvider } from '@/context/SessionContext'
 import Footer from '@/presentationals/Footer'
-
 import createEmotionCache from '@/styles/createEmotionCache'
 import theme from '@/styles/theme'
 import '../styles/globals.css'
-
-// app/layout.tsx
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache()
@@ -24,7 +20,8 @@ interface MyAppProps extends AppProps {
 
 export default function MyApp(props: MyAppProps): JSX.Element {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props
-  const GA_MEASUREMENT_ID = 'G-47ZGSE8C4V'
+  const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_ID
+
   useEffect(() => {
     console.log('Google Analytics ID:', GA_MEASUREMENT_ID)
   }, [GA_MEASUREMENT_ID])
@@ -33,7 +30,6 @@ export default function MyApp(props: MyAppProps): JSX.Element {
     <>
       <CacheProvider value={emotionCache}>
         <ThemeProvider theme={theme}>
-          {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
           <SessionProvider>
             <RestroomProvider>
               <CssBaseline />
@@ -43,8 +39,23 @@ export default function MyApp(props: MyAppProps): JSX.Element {
             </RestroomProvider>
           </SessionProvider>
         </ThemeProvider>
-      </CacheProvider>{' '}
-      <GoogleAnalytics gaId="G-47ZGSE8C4V" />
+      </CacheProvider>
+      {GA_MEASUREMENT_ID && (
+        <>
+          <Script
+            src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+            strategy="afterInteractive"
+          />
+          <Script id="google-analytics" strategy="afterInteractive">
+            {`
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', '${GA_MEASUREMENT_ID}');
+            `}
+          </Script>
+        </>
+      )}
     </>
   )
 }
