@@ -3,6 +3,7 @@ import CssBaseline from '@mui/material/CssBaseline'
 import { ThemeProvider } from '@mui/material/styles'
 import { GoogleAnalytics } from '@next/third-parties/google'
 import { AppProps } from 'next/app'
+import { useEffect } from 'react'
 import HeaderContainer from '@/containers/HeaderContainer'
 import { RestroomProvider } from '@/context/RestRoomContext'
 import { SessionProvider } from '@/context/SessionContext'
@@ -24,7 +25,9 @@ interface MyAppProps extends AppProps {
 export default function MyApp(props: MyAppProps): JSX.Element {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props
   const GA_MEASUREMENT_ID = 'G-47ZGSE8C4V'
-  console.log(GA_MEASUREMENT_ID)
+  useEffect(() => {
+    console.log('Google Analytics ID:', GA_MEASUREMENT_ID)
+  }, [GA_MEASUREMENT_ID])
 
   return (
     <>
@@ -41,7 +44,7 @@ export default function MyApp(props: MyAppProps): JSX.Element {
           </SessionProvider>
         </ThemeProvider>
       </CacheProvider>{' '}
-      {GA_MEASUREMENT_ID && <GoogleAnalytics gaId={GA_MEASUREMENT_ID} />}
+      {GA_MEASUREMENT_ID && <GoogleAnalytics gaId="G-47ZGSE8C4V" />}
     </>
   )
 }
