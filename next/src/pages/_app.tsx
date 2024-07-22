@@ -27,7 +27,7 @@ export default function MyApp(props: MyAppProps): JSX.Element {
 
   const router = useRouter()
   useEffect(() => {
-    const handleRouterChange = (url: any) => {
+    const handleRouterChange = (url: string) => {
       gtag.pageview(url)
     }
     router.events.on('routeChangeComplete', handleRouterChange)
