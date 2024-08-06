@@ -9,7 +9,7 @@ export const isValidImage = (file: File) => {
   return validFormats.includes(file.type) && file.size <= 20 * 1024 * 1024 // 20MB以下
 }
 
-export const reencodeImage = async (file: File) => {
+export const reencodeImage = (file: File): Promise<Blob> => {
   return new Promise((resolve, reject) => {
     const canvas = document.createElement('canvas')
     const ctx = canvas.getContext('2d')
@@ -20,7 +20,11 @@ export const reencodeImage = async (file: File) => {
       canvas.height = img.height
       ctx.drawImage(img, 0, 0)
       canvas.toBlob((blob) => {
-        resolve(blob)
+        if (blob) {
+          resolve(blob)
+        } else {
+          reject(new Error('Blob creation failed'))
+        }
       }, 'image/jpeg')
     }
 
@@ -28,7 +32,7 @@ export const reencodeImage = async (file: File) => {
 
     const reader = new FileReader()
     reader.onloadend = () => {
-      img.src = reader.result
+      img.src = reader.result as string
     }
     reader.onerror = (err) => reject(err)
     reader.readAsDataURL(file)
@@ -36,7 +40,9 @@ export const reencodeImage = async (file: File) => {
 }
 
 // 画像をそのまま送れないので画像をBase64エンコード（テキストに変換）する関数
-export const encodeImageToBase64 = (file: File): Promise<string> => {
+export const encodeImageToBase64 = (
+  fileOrBlob: File | Blob,
+): Promise<string> => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader()
     reader.onloadend = () => {
@@ -44,7 +50,7 @@ export const encodeImageToBase64 = (file: File): Promise<string> => {
       resolve(base64data)
     }
     reader.onerror = reject
-    reader.readAsDataURL(file)
+    reader.readAsDataURL(fileOrBlob)
   })
 }
 
