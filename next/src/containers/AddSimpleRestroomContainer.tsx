@@ -5,7 +5,12 @@ import { useForm, SubmitHandler } from 'react-hook-form'
 import { mutate } from 'swr'
 import { supabase } from '../utils/supabase'
 import AddSimpleRestroom from '@/presentationals/AddSimpleRestroom'
-import { chatgpt, encodeImageToBase64 } from '@/utils/chatgptAPI'
+import {
+  isValidImage,
+  reencodeImage,
+  chatgpt,
+  encodeImageToBase64,
+} from '@/utils/chatgptAPI'
 
 interface AddSimpleRestroomFormData {
   name: string
@@ -171,10 +176,24 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
   }
 
   const evaluateToiletCleanness = async (file: File) => {
+    if (!isValidImage(file)) {
+      setWarningImageMessage(
+        '有効な画像形式（PNG、JPEG、GIF、WEBP）で、サイズが20MB以下の画像をアップロードしてください。',
+      )
+      return false
+    }
+
     setIsLoading(true)
+
     try {
-      const imageBase64 = await encodeImageToBase64(file)
-      const result = await chatgpt(imageBase64)
+      const reencodedBlob = await reencodeImage(file)
+      const imageBase64 = await encodeImageToBase64(reencodedBlob)
+      // const imageBase64 = await encodeImageToBase64(file)
+      console.log(imageBase64)
+      const mimeType = file.type.toLowerCase() // MIMEタイプを取得
+      console.log(imageBase64)
+      const result = await chatgpt(imageBase64, mimeType)
+      console.log(result)
       setIsLoading(false)
       if (result == 0) {
         setWarningImageMessage('トイレの画像をアップロードしてください')
@@ -193,7 +212,10 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
       return false
     } catch (error) {
       setIsLoading(false)
-      console.error('Error evaluating toilet cleanness:', error)
+      console.error(
+        'トイレの清潔度の評価エラー:',
+        error.response ? error.response.data : error.message,
+      )
       setWarningImageMessage('トイレの清潔度の評価に失敗しました')
       return false
     }

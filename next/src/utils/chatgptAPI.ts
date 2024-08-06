@@ -1,8 +1,39 @@
 import axios from 'axios'
 
 const API_URL = 'https://api.openai.com/v1/'
-const MODEL = 'gpt-4o-mini'
+const MODEL = 'gpt-4o'
 const API_KEY = process.env.NEXT_PUBLIC_OPENAI_API_KEY
+
+export const isValidImage = (file) => {
+  const validFormats = ['image/png', 'image/jpeg', 'image/gif', 'image/webp']
+  return validFormats.includes(file.type) && file.size <= 20 * 1024 * 1024 // 20MB以下
+}
+
+export const reencodeImage = async (file) => {
+  return new Promise((resolve, reject) => {
+    const canvas = document.createElement('canvas')
+    const ctx = canvas.getContext('2d')
+    const img = new Image()
+
+    img.onload = () => {
+      canvas.width = img.width
+      canvas.height = img.height
+      ctx.drawImage(img, 0, 0)
+      canvas.toBlob((blob) => {
+        resolve(blob)
+      }, 'image/jpeg')
+    }
+
+    img.onerror = (err) => reject(err)
+
+    const reader = new FileReader()
+    reader.onloadend = () => {
+      img.src = reader.result
+    }
+    reader.onerror = (err) => reject(err)
+    reader.readAsDataURL(file)
+  })
+}
 
 // 画像をそのまま送れないので画像をBase64エンコード（テキストに変換）する関数
 export const encodeImageToBase64 = (file: File): Promise<string> => {
@@ -17,7 +48,8 @@ export const encodeImageToBase64 = (file: File): Promise<string> => {
   })
 }
 
-export const chatgpt = async (imageBase64: string) => {
+export const chatgpt = async (imageBase64: string, mimeType: string) => {
+  console.log(mimeType)
   try {
     const response = await axios.post(
       `${API_URL}chat/completions`,
@@ -39,7 +71,7 @@ export const chatgpt = async (imageBase64: string) => {
               {
                 type: 'image_url',
                 image_url: {
-                  url: `data:image/jpeg;base64,${imageBase64}`,
+                  url: `data:${mimeType};base64,${imageBase64}`,
                   detail: 'low', // 解像度を指定（low、high、autoのいずれか）今のところlowでも精度高い
                 },
               },
