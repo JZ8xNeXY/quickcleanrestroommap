@@ -148,10 +148,7 @@ const AddRestroomContainer: React.FC<AddRestroomProps> = ({
       return false
     } catch (error) {
       setIsLoading(false)
-      console.error(
-        'トイレの清潔度の評価エラー:',
-        error.response ? error.response.data : error.message,
-      )
+      console.error('トイレの清潔度の評価エラー:')
       setWarningImageMessage('トイレの清潔度の評価に失敗しました')
       return false
     }
