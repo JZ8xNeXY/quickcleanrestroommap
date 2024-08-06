@@ -4,12 +4,12 @@ const API_URL = 'https://api.openai.com/v1/'
 const MODEL = 'gpt-4o'
 const API_KEY = process.env.NEXT_PUBLIC_OPENAI_API_KEY
 
-export const isValidImage = (file) => {
+export const isValidImage = (file: File) => {
   const validFormats = ['image/png', 'image/jpeg', 'image/gif', 'image/webp']
   return validFormats.includes(file.type) && file.size <= 20 * 1024 * 1024 // 20MB以下
 }
 
-export const reencodeImage = async (file) => {
+export const reencodeImage = async (file: File) => {
   return new Promise((resolve, reject) => {
     const canvas = document.createElement('canvas')
     const ctx = canvas.getContext('2d')

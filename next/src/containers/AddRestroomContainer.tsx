@@ -4,7 +4,12 @@ import { useForm, SubmitHandler } from 'react-hook-form'
 import { mutate } from 'swr'
 import { supabase } from '../utils/supabase'
 import AddRestroom from '@/presentationals/AddRestroom'
-import { chatgpt, encodeImageToBase64 } from '@/utils/chatgptAPI'
+import {
+  isValidImage,
+  reencodeImage,
+  chatgpt,
+  encodeImageToBase64,
+} from '@/utils/chatgptAPI'
 
 interface AddRestroomFormData {
   name: string
@@ -107,25 +112,49 @@ const AddRestroomContainer: React.FC<AddRestroomProps> = ({
   }
 
   const evaluateToiletCleanness = async (file: File) => {
+    if (!isValidImage(file)) {
+      setWarningImageMessage(
+        '有効な画像形式（PNG、JPEG、GIF、WEBP）で、サイズが20MB以下の画像をアップロードしてください。',
+      )
+      return false
+    }
+
     setIsLoading(true)
-    const imageBase64 = await encodeImageToBase64(file)
-    const result = await chatgpt(imageBase64)
-    setIsLoading(false)
-    if (result == 0) {
-      setWarningImageMessage('トイレの画像をアップロードしてください')
-    } else {
-      setWarningImageMessage('')
-    }
-    if (result >= 1) {
-      setConfirmMessage('トイレの画像を確認しました')
-      setTimeout(() => {
-        setConfirmMessage('')
-      }, 5000)
+
+    try {
+      const reencodedBlob = await reencodeImage(file)
+      const imageBase64 = await encodeImageToBase64(reencodedBlob)
+      // const imageBase64 = await encodeImageToBase64(file)
+      console.log(imageBase64)
+      const mimeType = file.type.toLowerCase() // MIMEタイプを取得
+      console.log(imageBase64)
+      const result = await chatgpt(imageBase64, mimeType)
+      console.log(result)
+      setIsLoading(false)
+      if (result == 0) {
+        setWarningImageMessage('トイレの画像をアップロードしてください')
+      } else {
+        setWarningImageMessage('')
+      }
+      if (result >= 1) {
+        setConfirmMessage('トイレの画像を確認しました')
+        setTimeout(() => {
+          setConfirmMessage('')
+        }, 5000)
+        setImageToiletCleanness(result)
+        return true
+      }
       setImageToiletCleanness(result)
-      return true
+      return false
+    } catch (error) {
+      setIsLoading(false)
+      console.error(
+        'トイレの清潔度の評価エラー:',
+        error.response ? error.response.data : error.message,
+      )
+      setWarningImageMessage('トイレの清潔度の評価に失敗しました')
+      return false
     }
-    setImageToiletCleanness(result)
-    return false
   }
 
   const onChangeEvaluateToiletCleanness = async (files: FileList) => {
