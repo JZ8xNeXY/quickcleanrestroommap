@@ -1,11 +1,72 @@
 import axios from 'axios'
 
 const API_URL = 'https://api.openai.com/v1/'
-const MODEL = 'gpt-4o-mini'
+const MODEL = 'gpt-4o'
 const API_KEY = process.env.NEXT_PUBLIC_OPENAI_API_KEY
 
+export const isValidImage = (file: File) => {
+  const validFormats = ['image/png', 'image/jpeg', 'image/gif', 'image/webp']
+  return validFormats.includes(file.type) && file.size <= 20 * 1024 * 1024 // 20MB以下
+}
+
+export const reencodeImage = (file: File): Promise<Blob> => {
+  return new Promise((resolve, reject) => {
+    const canvas = document.createElement('canvas')
+    const ctx = canvas.getContext('2d')
+
+    if (!ctx) {
+      reject(new Error('Failed to get canvas context'))
+      return
+    }
+
+    const img = new Image()
+
+    img.onload = () => {
+      // 画像をリサイズする
+      const MAX_WIDTH = 2048
+      const MAX_HEIGHT = 2048
+      let width = img.width
+      let height = img.height
+
+      if (width > height) {
+        if (width > MAX_WIDTH) {
+          height = Math.round((height *= MAX_WIDTH / width))
+          width = MAX_WIDTH
+        }
+      } else {
+        if (height > MAX_HEIGHT) {
+          width = Math.round((width *= MAX_HEIGHT / height))
+          height = MAX_HEIGHT
+        }
+      }
+
+      canvas.width = width
+      canvas.height = height
+      ctx.drawImage(img, 0, 0, width, height)
+      canvas.toBlob((blob) => {
+        if (blob) {
+          resolve(blob)
+        } else {
+          reject(new Error('Blob creation failed'))
+        }
+      }, 'image/jpeg')
+    }
+
+    img.onerror = (err) => reject(err)
+
+    const reader = new FileReader()
+    reader.onloadend = () => {
+      img.src = reader.result as string
+    }
+    reader.onerror = (err) => reject(err)
+    reader.readAsDataURL(file)
+  })
+}
+
 // 画像をそのまま送れないので画像をBase64エンコード（テキストに変換）する関数
-export const encodeImageToBase64 = (file: File): Promise<string> => {
+export const encodeImageToBase64 = (
+  fileOrBlob: File | Blob,
+): Promise<string> => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader()
     reader.onloadend = () => {
@@ -13,11 +74,12 @@ export const encodeImageToBase64 = (file: File): Promise<string> => {
       resolve(base64data)
     }
     reader.onerror = reject
-    reader.readAsDataURL(file)
+    reader.readAsDataURL(fileOrBlob)
   })
 }
 
-export const chatgpt = async (imageBase64: string) => {
+export const chatgpt = async (imageBase64: string, mimeType: string) => {
+  console.log(mimeType)
   try {
     const response = await axios.post(
       `${API_URL}chat/completions`,
@@ -39,7 +101,7 @@ export const chatgpt = async (imageBase64: string) => {
               {
                 type: 'image_url',
                 image_url: {
-                  url: `data:image/jpeg;base64,${imageBase64}`,
+                  url: `data:${mimeType};base64,${imageBase64}`,
                   detail: 'low', // 解像度を指定（low、high、autoのいずれか）今のところlowでも精度高い
                 },
               },
