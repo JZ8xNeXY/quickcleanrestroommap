@@ -13,6 +13,12 @@ export const reencodeImage = (file: File): Promise<Blob> => {
   return new Promise((resolve, reject) => {
     const canvas = document.createElement('canvas')
     const ctx = canvas.getContext('2d')
+
+    if (!ctx) {
+      reject(new Error('Failed to get canvas context'))
+      return
+    }
+
     const img = new Image()
 
     img.onload = () => {
