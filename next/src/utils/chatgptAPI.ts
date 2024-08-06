@@ -1,20 +1,38 @@
 import axios from 'axios'
+import convert from 'heic-convert'
 
 const API_URL = 'https://api.openai.com/v1/'
 const MODEL = 'gpt-4o-mini'
 const API_KEY = process.env.NEXT_PUBLIC_OPENAI_API_KEY
 
 // 画像をそのまま送れないので画像をBase64エンコード（テキストに変換）する関数
-export const encodeImageToBase64 = (file: File): Promise<string> => {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader()
-    reader.onloadend = () => {
-      const base64data = (reader.result as string).split(',')[1] // "data:image/jpeg;base64," の部分を除去
-      resolve(base64data)
+export const encodeImageToBase64 = async (file: File): Promise<string> => {
+  try {
+    let targetFile = file
+    // HEICファイルをJPEGに変換
+    if (file.type === 'image/heic' || file.type === 'image/heif') {
+      const inputBuffer = await file.arrayBuffer()
+      const outputBuffer = await convert({
+        buffer: Buffer.from(inputBuffer), // the HEIC file buffer
+        format: 'JPEG', // output format
+        quality: 1, // the jpeg compression quality, between 0 and 1
+      })
+      targetFile = new File([outputBuffer], file.name, { type: 'image/jpeg' })
     }
-    reader.onerror = reject
-    reader.readAsDataURL(file)
-  })
+
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        const base64data = (reader.result as string).split(',')[1] // "data:image/jpeg;base64," の部分を除去
+        resolve(base64data)
+      }
+      reader.onerror = reject
+      reader.readAsDataURL(targetFile)
+    })
+  } catch (error) {
+    console.error('HEIC変換エラー:', error)
+    throw new Error('HEIC変換エラーが発生しました')
+  }
 }
 
 export const chatgpt = async (imageBase64: string) => {
