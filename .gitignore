@@ -2,4 +2,5 @@ next/node_modules/
 next/.env.*
 next/.next/*
 python/*
+notes/*
 rails/db/seed.rb
