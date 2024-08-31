@@ -13,7 +13,7 @@ interface AddMarkersProps {
   currentUserPos: { lat: number; lng: number }
   setCurrentUserPos: React.Dispatch<
     React.SetStateAction<
-      { lat: number; lng: number } | { lat: 35.681236; lng: 139.767125 }
+      { lat: number; lng: number } | { lat: 35.681236; lng: 139.767125 } //初期値は東京駅
     >
   >
 }
@@ -29,7 +29,7 @@ const AddMarkersContainer: NextPage<AddMarkersProps> = ({
 
   const closeModalWindow = () => setOpenModalWindow(false)
 
-  //再レンダリングされても状態を保持するため 不要な更新を防ぐ
+  //状態の不要な更新を防ぐ
   const markersRef = useRef<google.maps.marker.AdvancedMarkerElement[]>([])
 
   const fetchPosts = async () => {
@@ -40,24 +40,25 @@ const AddMarkersContainer: NextPage<AddMarkersProps> = ({
     return data
   }
 
+  // SWRを使ってデータをフェッチし、ウィンドウやタブのフォーカス時の再フェッチを無効化
   const { data, error } = useSWR('fetchPosts', fetchPosts, {
-    revalidateOnFocus: false, //SWRオプションの再検証の無効化
+    revalidateOnFocus: false,
   })
 
-  //現在地を取得するのは最初の１回かつmapを取得したきのみ 不要なuseEffectの実行を防ぐ
-  const FindCurrentLocation = useCallback(() => {
+  const findCurrentLocation = useCallback(() => {
     if (map) {
       userGeoLocation({ map, setCurrentUserPos })
     }
   }, [map, setCurrentUserPos])
 
   useEffect(() => {
-    FindCurrentLocation()
-  }, [FindCurrentLocation])
+    findCurrentLocation()
+  }, [findCurrentLocation])
 
   useEffect(() => {
-    const addMarkers = async () => {
+    const addMarkersToMap = async () => {
       if (map && data) {
+        // 非同期更新の実現のため、現在のマーカーをすべてマップから削除して、マーカーの配列をリセットする
         markersRef.current.forEach((marker) => (marker.map = null))
         markersRef.current = []
 
@@ -106,9 +107,7 @@ const AddMarkersContainer: NextPage<AddMarkersProps> = ({
       }
     }
 
-    if (map) {
-      addMarkers()
-    }
+    addMarkersToMap()
   }, [map, data, setSelectedRestroom])
 
   return (
