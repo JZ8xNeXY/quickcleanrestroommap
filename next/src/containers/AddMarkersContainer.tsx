@@ -41,7 +41,7 @@ const AddMarkersContainer: NextPage<AddMarkersProps> = ({
   }
 
   // SWRを使ってデータをフェッチし、ウィンドウやタブのフォーカス時の再フェッチを無効化
-  const { data, error } = useSWR<Restroom[]>('fetchPosts', fetchPosts, {
+  const { data, error } = useSWR('fetchPosts', fetchPosts, {
     revalidateOnFocus: false,
   })
 
