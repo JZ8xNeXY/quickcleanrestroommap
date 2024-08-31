@@ -1,33 +1,19 @@
 import { Box } from '@mui/material'
+import { PostgrestError } from '@supabase/supabase-js'
 import CalculateAndDisplayRoute from './CalculateAndDisplayRoute'
 import DisplayModalWindowContainer from '@/containers/DisplayModalWindowContainer'
-
-interface Restroom {
-  id: number
-  name: string
-  address: string
-  content: string
-  latitude: number
-  longitude: number
-  createdAt: string
-  nursingRoom: boolean
-  anyoneToilet: boolean
-  diaperChangingStation: boolean
-  powderCorner: boolean
-  strollerAccessible: boolean
-  evaluation: number
-  image: string
-}
+import { Restroom } from '@/interface/restroomInterface'
 
 interface AddMarkersProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  error: any
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  data: any
+  // https://github.com/supabase/postgrest-js/blob/915df5d548d6bf53aa8e21b731600dccee700113/src/lib/types.ts#L8-L13
+  error: PostgrestError | null
+  data: Restroom[] | null
   openModalWindow: boolean
   closeModalWindow: () => void
   selectedRestroom: Restroom
-  currentUserPos: { lat: number; lng: number } | undefined
+  currentUserPos:
+    | { lat: number; lng: number }
+    | { lat: 35.681236; lng: 139.767125 } //初期値は東京駅
   map: google.maps.Map | null
 }
 
@@ -43,23 +29,27 @@ const AddMarkers: React.FC<AddMarkersProps> = ({
   if (error) return <Box>An error has occurred.</Box>
   if (!data) return <Box>Loading...</Box>
 
+  const selectedRestroomDetails = {
+    name: selectedRestroom.name,
+    address: selectedRestroom.address,
+    content: selectedRestroom.content,
+    latitude: selectedRestroom.latitude,
+    longitude: selectedRestroom.longitude,
+    nursingRoom: selectedRestroom.nursingRoom,
+    anyoneToilet: selectedRestroom.anyoneToilet,
+    diaperChangingStation: selectedRestroom.diaperChangingStation,
+    powderCorner: selectedRestroom.powderCorner,
+    strollerAccessible: selectedRestroom.strollerAccessible,
+    evaluation: selectedRestroom.evaluation,
+    image: selectedRestroom.image,
+  }
+
   return (
     <>
       <DisplayModalWindowContainer
         openModalWindow={openModalWindow}
         closeModalWindow={closeModalWindow}
-        name={selectedRestroom.name}
-        address={selectedRestroom.address}
-        content={selectedRestroom.content}
-        latitude={selectedRestroom.latitude}
-        longitude={selectedRestroom.longitude}
-        nursingRoom={selectedRestroom.nursingRoom}
-        anyoneToilet={selectedRestroom.anyoneToilet}
-        diaperChangingStation={selectedRestroom.diaperChangingStation}
-        powderCorner={selectedRestroom.powderCorner}
-        strollerAccessible={selectedRestroom.strollerAccessible}
-        evaluation={selectedRestroom.evaluation}
-        image={selectedRestroom.image}
+        {...selectedRestroomDetails}
       />
       {currentUserPos &&
         selectedRestroom.latitude !== undefined &&
