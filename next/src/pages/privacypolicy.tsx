@@ -109,4 +109,10 @@ const PrivacyPolicy: NextPage = () => {
   )
 }
 
+export const getStaticProps = async () => {
+  return {
+    props: {},
+  }
+}
+
 export default PrivacyPolicy

@@ -1,9 +1,10 @@
 import camelcaseKeys from 'camelcase-keys'
 import type { NextPage } from 'next'
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef, useCallback } from 'react'
 import useSWR from 'swr'
 import { supabase } from '../utils/supabase'
 import { useRestroomContext } from '@/context/RestRoomContext'
+import { Restroom } from '@/interface/restroomInterface'
 import AddMarkers from '@/presentationals/AddMarkers'
 import { userGeoLocation } from '@/utils/userGeoLocation'
 
@@ -12,26 +13,9 @@ interface AddMarkersProps {
   currentUserPos: { lat: number; lng: number }
   setCurrentUserPos: React.Dispatch<
     React.SetStateAction<
-      { lat: number; lng: number } | { lat: 35.681236; lng: 139.767125 }
+      { lat: number; lng: number } | { lat: 35.681236; lng: 139.767125 } //初期値は東京駅
     >
   >
-}
-
-interface Restroom {
-  id: number
-  name: string
-  address: string
-  content: string
-  latitude: number
-  longitude: number
-  createdAt: string
-  nursingRoom: boolean
-  anyoneToilet: boolean
-  diaperChangingStation: boolean
-  powderCorner: boolean
-  strollerAccessible: boolean
-  evaluation: number
-  image: string
 }
 
 const AddMarkersContainer: NextPage<AddMarkersProps> = ({
@@ -39,7 +23,15 @@ const AddMarkersContainer: NextPage<AddMarkersProps> = ({
   currentUserPos,
   setCurrentUserPos,
 }) => {
-  //supabaseからの読込
+  const { selectedRestroom, setSelectedRestroom } = useRestroomContext()
+
+  const [openModalWindow, setOpenModalWindow] = useState(false)
+
+  const closeModalWindow = () => setOpenModalWindow(false)
+
+  //状態の不要な更新を防ぐ
+  const markersRef = useRef<google.maps.marker.AdvancedMarkerElement[]>([])
+
   const fetchPosts = async () => {
     const { data, error } = await supabase.from('posts').select('*')
     if (error) {
@@ -48,31 +40,25 @@ const AddMarkersContainer: NextPage<AddMarkersProps> = ({
     return data
   }
 
+  // SWRを使ってデータをフェッチし、ウィンドウやタブのフォーカス時の再フェッチを無効化
   const { data, error } = useSWR('fetchPosts', fetchPosts, {
     revalidateOnFocus: false,
   })
 
-  const { selectedRestroom, setSelectedRestroom } = useRestroomContext()
-
-  const [openModalWindow, setOpenModalWindow] = useState(false)
-  const closeModalWindow = () => setOpenModalWindow(false)
-
-  const markersRef = useRef<google.maps.marker.AdvancedMarkerElement[]>([])
-
-  useEffect(() => {
-    const FindCurrentLocation = () => {
-      if (map) {
-        userGeoLocation({ map, setCurrentUserPos })
-      }
-    }
+  const findCurrentLocation = useCallback(() => {
     if (map) {
-      FindCurrentLocation()
+      userGeoLocation({ map, setCurrentUserPos })
     }
   }, [map, setCurrentUserPos])
 
   useEffect(() => {
-    const addMarkers = async () => {
+    findCurrentLocation()
+  }, [findCurrentLocation])
+
+  useEffect(() => {
+    const addMarkersToMap = async () => {
       if (map && data) {
+        // 非同期更新の実現のため、現在のマーカーをすべてマップから削除して、マーカーの配列をリセットする
         markersRef.current.forEach((marker) => (marker.map = null))
         markersRef.current = []
 
@@ -121,9 +107,7 @@ const AddMarkersContainer: NextPage<AddMarkersProps> = ({
       }
     }
 
-    if (map) {
-      addMarkers()
-    }
+    addMarkersToMap()
   }, [map, data, setSelectedRestroom])
 
   return (

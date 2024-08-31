@@ -27,7 +27,7 @@ const TermOfUse: NextPage = () => {
           <Typography component="li">
             ・法令または公序良俗に違反する行為
           </Typography>
-          <Typography component="li">犯罪行為に関連する行為</Typography>
+          <Typography component="li">・犯罪行為に関連する行為</Typography>
           <Typography component="li">
             ・本サービスの内容等、本サービスに含まれる著作権、商標権ほか知的財産権を侵害する行為
           </Typography>
@@ -173,6 +173,12 @@ const TermOfUse: NextPage = () => {
       </Box>
     </Container>
   )
+}
+
+export const getStaticProps = async () => {
+  return {
+    props: {},
+  }
 }
 
 export default TermOfUse
