@@ -21,7 +21,7 @@ const Index: NextPage = () => {
   const [currentUserPos, setCurrentUserPos] = useState<{
     lat: number
     lng: number
-  }>({ lat: 35.681236, lng: 139.767125 })
+  }>({ lat: 35.681236, lng: 139.767125 }) //初期値を東京駅に設定
 
   useEffect(() => {
     loadGoogleMapsAPI(setMap)
@@ -51,7 +51,7 @@ const Index: NextPage = () => {
             />
           </RestroomProvider>
         </SessionProvider>
-        <Box id="map" style={{ height: '80vh', width: '100%' }}></Box>
+        <Box id="map" sx={{ height: '80vh', width: '100%' }}></Box>
         <Box id="infoPanel"></Box>
       </Container>
     </>
