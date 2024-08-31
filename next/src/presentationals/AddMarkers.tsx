@@ -7,7 +7,7 @@ import { Restroom } from '@/interface/restroomInterface'
 interface AddMarkersProps {
   // https://github.com/supabase/postgrest-js/blob/915df5d548d6bf53aa8e21b731600dccee700113/src/lib/types.ts#L8-L13
   error: PostgrestError | null
-  data: Restroom[] | null
+  data: Restroom[] | undefined
   openModalWindow: boolean
   closeModalWindow: () => void
   selectedRestroom: Restroom
