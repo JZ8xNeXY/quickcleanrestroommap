@@ -9,6 +9,12 @@ import { userGeoLocation } from '@/utils/userGeoLocation'
 
 interface AddMarkersProps {
   map: google.maps.Map | null
+  currentUserPos: { lat: number; lng: number }
+  setCurrentUserPos: React.Dispatch<
+    React.SetStateAction<
+      { lat: number; lng: number } | { lat: 35.681236; lng: 139.767125 }
+    >
+  >
 }
 
 interface Restroom {
@@ -28,7 +34,11 @@ interface Restroom {
   image: string
 }
 
-const AddMarkersContainer: NextPage<AddMarkersProps> = ({ map }) => {
+const AddMarkersContainer: NextPage<AddMarkersProps> = ({
+  map,
+  currentUserPos,
+  setCurrentUserPos,
+}) => {
   //supabaseからの読込
   const fetchPosts = async () => {
     const { data, error } = await supabase.from('posts').select('*')
@@ -47,11 +57,6 @@ const AddMarkersContainer: NextPage<AddMarkersProps> = ({ map }) => {
   const [openModalWindow, setOpenModalWindow] = useState(false)
   const closeModalWindow = () => setOpenModalWindow(false)
 
-  const [currentUserPos, setCurrentUserPos] = useState<{
-    lat: number
-    lng: number
-  }>()
-
   const markersRef = useRef<google.maps.marker.AdvancedMarkerElement[]>([])
 
   useEffect(() => {
@@ -63,7 +68,7 @@ const AddMarkersContainer: NextPage<AddMarkersProps> = ({ map }) => {
     if (map) {
       FindCurrentLocation()
     }
-  }, [map])
+  }, [map, setCurrentUserPos])
 
   useEffect(() => {
     const addMarkers = async () => {
