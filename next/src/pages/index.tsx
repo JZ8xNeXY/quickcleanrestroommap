@@ -18,6 +18,11 @@ const Index: NextPage = () => {
     null,
   )
 
+  const [currentUserPos, setCurrentUserPos] = useState<{
+    lat: number
+    lng: number
+  }>({ lat: 35.681236, lng: 139.767125 })
+
   useEffect(() => {
     loadGoogleMapsAPI(setMap)
   }, [])
@@ -34,7 +39,11 @@ const Index: NextPage = () => {
       <Container maxWidth="xl">
         <SessionProvider>
           <RestroomProvider>
-            <AddMarkersContainer map={map} />
+            <AddMarkersContainer
+              map={map}
+              currentUserPos={currentUserPos}
+              setCurrentUserPos={setCurrentUserPos}
+            />
             <AddRestroomContainer
               open={openAddRestroomModal}
               onClose={() => setOpenAddRestroomModal(false)}
