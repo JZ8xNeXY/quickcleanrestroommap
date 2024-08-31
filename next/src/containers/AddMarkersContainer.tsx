@@ -10,7 +10,7 @@ import { userGeoLocation } from '@/utils/userGeoLocation'
 interface AddMarkersProps {
   map: google.maps.Map | null
   currentUserPos: { lat: number; lng: number }
-  setCurrentUserPos : React.Dispatch<
+  setCurrentUserPos: React.Dispatch<
     React.SetStateAction<
       { lat: number; lng: number } | { lat: 35.681236; lng: 139.767125 }
     >
@@ -37,7 +37,7 @@ interface Restroom {
 const AddMarkersContainer: NextPage<AddMarkersProps> = ({
   map,
   currentUserPos,
-  setCurrentUserPos 
+  setCurrentUserPos,
 }) => {
   //supabaseからの読込
   const fetchPosts = async () => {
@@ -68,7 +68,7 @@ const AddMarkersContainer: NextPage<AddMarkersProps> = ({
     if (map) {
       FindCurrentLocation()
     }
-  }, [map])
+  }, [map, setCurrentUserPos])
 
   useEffect(() => {
     const addMarkers = async () => {
