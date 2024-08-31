@@ -30,7 +30,7 @@ const Index: NextPage = () => {
   useEffect(() => {
     if (map) {
       RightClickMapHandler({ map, setMap, setOpenAddRestroomModal, setCoords })
-      userGeoLocation({ map, setCurrentUserPos: () => {} })
+      userGeoLocation({ map, setCurrentUserPos })
     }
   }, [map])
 
