@@ -28,6 +28,11 @@ const cardStyle = {
 const About: NextPage = () => {
   const [map, setMap] = useState<google.maps.Map | null>(null)
 
+  const [currentUserPos, setCurrentUserPos] = useState<{
+    lat: number
+    lng: number
+  }>({ lat: 35.681236, lng: 139.767125 }) //初期値を東京駅に設定
+
   useEffect(() => {
     loadGoogleMapsAPI(setMap)
   }, [])
@@ -169,7 +174,11 @@ const About: NextPage = () => {
 
       <Box sx={{ textAlign: 'center', mt: 4 }}>
         <RestroomProvider>
-          <AddMarkersContainer map={map} />
+          <AddMarkersContainer
+            map={map}
+            currentUserPos={currentUserPos}
+            setCurrentUserPos={setCurrentUserPos}
+          />
         </RestroomProvider>
         <Box id="map" style={{ height: '80vh', width: '100%' }}></Box>
       </Box>
