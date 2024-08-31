@@ -1,9 +1,10 @@
 import camelcaseKeys from 'camelcase-keys'
 import type { NextPage } from 'next'
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef, useCallback } from 'react'
 import useSWR from 'swr'
 import { supabase } from '../utils/supabase'
 import { useRestroomContext } from '@/context/RestRoomContext'
+import { Restroom } from '@/interface/restroomInterface'
 import AddMarkers from '@/presentationals/AddMarkers'
 import { userGeoLocation } from '@/utils/userGeoLocation'
 
@@ -17,29 +18,20 @@ interface AddMarkersProps {
   >
 }
 
-interface Restroom {
-  id: number
-  name: string
-  address: string
-  content: string
-  latitude: number
-  longitude: number
-  createdAt: string
-  nursingRoom: boolean
-  anyoneToilet: boolean
-  diaperChangingStation: boolean
-  powderCorner: boolean
-  strollerAccessible: boolean
-  evaluation: number
-  image: string
-}
-
 const AddMarkersContainer: NextPage<AddMarkersProps> = ({
   map,
   currentUserPos,
   setCurrentUserPos,
 }) => {
-  //supabaseからの読込
+  const { selectedRestroom, setSelectedRestroom } = useRestroomContext()
+
+  const [openModalWindow, setOpenModalWindow] = useState(false)
+
+  const closeModalWindow = () => setOpenModalWindow(false)
+
+  //再レンダリングされても状態を保持するため 不要な更新を防ぐ
+  const markersRef = useRef<google.maps.marker.AdvancedMarkerElement[]>([])
+
   const fetchPosts = async () => {
     const { data, error } = await supabase.from('posts').select('*')
     if (error) {
@@ -49,26 +41,19 @@ const AddMarkersContainer: NextPage<AddMarkersProps> = ({
   }
 
   const { data, error } = useSWR('fetchPosts', fetchPosts, {
-    revalidateOnFocus: false,
+    revalidateOnFocus: false, //SWRオプションの再検証の無効化
   })
 
-  const { selectedRestroom, setSelectedRestroom } = useRestroomContext()
-
-  const [openModalWindow, setOpenModalWindow] = useState(false)
-  const closeModalWindow = () => setOpenModalWindow(false)
-
-  const markersRef = useRef<google.maps.marker.AdvancedMarkerElement[]>([])
-
-  useEffect(() => {
-    const FindCurrentLocation = () => {
-      if (map) {
-        userGeoLocation({ map, setCurrentUserPos })
-      }
-    }
+  //現在地を取得するのは最初の１回かつmapを取得したきのみ 不要なuseEffectの実行を防ぐ
+  const FindCurrentLocation = useCallback(() => {
     if (map) {
-      FindCurrentLocation()
+      userGeoLocation({ map, setCurrentUserPos })
     }
   }, [map, setCurrentUserPos])
+
+  useEffect(() => {
+    FindCurrentLocation()
+  }, [FindCurrentLocation])
 
   useEffect(() => {
     const addMarkers = async () => {
