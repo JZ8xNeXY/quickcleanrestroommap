@@ -1,23 +1,12 @@
 import React, { useState } from 'react'
 import EditRestroomContainer from './EditRestroomContainer'
 import { useSessionContext } from '@/context/SessionContext'
+import { Restroom } from '@/interface/restroomInterface'
 import DisplayModalWindow from '@/presentationals/DisplayModalWindow'
 
-interface DisplayModalWindowContainerProps {
+interface DisplayModalWindowContainerProps extends Restroom {
   openModalWindow: boolean
   closeModalWindow: () => void
-  name: string
-  address: string
-  content: string
-  latitude: number
-  longitude: number
-  nursingRoom?: boolean
-  anyoneToilet?: boolean
-  diaperChangingStation?: boolean
-  powderCorner?: boolean
-  strollerAccessible?: boolean
-  evaluation: number
-  image: string
 }
 
 const DisplayModalWindowContainer: React.FC<

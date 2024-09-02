@@ -14,7 +14,7 @@ import {
 } from '@mui/material'
 import { MutableRefObject } from 'react'
 import { Controller } from 'react-hook-form'
-import modalStyle from '@/styles/modalStyles'
+import { modalStyle } from '@/styles/modalStyles'
 
 interface EditRestroomProps {
   open: boolean
