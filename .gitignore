@@ -4,3 +4,4 @@ next/.next/*
 python/*
 notes/*
 rails/db/seed.rb
+supabase/*
