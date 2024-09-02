@@ -1,6 +1,6 @@
-/* eslint-disable @next/next/no-img-element */
 import CloseIcon from '@mui/icons-material/Close'
 import { Box, Button, Modal, Typography } from '@mui/material'
+import Image from 'next/image'
 import React from 'react'
 import ReactStarsRating from 'react-awesome-stars-rating'
 import { Restroom } from '@/interface/restroomInterface'
@@ -52,6 +52,7 @@ const DisplayModalWindow: React.FC<DisplayModalWindowProps> = ({
             <CloseIcon />
           </Button>
         </Box>
+        {/* レスポンシブ対応 */}
         <Box
           sx={{
             width: '100%',
@@ -62,7 +63,7 @@ const DisplayModalWindow: React.FC<DisplayModalWindowProps> = ({
             },
           }}
         >
-          <img src={image} alt="restroom" width={200} height={200} />
+          <Image src={image} alt="restroom" width={200} height={200} />
         </Box>
         <Box
           sx={{
