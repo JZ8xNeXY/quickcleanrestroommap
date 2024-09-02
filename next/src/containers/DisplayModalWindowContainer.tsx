@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import EditRestroomContainer from './EditRestroomContainer'
-import { userSessionContext } from '@/context/SessionContext'
+import { useSessionContext } from '@/context/SessionContext'
 import { Restroom } from '@/interface/restroomInterface'
 import DisplayModalWindow from '@/presentationals/DisplayModalWindow'
 
@@ -27,7 +27,7 @@ const DisplayModalWindowContainer: React.FC<
   evaluation,
   image,
 }) => {
-  const { currentUser } = userSessionContext()
+  const { currentUser } = useSessionContext()
   const [editModalWindow, setEditModalWindow] = useState(false)
   const openEditRestroomModalWindow = () => setEditModalWindow(true)
   const closeEditRestroomModalWindow = () => setEditModalWindow(false)
