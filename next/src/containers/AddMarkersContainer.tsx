@@ -71,7 +71,7 @@ const AddMarkersContainer: NextPage<AddMarkersProps> = ({
         restrooms.forEach((restroom) => {
           const restroomImg = document.createElement('img')
           restroomImg.src = '/restroom.png'
-          restroomImg.alt = restroom.name
+          restroomImg.alt = restroom.name || ''
           restroomImg.width = 75
           restroomImg.height = 75
 

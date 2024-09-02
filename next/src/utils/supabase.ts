@@ -1,5 +1,4 @@
 import { createClient } from '@supabase/supabase-js'
-import type { Database } from '@/type/schema'
 
 // https://supabase.com/blog/supabase-js-v2
 
@@ -10,4 +9,4 @@ if (!supabaseUrl || !supabaseKey) {
   throw new Error('Missing Supabase URL or API Key')
 }
 
-export const supabase = createClient<Database>(supabaseUrl, supabaseKey)
+export const supabase = createClient(supabaseUrl, supabaseKey)
