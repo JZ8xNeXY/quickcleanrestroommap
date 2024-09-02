@@ -3,6 +3,8 @@ import CloseIcon from '@mui/icons-material/Close'
 import { Box, Button, Modal, Typography } from '@mui/material'
 import React from 'react'
 import ReactStarsRating from 'react-awesome-stars-rating'
+import { Restroom } from '@/interface/restroomInterface'
+import { User } from '@/interface/userInterface'
 import buttonStyle from '@/styles/buttonStyle'
 import changeFontSize from '@/styles/changeFontSize'
 import {
@@ -14,29 +16,10 @@ import {
 } from '@/styles/facilityStyles'
 import modalStyle from '@/styles/modalStyles'
 
-interface UserProps {
-  email: string
-  id: number
-  isFetched: boolean
-  isSignedIn: boolean
-}
-
-interface DisplayModalWindowProps {
-  user: UserProps
+interface DisplayModalWindowProps extends Restroom {
+  user: User
   openModalWindow: boolean
   closeModalWindow: () => void
-  name: string
-  address: string
-  content: string
-  latitude: number
-  longitude: number
-  nursingRoom?: boolean
-  anyoneToilet?: boolean
-  diaperChangingStation?: boolean
-  powderCorner?: boolean
-  strollerAccessible?: boolean
-  evaluation: number
-  image: string
   openEditRestroomModalWindow: () => void
 }
 
@@ -157,16 +140,10 @@ const DisplayModalWindow: React.FC<DisplayModalWindowProps> = ({
           <Typography variant="h6" sx={{ fontWeight: 'bold', mt: 1 }}>
             清潔度
           </Typography>
-          {/* <Typography sx={{ ml: 2 }}>評価:{evaluation}</Typography> */}
           <Box sx={{ ml: 2 }}>
             <ReactStarsRating isEdit={false} value={evaluation} />
           </Box>
         </Box>
-        {/* <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-          <Button sx={buttonStyle} onClick={closeModalWindow}>
-            評価する
-          </Button>
-        </Box> */}
         <Box sx={{ textAlign: 'center', mt: 4 }}>
           <Button
             variant="contained"

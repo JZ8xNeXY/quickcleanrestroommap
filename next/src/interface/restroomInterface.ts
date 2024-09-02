@@ -1,11 +1,10 @@
+//個別の施設情報
 export interface Restroom {
-  id: number
   name: string
   address: string
   content: string
   latitude: number
   longitude: number
-  createdAt: string
   nursingRoom: boolean
   anyoneToilet: boolean
   diaperChangingStation: boolean
@@ -13,4 +12,10 @@ export interface Restroom {
   strollerAccessible: boolean
   evaluation: number
   image: string
+}
+
+//施設情報全体
+export interface Restrooms extends Restroom {
+  id: number
+  createdAt: string
 }

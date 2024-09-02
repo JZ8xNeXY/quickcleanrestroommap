@@ -4,7 +4,7 @@ import { useEffect, useState, useRef, useCallback } from 'react'
 import useSWR from 'swr'
 import { supabase } from '../utils/supabase'
 import { useRestroomContext } from '@/context/RestRoomContext'
-import { Restroom } from '@/interface/restroomInterface'
+import { Restrooms } from '@/interface/restroomInterface'
 import AddMarkers from '@/presentationals/AddMarkers'
 import { userGeoLocation } from '@/utils/userGeoLocation'
 
@@ -62,7 +62,7 @@ const AddMarkersContainer: NextPage<AddMarkersProps> = ({
         markersRef.current.forEach((marker) => (marker.map = null))
         markersRef.current = []
 
-        const restrooms: Restroom[] = data ? camelcaseKeys(data) : []
+        const restrooms: Restrooms[] = data ? camelcaseKeys(data) : []
 
         const { AdvancedMarkerElement } = (await google.maps.importLibrary(
           'marker',
