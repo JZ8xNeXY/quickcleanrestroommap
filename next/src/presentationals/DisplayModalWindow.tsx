@@ -14,7 +14,13 @@ import {
   powderCornerStyle,
   strollerAccessibleStyle,
 } from '@/styles/facilityStyles'
-import modalStyle from '@/styles/modalStyles'
+import {
+  modalStyle,
+  closeButtonStyle,
+  imageBoxStyle,
+  facilityNameStyle,
+  modalContentTitle,
+} from '@/styles/modalStyles'
 
 interface DisplayModalWindowProps extends Restroom {
   user: User
@@ -43,66 +49,46 @@ const DisplayModalWindow: React.FC<DisplayModalWindowProps> = ({
     <Modal
       open={openModalWindow}
       onClose={closeModalWindow}
-      aria-labelledby="modal-title"
-      aria-describedby="modal-description"
+      aria-labelledby="modal-title" //アクセシビリティ対応
+      aria-describedby="modal-description" //アクセシビリティ対応
     >
       <Box sx={modalStyle}>
         <Box sx={{ display: 'flex', justifyContent: 'right' }}>
-          <Button sx={{ color: '#000000' }} onClick={closeModalWindow}>
+          <Button sx={closeButtonStyle} onClick={closeModalWindow}>
             <CloseIcon />
           </Button>
         </Box>
-        {/* レスポンシブ対応 */}
-        <Box
-          sx={{
-            width: '100%',
-            height: 'auto',
-            '& img': {
-              width: '100%',
-              height: 'auto',
-            },
-          }}
-        >
+        <Box sx={imageBoxStyle}>
           <Image src={image} alt="restroom" width={200} height={200} />
         </Box>
-        <Box
-          sx={{
-            display: 'flex',
-            bgcolor: '#F0F0F0',
-            alignItems: 'center',
-            borderRadius: '5px',
-            p: 1,
-            mt: 2,
-          }}
-        >
+        <Box sx={facilityNameStyle}>
           <Typography sx={{ ...changeFontSize(name) }}>
             {name ? name : 'ー'}
           </Typography>
         </Box>
-        {user &&
-          (user ? (
-            <Box sx={{ display: 'flex', justifyContent: 'right', mt: 0 }}>
-              <Button
-                sx={buttonStyle}
-                onClick={() => {
-                  closeModalWindow()
-                  openEditRestroomModalWindow()
-                }}
-              >
-                編集する
-              </Button>
-            </Box>
-          ) : null)}
+        {user && (
+          <Box sx={{ display: 'flex', justifyContent: 'right', mt: 0 }}>
+            <Button
+              sx={buttonStyle}
+              onClick={() => {
+                closeModalWindow()
+                openEditRestroomModalWindow()
+              }}
+            >
+              編集する
+            </Button>
+          </Box>
+        )}
         <Box sx={{ mt: 1 }}>
-          <Typography variant="h6" sx={{ fontWeight: 'bold', mt: 1 }}>
+          <Typography variant="h6" sx={modalContentTitle}>
             住所
           </Typography>
           <Typography sx={{ ml: 2 }}>{address ? address : 'ー'}</Typography>
-          <Typography variant="h6" sx={{ fontWeight: 'bold', mt: 1 }}>
+          <Typography variant="h6" sx={modalContentTitle}>
             コメント
           </Typography>
           <Typography sx={{ ml: 2 }}>{content ? content : 'ー'}</Typography>
-          <Typography variant="h6" sx={{ fontWeight: 'bold', mt: 1 }}>
+          <Typography variant="h6" sx={modalContentTitle}>
             設備情報
           </Typography>
           <Box
@@ -113,32 +99,30 @@ const DisplayModalWindow: React.FC<DisplayModalWindowProps> = ({
               flexWrap: 'wrap',
             }}
           >
-            <Typography sx={{ ml: 2 }}>
-              {!nursingRoom &&
-                !anyoneToilet &&
-                !diaperChangingStation &&
-                !powderCorner &&
-                !strollerAccessible && <Typography>ー</Typography>}
-            </Typography>
-            {nursingRoom && (
+            {nursingRoom ? (
               <Typography sx={nursingRoomStyle}>授乳室</Typography>
-            )}
-            {anyoneToilet && (
+            ) : null}
+            {anyoneToilet ? (
               <Typography sx={anyoneToiletStyle}>誰でもトイレ</Typography>
-            )}
-            {diaperChangingStation && (
+            ) : null}
+            {diaperChangingStation ? (
               <Typography sx={diaperChangingStationStyle}>
                 オムツ交換台
               </Typography>
-            )}
-            {powderCorner && (
+            ) : null}
+            {powderCorner ? (
               <Typography sx={powderCornerStyle}>パウダーコーナー</Typography>
-            )}
-            {strollerAccessible && (
+            ) : null}
+            {strollerAccessible ? (
               <Typography sx={strollerAccessibleStyle}>ベビーカー可</Typography>
-            )}
+            ) : null}
+            {!nursingRoom &&
+              !anyoneToilet &&
+              !diaperChangingStation &&
+              !powderCorner &&
+              !strollerAccessible && <Typography sx={{ ml: 2 }}>ー</Typography>}
           </Box>
-          <Typography variant="h6" sx={{ fontWeight: 'bold', mt: 1 }}>
+          <Typography variant="h6" sx={modalContentTitle}>
             清潔度
           </Typography>
           <Box sx={{ ml: 2 }}>
