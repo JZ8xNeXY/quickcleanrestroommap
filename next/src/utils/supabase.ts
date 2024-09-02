@@ -1,5 +1,7 @@
 import { createClient } from '@supabase/supabase-js'
 
+// https://supabase.com/blog/supabase-js-v2
+
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_API_KEY
 

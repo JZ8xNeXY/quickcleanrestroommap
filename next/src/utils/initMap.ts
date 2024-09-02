@@ -1,4 +1,4 @@
-// //マップを表示する
+// //マップを作成して表示する
 export const initMap = async (
   setMap: React.Dispatch<React.SetStateAction<google.maps.Map | null>>,
 ) => {
@@ -10,7 +10,7 @@ export const initMap = async (
       zoom: 16,
       mapId: 'DEMO_MAP_ID',
       maxZoom: 25,
-      center: { lat: 35.681236, lng: 139.767125 },
+      center: { lat: 35.681236, lng: 139.767125 }, //東京駅
       mapTypeId: 'roadmap',
     })
 

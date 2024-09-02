@@ -69,6 +69,7 @@ export const loadGoogleMapsAPI = (
     const loadMap = () => {
       u()
         .then(() => {
+          //マップを作成して表示する
           initMap(setMap)
         })
         .catch((error) => {
