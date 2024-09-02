@@ -17,5 +17,5 @@ export interface Restroom {
 //施設情報全体
 export interface Restrooms extends Restroom {
   id: number
-  createdAt: string
+  createdAt: string | null
 }
