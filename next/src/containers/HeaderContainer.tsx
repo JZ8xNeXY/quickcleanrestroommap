@@ -39,9 +39,9 @@ const HeaderContainer = () => {
 
   const list = () => (
     <Box
-      role="presentation"
-      onClick={openDrawer(false)}
-      onKeyDown={openDrawer(false)}
+      role="presentation" //アクセシビリティ対応
+      onClick={() => openDrawer(false)}
+      onKeyDown={() => openDrawer(false)}
     >
       <Box sx={{ display: 'flex', justifyContent: 'right' }}>
         <CloseIcon sx={{ m: 1 }} onClick={closeDrawer} />
