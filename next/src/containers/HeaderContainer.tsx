@@ -1,6 +1,6 @@
 import CloseIcon from '@mui/icons-material/Close'
 import { Box, List, ListItem, ListItemText } from '@mui/material'
-import Link from 'next/link'
+import NextLink from 'next/link'
 import React, { useState } from 'react'
 import { useSessionContext } from '@/context/SessionContext'
 import Header from '@/presentationals/Header'
@@ -37,7 +37,7 @@ const HeaderContainer = () => {
     { text: 'プライバシーポリシー', href: '/privacypolicy' },
   ]
 
-  const list = () => (
+  const SideBar = () => (
     <Box
       role="presentation" //アクセシビリティ対応
       onClick={() => openDrawer(false)}
@@ -48,11 +48,14 @@ const HeaderContainer = () => {
       </Box>
       <List>
         {DrawerMenuItems.map(({ text, href }) => (
-          <Link href={href} passHref key={text}>
-            <ListItem>
-              <ListItemText primary={text} />
-            </ListItem>
-          </Link>
+          <ListItem
+            component={NextLink}
+            href={href}
+            key={text}
+            onClick={closeDrawer}
+          >
+            <ListItemText primary={text} />
+          </ListItem>
         ))}
       </List>
     </Box>
@@ -65,7 +68,7 @@ const HeaderContainer = () => {
       openDrawer={openDrawer}
       openAddSimpleRestroomModal={openAddSimpleRestroomModal}
       setOpenAddSimpleRestroomModal={setOpenAddSimpleRestroomModal}
-      list={list}
+      sideBar={SideBar}
     />
   )
 }
