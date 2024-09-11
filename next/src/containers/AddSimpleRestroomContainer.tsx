@@ -4,24 +4,10 @@ import { useState, useEffect, useRef, MutableRefObject } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { mutate } from 'swr'
 import { supabase } from '../utils/supabase'
+import { AddRestroomFormData } from '@/interface/addRestroomFormDataInterface'
 import AddSimpleRestroom from '@/presentationals/AddSimpleRestroom'
 import { chatgpt, encodeImageToBase64 } from '@/utils/chatgptAPI'
 
-interface AddSimpleRestroomFormData {
-  name: string
-  address: string
-  content: string
-  latitude: number
-  longitude: number
-  createdAt: string
-  nursing_room: boolean
-  anyone_toilet: boolean
-  diaper_changing_station: boolean
-  powder_corner: boolean
-  stroller_accessible: boolean
-  evaluation: number
-  image?: FileList
-}
 
 interface AddSimpleRestroomProps {
   open: boolean
@@ -42,7 +28,7 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
   onClose,
 }) => {
   const { register, handleSubmit, control, reset, setValue } =
-    useForm<AddSimpleRestroomFormData>({
+    useForm<AddRestroomFormData>({
       defaultValues: {
         name: '',
         address: '',
@@ -233,7 +219,7 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
     await uploadFileToS3(file)
   }
 
-  const onSubmit: SubmitHandler<AddSimpleRestroomFormData> = async (data) => {
+  const onSubmit: SubmitHandler<AddRestroomFormData> = async (data) => {
     if (!fileInput.current?.files || fileInput.current.files.length === 0) {
       setWarningImageMessage('トイレの画像をアップロードしてください')
       return

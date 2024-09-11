@@ -3,24 +3,9 @@ import { useState, useEffect, useRef, MutableRefObject } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { mutate } from 'swr'
 import { supabase } from '../utils/supabase'
+import { AddRestroomFormData } from '@/interface/addRestroomFormDataInterface'
 import AddRestroom from '@/presentationals/AddRestroom'
 import { chatgpt } from '@/utils/chatgptAPI'
-
-interface AddRestroomFormData {
-  name: string
-  address: string
-  content: string
-  latitude: number
-  longitude: number
-  createdAt: string
-  nursing_room: boolean
-  anyone_toilet: boolean
-  diaper_changing_station: boolean
-  powder_corner: boolean
-  stroller_accessible: boolean
-  evaluation: number
-  image?: FileList
-}
 
 interface AddRestroomProps {
   open: boolean
