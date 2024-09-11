@@ -69,13 +69,8 @@ const Header: React.FC<HeaderProps> = ({
                   <MenuIcon />
                 </IconButton>
               </Toolbar>
-              <Drawer
-                anchor="left"
-                open={isOpen}
-                onClose={() => {
-                  openDrawer(false)
-                }}
-              >
+              {/* サイドバー以外をクリックしても閉じるようにする */}
+              <Drawer anchor="left" open={isOpen} onClose={openDrawer(false)}>
                 {sideBar()}
               </Drawer>
             </Box>
