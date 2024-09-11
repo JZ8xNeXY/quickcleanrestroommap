@@ -6,8 +6,7 @@ import { mutate } from 'swr'
 import { supabase } from '../utils/supabase'
 import { AddRestroomFormData } from '@/interface/addRestroomFormDataInterface'
 import AddSimpleRestroom from '@/presentationals/AddSimpleRestroom'
-import { chatgpt, encodeImageToBase64 } from '@/utils/chatgptAPI'
-
+import { chatgpt } from '@/utils/chatgptAPI'
 
 interface AddSimpleRestroomProps {
   open: boolean
@@ -62,52 +61,33 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
     setValue('evaluation', imageToiletCleanness)
   }, [imageToiletCleanness, setValue])
 
-  const onChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files
-    if (!files || files.length <= 0) return
-    try {
-      showImageFileName(files)
-      await onChangeShowExifData(e)
-      const isOk = await onChangeEvaluateToiletCleanness(files)
-      if (isOk) {
-        await onChangeUploadFileToS3(files)
-      }
-    } catch (error) {
-      console.error('Error processing file:', error)
-    }
-  }
-
-  // ref関数 react-hook-formが管理できるようになる
-  const { ref, ...rest } = register('image', { onChange })
-
-  const selectImageFile = () => {
-    if (!fileInput.current) return
-    fileInput.current.removeAttribute('capture')
-    fileInput.current.click()
-  }
-
-  const showImageFileName = (files: FileList) => {
-    const file = files[0]
-    const fileReader = new FileReader()
-    setFileName(file.name)
-    fileReader.onload = () => {
-      setImageData(fileReader.result as string)
-    }
-    fileReader.readAsDataURL(file)
-  }
-
-  const resetImageFile = () => {
-    setFileName('')
-    setImageData('')
-    if (fileInput.current) {
-      fileInput.current.value = ''
-    }
-  }
-
   const resetModal = () => {
     reset()
     resetImageFile()
     onClose()
+  }
+
+  const showImageFileName = (files: FileList) => {
+    const file = files[0]
+    setFileName(file.name)
+  }
+
+  const convertFileToBase64 = async (file: File): Promise<string> => {
+    const fileReader = new FileReader()
+
+    const imageDataToBase64: string = await new Promise((resolve, reject) => {
+      fileReader.onload = () => {
+        resolve(fileReader.result as string)
+      }
+
+      fileReader.onerror = (error) => reject(error)
+
+      fileReader.readAsDataURL(file)
+    })
+
+    setImageData(imageDataToBase64)
+
+    return imageDataToBase64.split(',')[1] // "data:image/jpeg;base64,"の部分を除去して返す
   }
 
   const getExifData = (file: File) => {
@@ -156,11 +136,10 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
     await getExifData(file)
   }
 
-  const evaluateToiletCleanness = async (file: File) => {
+  const evaluateToiletCleanness = async (imageDataToBase64: string) => {
     setIsLoading(true)
     try {
-      const imageBase64 = await encodeImageToBase64(file)
-      const result = await chatgpt(imageBase64)
+      const result = await chatgpt(imageDataToBase64)
       setIsLoading(false)
       if (result == 0) {
         setWarningImageMessage('トイレの画像をアップロードしてください')
@@ -185,9 +164,8 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
     }
   }
 
-  const onChangeEvaluateToiletCleanness = async (files: FileList) => {
-    const file = files[0]
-    return await evaluateToiletCleanness(file)
+  const onChangeEvaluateToiletCleanness = async (imageDataToBase64: string) => {
+    return await evaluateToiletCleanness(imageDataToBase64)
   }
 
   const s3 = new AWS.S3({
@@ -217,6 +195,27 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
   const onChangeUploadFileToS3 = async (files: FileList) => {
     const file = files[0]
     await uploadFileToS3(file)
+  }
+
+  const onChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files
+    if (!files || files.length <= 0) return
+
+    const file = files[0]
+
+    try {
+      showImageFileName(files)
+
+      await onChangeShowExifData(e)
+
+      const imageBase64 = await convertFileToBase64(file)
+      const isOk = await onChangeEvaluateToiletCleanness(imageBase64)
+      if (isOk) {
+        await onChangeUploadFileToS3(files)
+      }
+    } catch (error) {
+      console.error('Error processing file:', error)
+    }
   }
 
   const onSubmit: SubmitHandler<AddRestroomFormData> = async (data) => {
@@ -267,6 +266,23 @@ const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
       }
     }
   }
+
+  const selectImageFile = () => {
+    if (!fileInput.current) return
+    fileInput.current.removeAttribute('capture')
+    fileInput.current.click()
+  }
+
+  const resetImageFile = () => {
+    setFileName('')
+    setImageData('')
+    if (fileInput.current) {
+      fileInput.current.value = ''
+    }
+  }
+
+  // ref関数 react-hook-formが管理できるようになる
+  const { ref, ...rest } = register('image', { onChange })
 
   return (
     <AddSimpleRestroom
