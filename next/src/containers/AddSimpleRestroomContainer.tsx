@@ -4,14 +4,12 @@ import { useState, useEffect, useRef, MutableRefObject } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { mutate } from 'swr'
 import { supabase } from '../utils/supabase'
-import { AddRestroomFormData } from '@/interface/addRestroomFormDataInterface'
+import {
+  AddRestroomFormData,
+  AddRestroomProps,
+} from '@/interface/addRestroomFormDataInterface'
 import AddSimpleRestroom from '@/presentationals/AddSimpleRestroom'
 import { chatgpt } from '@/utils/chatgptAPI'
-
-interface AddSimpleRestroomProps {
-  open: boolean
-  onClose: () => void
-}
 
 interface ExifTagValue {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -22,7 +20,7 @@ interface ExifTagValue {
   '4'?: [number, number, number]
 }
 
-const AddSimpleRestroomContainer: React.FC<AddSimpleRestroomProps> = ({
+const AddSimpleRestroomContainer: React.FC<AddRestroomProps> = ({
   open,
   onClose,
 }) => {

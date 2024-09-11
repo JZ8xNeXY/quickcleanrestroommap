@@ -13,3 +13,8 @@ export interface AddRestroomFormData {
   evaluation: number
   image?: FileList
 }
+
+export interface AddRestroomProps {
+  open: boolean
+  onClose: () => void
+}

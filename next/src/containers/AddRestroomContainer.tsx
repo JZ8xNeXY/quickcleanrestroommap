@@ -3,17 +3,18 @@ import { useState, useEffect, useRef, MutableRefObject } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { mutate } from 'swr'
 import { supabase } from '../utils/supabase'
-import { AddRestroomFormData } from '@/interface/addRestroomFormDataInterface'
+import {
+  AddRestroomFormData,
+  AddRestroomProps,
+} from '@/interface/addRestroomFormDataInterface'
 import AddRestroom from '@/presentationals/AddRestroom'
 import { chatgpt } from '@/utils/chatgptAPI'
 
-interface AddRestroomProps {
-  open: boolean
-  onClose: () => void
+interface AddRestroomPropsExtended extends AddRestroomProps {
   coords: { lat: number; lng: number } | null
 }
 
-const AddRestroomContainer: React.FC<AddRestroomProps> = ({
+const AddRestroomContainer: React.FC<AddRestroomPropsExtended> = ({
   open,
   onClose,
   coords,
