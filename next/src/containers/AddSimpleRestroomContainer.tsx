@@ -12,12 +12,17 @@ import AddSimpleRestroom from '@/presentationals/AddSimpleRestroom'
 import { chatgpt } from '@/utils/chatgptAPI'
 
 interface ExifTagValue {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [key: string]: any
+  '0'?: [number, number, number, number]
   '1'?: string
   '2'?: [number, number, number]
   '3'?: string
   '4'?: [number, number, number]
+  '34853'?: {
+    1: string //北緯
+    2: [number, number, number] //緯度情報
+    3: string //東経
+    4: [number, number, number] //経度情報
+  }
 }
 
 const AddSimpleRestroomContainer: React.FC<AddRestroomProps> = ({
