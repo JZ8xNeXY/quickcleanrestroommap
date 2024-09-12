@@ -1,28 +1,12 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react'
-
-interface Restroom {
-  id: number
-  name: string
-  address: string
-  content: string
-  latitude: number
-  longitude: number
-  createdAt: string
-  nursingRoom: boolean
-  anyoneToilet: boolean
-  diaperChangingStation: boolean
-  powderCorner: boolean
-  strollerAccessible: boolean
-  evaluation: number
-  image: string
-}
+import { Restrooms } from '@/interface/restroomInterface'
 
 interface RestroomContextProps {
-  selectedRestroom: Restroom
-  setSelectedRestroom: React.Dispatch<React.SetStateAction<Restroom>>
+  selectedRestroom: Restrooms
+  setSelectedRestroom: React.Dispatch<React.SetStateAction<Restrooms>>
 }
 
-const defaultRestroom: Restroom = {
+const defaultRestroom: Restrooms = {
   id: 0,
   name: '',
   address: '',
@@ -45,7 +29,7 @@ const RestroomContext = createContext<RestroomContextProps | undefined>(
 
 export function RestroomProvider({ children }: { children: ReactNode }) {
   const [selectedRestroom, setSelectedRestroom] =
-    useState<Restroom>(defaultRestroom)
+    useState<Restrooms>(defaultRestroom)
 
   return (
     <RestroomContext.Provider value={{ selectedRestroom, setSelectedRestroom }}>

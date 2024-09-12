@@ -4,19 +4,6 @@ const API_URL = 'https://api.openai.com/v1/'
 const MODEL = 'gpt-4o-mini'
 const API_KEY = process.env.NEXT_PUBLIC_OPENAI_API_KEY
 
-// 画像をそのまま送れないので画像をBase64エンコード（テキストに変換）する関数
-export const encodeImageToBase64 = (file: File): Promise<string> => {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader()
-    reader.onloadend = () => {
-      const base64data = (reader.result as string).split(',')[1] // "data:image/jpeg;base64," の部分を除去
-      resolve(base64data)
-    }
-    reader.onerror = reject
-    reader.readAsDataURL(file)
-  })
-}
-
 export const chatgpt = async (imageBase64: string) => {
   try {
     const response = await axios.post(

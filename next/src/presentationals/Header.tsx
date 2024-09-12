@@ -12,24 +12,17 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 import AddSimpleRestroomContainer from '@/containers/AddSimpleRestroomContainer'
-
-interface UserProps {
-  email: string
-  id: number
-  isFetched: boolean
-  isSignedIn: boolean
-}
+import { User } from '@/interface/userInterface'
 
 interface HeaderProps {
-  user: UserProps
+  user: User
   isOpen: boolean
   openDrawer: (
     open: boolean,
   ) => (event: React.KeyboardEvent | React.MouseEvent) => void
   openAddSimpleRestroomModal: boolean
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  setOpenAddSimpleRestroomModal: any
-  list: () => JSX.Element
+  setOpenAddSimpleRestroomModal: React.Dispatch<React.SetStateAction<boolean>>
+  sideBar: () => JSX.Element
 }
 
 const Header: React.FC<HeaderProps> = ({
@@ -38,7 +31,7 @@ const Header: React.FC<HeaderProps> = ({
   openDrawer,
   openAddSimpleRestroomModal,
   setOpenAddSimpleRestroomModal,
-  list,
+  sideBar,
 }) => {
   return (
     <AppBar
@@ -76,14 +69,9 @@ const Header: React.FC<HeaderProps> = ({
                   <MenuIcon />
                 </IconButton>
               </Toolbar>
-              <Drawer
-                anchor="left"
-                open={isOpen}
-                onClose={() => {
-                  openDrawer(false)
-                }}
-              >
-                {list()}
+              {/* サイドバー以外をクリックしても閉じるようにする */}
+              <Drawer anchor="left" open={isOpen} onClose={openDrawer(false)}>
+                {sideBar()}
               </Drawer>
             </Box>
             <Box>
