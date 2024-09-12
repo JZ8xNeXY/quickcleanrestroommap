@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @next/next/no-img-element */
 import {
   Box,
   Button,
@@ -13,30 +11,15 @@ import {
   Grid,
   Alert,
 } from '@mui/material'
-import { MutableRefObject } from 'react'
 import { Controller } from 'react-hook-form'
+import { AddRestroomProps } from '@/interface/addRestroomInterface'
 import { modalStyle } from '@/styles/modalStyles'
 
-interface AddRestroomProps {
-  open: boolean
-  onClose: () => void
+interface AddRestroomPropsExtended extends AddRestroomProps {
   coords: { lat: number; lng: number } | null
-  handleSubmit: any
-  onSubmit: any
-  control: any
-  fileName: string
-  imageData: string
-  selectImageFile: () => void
-  resetImageFile: () => void
-  register: any
-  fileInput: MutableRefObject<HTMLInputElement | null> //更新可能
-  onChange: any
-  warningImageMessage: string
-  confirmImageMessage: string
-  isLoading: boolean
 }
 
-const AddRestroom: React.FC<AddRestroomProps> = ({
+const AddRestroom: React.FC<AddRestroomPropsExtended> = ({
   open,
   onClose,
   coords,
@@ -54,6 +37,9 @@ const AddRestroom: React.FC<AddRestroomProps> = ({
   confirmImageMessage,
   isLoading,
 }) => {
+  // ref関数 react-hook-formが管理できるようになる
+  const { ref, ...rest } = register('image', { onChange })
+
   return (
     <Modal open={open} onClose={onClose}>
       <Box sx={modalStyle}>
@@ -85,12 +71,12 @@ const AddRestroom: React.FC<AddRestroomProps> = ({
               type="file"
               id="file"
               ref={(e) => {
-                register.ref(e) // ref関数でフォームに入力した値を管理
+                ref(e) // ref関数でフォームに入力した値を管理
                 if (e) fileInput.current = e
               }}
               accept="image/*"
               style={{ display: 'none' }}
-              {...register.rest}
+              {...rest}
               onChange={onChange}
             />
             <Button
@@ -109,8 +95,8 @@ const AddRestroom: React.FC<AddRestroomProps> = ({
                 (必須)
               </span>
             </Button>
-            <div
-              style={{
+            <Box
+              sx={{
                 padding: '1em',
                 border: '1px dotted #ccc',
                 minHeight: '200px',
@@ -119,16 +105,32 @@ const AddRestroom: React.FC<AddRestroomProps> = ({
             >
               {fileName && (
                 <>
-                  <Button onClick={resetImageFile}>❌ CLOSE</Button>
-                  <img
+                  <Button
+                    onClick={resetImageFile}
+                    sx={{
+                      alignSelf: 'flex-start',
+                      mb: 1,
+                      fontWeight: 'bold',
+                      color: 'red',
+                    }}
+                  >
+                    ❌ CLOSE
+                  </Button>
+                  <Box
+                    component="img"
                     src={imageData}
-                    style={{ margin: 'auto', maxWidth: '100%' }}
                     alt="Selected"
+                    sx={{
+                      display: 'block',
+                      margin: 'auto',
+                      maxWidth: '100%',
+                      height: 'auto',
+                    }}
                   />
                   <Typography>{fileName}</Typography>
                 </>
               )}
-            </div>
+            </Box>
             <Controller
               name="name"
               control={control}

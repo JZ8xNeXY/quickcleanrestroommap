@@ -100,10 +100,8 @@ const AddSimpleRestroomContainer: React.FC<AddRestroomProps> = ({
 
         const gpsData = allExifData['34853']
         if (gpsData) {
-          // 正しい型の引数を渡す
           const latitude = convertDMSToDD(gpsData[2], gpsData[1])
           setImageLatitude(latitude.toString())
-          // 正しい型の引数を渡す
           const longitude = convertDMSToDD(gpsData[4], gpsData[3])
           setImageLongitude(longitude.toString())
           setWarningCoordMessage('')

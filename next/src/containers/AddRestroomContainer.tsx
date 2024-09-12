@@ -213,9 +213,6 @@ const AddRestroomContainer: React.FC<AddRestroomPropsExtended> = ({
     }
   }
 
-  // ref関数 react-hook-formが管理できるようになる
-  const { ref, ...rest } = register('image', { onChange })
-
   return (
     <AddRestroom
       open={open}
@@ -228,7 +225,7 @@ const AddRestroomContainer: React.FC<AddRestroomPropsExtended> = ({
       imageData={imageData}
       selectImageFile={selectImageFile}
       resetImageFile={resetImageFile}
-      register={{ ...rest, ref }}
+      register={register}
       fileInput={fileInput}
       onChange={onChange} //ファイル分割用に追加
       warningImageMessage={warningImageMessage}
