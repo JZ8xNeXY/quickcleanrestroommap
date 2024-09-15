@@ -8,7 +8,6 @@ import {
   Modal,
   Grid,
   Alert,
-  Input,
 } from '@mui/material'
 import { Controller } from 'react-hook-form'
 import Coord from './Coord'
