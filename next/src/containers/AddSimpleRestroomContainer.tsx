@@ -282,9 +282,6 @@ const AddSimpleRestroomContainer: React.FC<AddRestroomProps> = ({
     }
   }
 
-  // ref関数 react-hook-formが管理できるようになる
-  const { ref, ...rest } = register('image', { onChange })
-
   return (
     <AddSimpleRestroom
       open={open}
