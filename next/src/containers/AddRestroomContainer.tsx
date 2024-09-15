@@ -1,4 +1,3 @@
-import AWS from 'aws-sdk'
 import { useState, useEffect, useRef, MutableRefObject } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { mutate } from 'swr'
