@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @next/next/no-img-element */
 import {
   Box,
   Button,
@@ -8,35 +6,21 @@ import {
   Typography,
   Stack,
   Modal,
-  FormControlLabel,
-  Checkbox,
   Grid,
   Alert,
 } from '@mui/material'
-import { MutableRefObject } from 'react'
 import { Controller } from 'react-hook-form'
+import Coord from './Coord'
+import FacilityCheckBox from './FacilityCheckBox'
+import FormTextField from './FormTextField'
+import { AddRestroomProps } from '@/interface/addRestroomInterface'
 import { modalStyle } from '@/styles/modalStyles'
 
-interface AddRestroomProps {
-  open: boolean
-  onClose: () => void
+interface AddRestroomPropsExtended extends AddRestroomProps {
   coords: { lat: number; lng: number } | null
-  handleSubmit: any
-  onSubmit: any
-  control: any
-  fileName: string
-  imageData: string
-  selectImageFile: () => void
-  resetImageFile: () => void
-  register: any
-  fileInput: MutableRefObject<HTMLInputElement | null> //更新可能
-  onChange: any
-  warningImageMessage: string
-  confirmImageMessage: string
-  isLoading: boolean
 }
 
-const AddRestroom: React.FC<AddRestroomProps> = ({
+const AddRestroom: React.FC<AddRestroomPropsExtended> = ({
   open,
   onClose,
   coords,
@@ -54,6 +38,9 @@ const AddRestroom: React.FC<AddRestroomProps> = ({
   confirmImageMessage,
   isLoading,
 }) => {
+  // ref関数 react-hook-formが管理できるようになる
+  const { ref, ...rest } = register('image', { onChange })
+
   return (
     <Modal open={open} onClose={onClose}>
       <Box sx={modalStyle}>
@@ -85,12 +72,12 @@ const AddRestroom: React.FC<AddRestroomProps> = ({
               type="file"
               id="file"
               ref={(e) => {
-                register.ref(e) // ref関数でフォームに入力した値を管理
+                ref(e) // ref関数でフォームに入力した値を管理
                 if (e) fileInput.current = e
               }}
               accept="image/*"
               style={{ display: 'none' }}
-              {...register.rest}
+              {...rest}
               onChange={onChange}
             />
             <Button
@@ -109,8 +96,8 @@ const AddRestroom: React.FC<AddRestroomProps> = ({
                 (必須)
               </span>
             </Button>
-            <div
-              style={{
+            <Box
+              sx={{
                 padding: '1em',
                 border: '1px dotted #ccc',
                 minHeight: '200px',
@@ -119,52 +106,37 @@ const AddRestroom: React.FC<AddRestroomProps> = ({
             >
               {fileName && (
                 <>
-                  <Button onClick={resetImageFile}>❌ CLOSE</Button>
-                  <img
+                  <Button
+                    onClick={resetImageFile}
+                    sx={{
+                      alignSelf: 'flex-start',
+                      mb: 1,
+                      fontWeight: 'bold',
+                      color: 'red',
+                    }}
+                  >
+                    ❌ CLOSE
+                  </Button>
+                  <Box
+                    component="img"
                     src={imageData}
-                    style={{ margin: 'auto', maxWidth: '100%' }}
                     alt="Selected"
+                    sx={{
+                      display: 'block',
+                      margin: 'auto',
+                      maxWidth: '100%',
+                      height: 'auto',
+                    }}
                   />
                   <Typography>{fileName}</Typography>
                 </>
               )}
-            </div>
-            <Controller
-              name="name"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  type="text"
-                  label="施設名称"
-                  sx={{ backgroundColor: 'white' }}
-                />
-              )}
-            />
-            <Controller
-              name="address"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  type="text"
-                  label="住所"
-                  sx={{ backgroundColor: 'white' }}
-                />
-              )}
-            />
-            <Controller
-              name="content"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  type="text"
-                  label="コメント"
-                  sx={{ backgroundColor: 'white' }}
-                />
-              )}
-            />
+            </Box>
+
+            <FormTextField name="name" control={control} label="施設名称" />
+            <FormTextField name="address" control={control} label="住所" />
+            <FormTextField name="content" control={control} label="コメント" />
+
             <Typography
               component="p"
               sx={{
@@ -174,73 +146,34 @@ const AddRestroom: React.FC<AddRestroomProps> = ({
             >
               設備有無
             </Typography>
+
             <Box>
               <Grid container spacing={0.1}>
-                <Grid item xs={10}>
-                  <Controller
-                    name="nursing_room"
-                    control={control}
-                    render={({ field }) => (
-                      <FormControlLabel
-                        label="授乳室"
-                        control={<Checkbox {...field} checked={field.value} />}
-                        sx={{ padding: '1px', marginBottom: '1px' }}
-                      />
-                    )}
-                  />
-                </Grid>
-                <Grid item xs={10}>
-                  <Controller
-                    name="anyone_toilet"
-                    control={control}
-                    render={({ field }) => (
-                      <FormControlLabel
-                        label="誰でもトイレ"
-                        control={<Checkbox {...field} checked={field.value} />}
-                        sx={{ padding: '1px', marginBottom: '1px' }}
-                      />
-                    )}
-                  />
-                </Grid>
-                <Grid item xs={10}>
-                  <Controller
-                    name="diaper_changing_station"
-                    control={control}
-                    render={({ field }) => (
-                      <FormControlLabel
-                        label="オムツ交換台"
-                        control={<Checkbox {...field} checked={field.value} />}
-                        sx={{ padding: '1px', marginBottom: '1px' }}
-                      />
-                    )}
-                  />
-                </Grid>
-                <Grid item xs={10}>
-                  <Controller
-                    name="powder_corner"
-                    control={control}
-                    render={({ field }) => (
-                      <FormControlLabel
-                        label="パウダーコーナー"
-                        control={<Checkbox {...field} checked={field.value} />}
-                        sx={{ padding: '1px', marginBottom: '1px' }}
-                      />
-                    )}
-                  />
-                </Grid>
-                <Grid item xs={10}>
-                  <Controller
-                    name="stroller_accessible"
-                    control={control}
-                    render={({ field }) => (
-                      <FormControlLabel
-                        label="ベビーカー可"
-                        control={<Checkbox {...field} checked={field.value} />}
-                        sx={{ padding: '1px', marginBottom: '1px' }}
-                      />
-                    )}
-                  />
-                </Grid>
+                <FacilityCheckBox
+                  name="nursing_room"
+                  control={control}
+                  label="授乳室"
+                />
+                <FacilityCheckBox
+                  name="anyone_toilet"
+                  control={control}
+                  label="誰でもトイレ"
+                />
+                <FacilityCheckBox
+                  name="diaper_changing_station"
+                  control={control}
+                  label="オムツ交換台"
+                />
+                <FacilityCheckBox
+                  name="powder_corner"
+                  control={control}
+                  label="パウダーコーナー"
+                />
+                <FacilityCheckBox
+                  name="stroller_accessible"
+                  control={control}
+                  label="ベビーカー可"
+                />
               </Grid>
             </Box>
             <Controller
@@ -256,35 +189,19 @@ const AddRestroom: React.FC<AddRestroomProps> = ({
                 />
               )}
             />
-            <Controller
+            <Coord
               name="latitude"
               control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  type="number"
-                  label="緯度"
-                  sx={{ backgroundColor: 'white' }}
-                  value={coords ? coords.lat : ''}
-                  InputProps={{ readOnly: true }}
-                  style={{ display: 'none' }}
-                />
-              )}
+              label="緯度"
+              coords={coords}
+              coordType="lat"
             />
-            <Controller
+            <Coord
               name="longitude"
               control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  type="number"
-                  label="経度"
-                  sx={{ backgroundColor: 'white' }}
-                  value={coords ? coords.lng : ''}
-                  InputProps={{ readOnly: true }}
-                  style={{ display: 'none' }}
-                />
-              )}
+              label="経度"
+              coords={coords}
+              coordType="lng"
             />
             <Button
               variant="contained"

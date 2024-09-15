@@ -100,10 +100,8 @@ const AddSimpleRestroomContainer: React.FC<AddRestroomProps> = ({
 
         const gpsData = allExifData['34853']
         if (gpsData) {
-          // 正しい型の引数を渡す
           const latitude = convertDMSToDD(gpsData[2], gpsData[1])
           setImageLatitude(latitude.toString())
-          // 正しい型の引数を渡す
           const longitude = convertDMSToDD(gpsData[4], gpsData[3])
           setImageLongitude(longitude.toString())
           setWarningCoordMessage('')
@@ -284,9 +282,6 @@ const AddSimpleRestroomContainer: React.FC<AddRestroomProps> = ({
     }
   }
 
-  // ref関数 react-hook-formが管理できるようになる
-  const { ref, ...rest } = register('image', { onChange })
-
   return (
     <AddSimpleRestroom
       open={open}
@@ -298,7 +293,7 @@ const AddSimpleRestroomContainer: React.FC<AddRestroomProps> = ({
       imageData={imageData}
       selectImageFile={selectImageFile}
       resetImageFile={resetImageFile}
-      register={{ ...rest, ref }}
+      register={register}
       fileInput={fileInput}
       onChange={onChange} //ファイル分割用に追加
       warningImageMessage={warningImageMessage}
