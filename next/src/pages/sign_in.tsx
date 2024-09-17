@@ -1,8 +1,17 @@
+import { Visibility, VisibilityOff } from '@mui/icons-material'
 import { LoadingButton } from '@mui/lab'
-import { Box, Container, TextField, Typography, Stack } from '@mui/material'
+import {
+  Box,
+  Container,
+  TextField,
+  Typography,
+  Stack,
+  IconButton,
+  InputAdornment,
+} from '@mui/material'
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useState, React } from 'react'
 import { useForm, SubmitHandler, Controller } from 'react-hook-form'
 import { useSessionContext } from '@/context/SessionContext'
 import { supabase } from '@/utils/supabase'
@@ -17,7 +26,21 @@ const SignIn: NextPage = () => {
   const router = useRouter()
   const [user, setUser] = useUserState()
   const [isLoading, setIsLoading] = useState(false)
-  const { currentUser, setCurrentUser } = useSessionContext()
+  const { setCurrentUser } = useSessionContext()
+
+  const [showPassword, setShowPassword] = useState(false)
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show)
+
+  const handleMouseDownPassword = (event: React.MouseEvent) => {
+    event.preventDefault()
+  }
+
+  const handleMouseUpPassword = (
+    event: React.MouseEvent<HTMLButtonElement>,
+  ) => {
+    event.preventDefault()
+  }
 
   const { handleSubmit, control } = useForm<SignInFormData>({
     defaultValues: { email: '', password: '' },
@@ -60,11 +83,8 @@ const SignIn: NextPage = () => {
     try {
       const user = await signIn(data.email, data.password)
       setCurrentUser(user)
-      console.log(currentUser)
       router.push('/')
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (e: any) {
-      console.error(e.message)
+    } catch (e: unknown) {
       setIsLoading(false)
     }
   }
@@ -93,6 +113,7 @@ const SignIn: NextPage = () => {
             render={({ field, fieldState }) => (
               <TextField
                 {...field}
+                required
                 type="text"
                 label="メールアドレス"
                 error={fieldState.invalid}
@@ -108,11 +129,27 @@ const SignIn: NextPage = () => {
             render={({ field, fieldState }) => (
               <TextField
                 {...field}
-                type="password"
+                required
+                type={showPassword ? 'text' : 'password'}
                 label="パスワード"
                 error={fieldState.invalid}
                 helperText={fieldState.error?.message}
                 sx={{ backgroundColor: 'white' }}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="パスワードを表示"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        onMouseUp={handleMouseUpPassword}
+                        edge="end"
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
               />
             )}
           />
