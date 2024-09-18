@@ -11,7 +11,7 @@ import {
 } from '@mui/material'
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
-import { useState, React } from 'react'
+import { useState } from 'react'
 import { useForm, SubmitHandler, Controller } from 'react-hook-form'
 import { useSessionContext } from '@/context/SessionContext'
 import { supabase } from '@/utils/supabase'
