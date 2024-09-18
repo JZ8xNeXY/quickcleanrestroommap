@@ -4,30 +4,17 @@ import { useForm, SubmitHandler } from 'react-hook-form'
 import useSWR, { mutate } from 'swr'
 import { supabase } from '../utils/supabase'
 import { useRestroomContext } from '@/context/RestRoomContext'
+import {
+  AddRestroomFormData,
+  AddRestroomProps,
+} from '@/interface/addRestroomFormDataInterface'
 import EditRestroom from '@/presentationals/EditRestroom'
 
-interface EditRestroomFormData {
+interface EditRestroomFormData extends AddRestroomFormData {
   id: number
-  name: string
-  address: string
-  content: string
-  latitude: number
-  longitude: number
-  createdAt: string
-  nursing_room: boolean
-  anyone_toilet: boolean
-  diaper_changing_station: boolean
-  powder_corner: boolean
-  stroller_accessible: boolean
-  image?: string
 }
 
-interface EditRestroomProps {
-  open: boolean
-  onClose: () => void
-}
-
-const EditRestroomContainer: React.FC<EditRestroomProps> = ({
+const EditRestroomContainer: React.FC<AddRestroomProps> = ({
   open,
   onClose,
 }) => {
@@ -44,20 +31,10 @@ const EditRestroomContainer: React.FC<EditRestroomProps> = ({
   const [imageData, setImageData] = useState('')
   const [imageUrl, setImageUrl] = useState<string | null>(null) //S3のURL
 
-  const onChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files
-    if (!files || files.length <= 0) return
-    showImageFileName(files)
-    await onChangeUploadFileToS3(files)
-  }
-
-  // ref関数 react-hook-formが管理できるようになる
-  const { ref, ...rest } = register('image', { onChange })
-
-  const selectImageFile = () => {
-    if (!fileInput.current) return
-    fileInput.current.removeAttribute('capture')
-    fileInput.current.click()
+  const resetModal = () => {
+    reset()
+    resetImageFile()
+    onClose()
   }
 
   const showImageFileName = (files: FileList) => {
@@ -70,20 +47,7 @@ const EditRestroomContainer: React.FC<EditRestroomProps> = ({
     fileReader.readAsDataURL(file)
   }
 
-  const resetImageFile = () => {
-    setFileName('')
-    setImageData('')
-    if (fileInput.current) {
-      fileInput.current.value = ''
-    }
-  }
-
-  const resetModal = () => {
-    reset()
-    resetImageFile()
-    onClose()
-  }
-
+  //Todo サーバーサイドから読み込む設定に変更予定
   const s3 = new AWS.S3({
     accessKeyId: process.env.NEXT_PUBLIC_AWS_ACCESS_KEY_ID,
     secretAccessKey: process.env.NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY,
@@ -111,6 +75,13 @@ const EditRestroomContainer: React.FC<EditRestroomProps> = ({
   const onChangeUploadFileToS3 = async (files: FileList) => {
     const file = files[0]
     await uploadFileToS3(file)
+  }
+
+  const onChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files
+    if (!files || files.length <= 0) return
+    showImageFileName(files)
+    await onChangeUploadFileToS3(files)
   }
 
   const onSubmit: SubmitHandler<EditRestroomFormData> = async (data) => {
@@ -154,7 +125,20 @@ const EditRestroomContainer: React.FC<EditRestroomProps> = ({
     }
   }
 
-  //supabaseからの読込
+  const selectImageFile = () => {
+    if (!fileInput.current) return
+    fileInput.current.removeAttribute('capture')
+    fileInput.current.click()
+  }
+
+  const resetImageFile = () => {
+    setFileName('')
+    setImageData('')
+    if (fileInput.current) {
+      fileInput.current.value = ''
+    }
+  }
+
   const fetchPosts = async () => {
     const { data, error } = await supabase.from('posts').select('*')
     if (error) {
@@ -181,6 +165,9 @@ const EditRestroomContainer: React.FC<EditRestroomProps> = ({
     if (error != null) throw new Error(error.message)
     return true
   }
+
+  // ref関数 react-hook-formが管理できるようになる
+  const { ref, ...rest } = register('image', { onChange })
 
   return (
     <EditRestroom
