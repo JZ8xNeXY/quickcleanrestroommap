@@ -29,7 +29,7 @@ const EditRestroomContainer: React.FC<AddRestroomProps> = ({
 
   const [fileName, setFileName] = useState('')
   const [imageData, setImageData] = useState('')
-  const [imageUrl, setImageUrl] = useState<string | null>(null) //S3のURL
+  const [imageS3Url, setImageS3Url] = useState<string | null>(null)
 
   const resetModal = () => {
     reset()
@@ -39,8 +39,9 @@ const EditRestroomContainer: React.FC<AddRestroomProps> = ({
 
   const showImageFileName = (files: FileList) => {
     const file = files[0]
-    const fileReader = new FileReader()
     setFileName(file.name)
+
+    const fileReader = new FileReader()
     fileReader.onload = () => {
       setImageData(fileReader.result as string)
     }
@@ -65,7 +66,7 @@ const EditRestroomContainer: React.FC<AddRestroomProps> = ({
 
     try {
       const { Location } = await s3.upload(params).promise()
-      setImageUrl(Location) // 画像URLをステートに保存
+      setImageS3Url(Location) // 画像URLをステートに保存
     } catch (error) {
       console.error('Error uploading file to S3:', error)
       throw new Error('Failed to upload file to S3')
@@ -101,7 +102,7 @@ const EditRestroomContainer: React.FC<AddRestroomProps> = ({
         powder_corner: data.powder_corner ?? selectedRestroom.powderCorner,
         stroller_accessible:
           data.stroller_accessible ?? selectedRestroom.strollerAccessible,
-        image: imageUrl || selectedRestroom.image,
+        image: imageS3Url || selectedRestroom.image,
       }
 
       try {
@@ -116,10 +117,9 @@ const EditRestroomContainer: React.FC<AddRestroomProps> = ({
           throw new Error(error.message)
         }
 
-        await mutate('fetchPosts') // キャッシュを再取得して更新
+        await mutate('fetchPosts')
         resetModal()
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } catch (error: any) {
+      } catch (error) {
         console.error('Request failed:', error)
       }
     }
@@ -137,22 +137,6 @@ const EditRestroomContainer: React.FC<AddRestroomProps> = ({
     if (fileInput.current) {
       fileInput.current.value = ''
     }
-  }
-
-  const fetchPosts = async () => {
-    const { data, error } = await supabase.from('posts').select('*')
-    if (error) {
-      throw new Error(error.message)
-    }
-    return data
-  }
-
-  const { error } = useSWR('fetchPosts', fetchPosts, {
-    revalidateOnFocus: false,
-  })
-
-  if (error) {
-    console.error('Error fetching posts:', error)
   }
 
   const onDelete = async () => {

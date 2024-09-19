@@ -57,7 +57,7 @@ const AddSimpleRestroomContainer: React.FC<AddRestroomProps> = ({
   const [confirmImageMessage, setConfirmMessage] = useState('')
   const [warningCoordMessage, setWarningCoordMessage] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-  const [imageUrl, setImageUrl] = useState<string | null>(null) //S3のURL
+  const [imageS3Url, setImageS3Url] = useState<string | null>(null)
 
   useEffect(() => {
     setValue('evaluation', imageToiletCleanness)
@@ -193,7 +193,7 @@ const AddSimpleRestroomContainer: React.FC<AddRestroomProps> = ({
 
     if (upload.ok) {
       const fileUrl = uploadURL.split('?')[0]
-      setImageUrl(fileUrl)
+      setImageS3Url(fileUrl)
     } else {
       console.error('File upload failed')
     }
@@ -243,7 +243,7 @@ const AddSimpleRestroomContainer: React.FC<AddRestroomProps> = ({
       powder_corner: data.powder_corner ?? false,
       stroller_accessible: data.stroller_accessible ?? false,
       evaluation: data.evaluation,
-      image: imageUrl,
+      image: imageS3Url,
     }
 
     try {
