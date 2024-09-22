@@ -14,6 +14,7 @@ import { AddCoord } from './Coord'
 import { AddFacilityCheckBox } from './FacilityCheckBox'
 import { AddFormTextField } from './FormTextField'
 import { AddRestroomProps } from '@/interface/addRestroomInterface'
+import { defaultButtonStyle } from '@/styles/buttonStyle'
 import { modalStyle } from '@/styles/modalStyles'
 
 interface AddRestroomPropsExtended extends AddRestroomProps {
@@ -84,7 +85,7 @@ const AddRestroom: React.FC<AddRestroomPropsExtended> = ({
               variant="contained"
               type="button"
               disabled={isLoading}
-              sx={{ fontWeight: 'bold', color: 'white' }}
+              sx={defaultButtonStyle}
               onClick={selectImageFile}
             >
               {isLoading
@@ -207,11 +208,7 @@ const AddRestroom: React.FC<AddRestroomPropsExtended> = ({
               coords={coords}
               coordType="lng"
             />
-            <Button
-              variant="contained"
-              type="submit"
-              sx={{ fontWeight: 'bold', color: 'white' }}
-            >
+            <Button variant="contained" type="submit" sx={defaultButtonStyle}>
               送信する
             </Button>
           </Stack>

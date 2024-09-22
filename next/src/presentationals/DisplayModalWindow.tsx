@@ -5,7 +5,7 @@ import React from 'react'
 import ReactStarsRating from 'react-awesome-stars-rating'
 import { Restroom } from '@/interface/restroomInterface'
 import { User } from '@/interface/userInterface'
-import buttonStyle from '@/styles/buttonStyle'
+import { defaultButtonStyle, editButtonStyle } from '@/styles/buttonStyle'
 import changeFontSize from '@/styles/changeFontSize'
 import {
   nursingRoomStyle,
@@ -69,7 +69,7 @@ const DisplayModalWindow: React.FC<DisplayModalWindowProps> = ({
         {user && (
           <Box sx={{ display: 'flex', justifyContent: 'right', mt: 0 }}>
             <Button
-              sx={buttonStyle}
+              sx={editButtonStyle}
               onClick={() => {
                 closeModalWindow()
                 openEditRestroomModalWindow()
@@ -135,7 +135,7 @@ const DisplayModalWindow: React.FC<DisplayModalWindowProps> = ({
             color="primary"
             href="https://docs.google.com/forms/d/e/1FAIpQLSekveKygTBRldu2AcRV97sUq5RXS7K4qq_k0DLKuT_Skcv48g/viewform"
             target="_blank"
-            sx={{ color: 'white', textTransform: 'none' }}
+            sx={defaultButtonStyle}
           >
             お問い合わせはこちら ＞
           </Button>
