@@ -11,7 +11,7 @@ import {
 } from '@mui/material'
 import { Controller } from 'react-hook-form'
 import Coord from './Coord'
-import FacilityCheckBox from './FacilityCheckBox'
+import { AddFacilityCheckBox } from './FacilityCheckBox'
 import { AddFormTextField } from './FormTextField'
 import { AddRestroomProps } from '@/interface/addRestroomInterface'
 import { modalStyle } from '@/styles/modalStyles'
@@ -158,27 +158,27 @@ const AddSimpleRestroom: React.FC<AddRestroomPropsExtended> = ({
             <Box>
               <Grid container spacing={0.1}>
                 <Grid container spacing={0.1}>
-                  <FacilityCheckBox
+                  <AddFacilityCheckBox
                     name="nursing_room"
                     control={control}
                     label="授乳室"
                   />
-                  <FacilityCheckBox
+                  <AddFacilityCheckBox
                     name="anyone_toilet"
                     control={control}
                     label="誰でもトイレ"
                   />
-                  <FacilityCheckBox
+                  <AddFacilityCheckBox
                     name="diaper_changing_station"
                     control={control}
                     label="オムツ交換台"
                   />
-                  <FacilityCheckBox
+                  <AddFacilityCheckBox
                     name="powder_corner"
                     control={control}
                     label="パウダーコーナー"
                   />
-                  <FacilityCheckBox
+                  <AddFacilityCheckBox
                     name="stroller_accessible"
                     control={control}
                     label="ベビーカー可"
@@ -199,36 +199,6 @@ const AddSimpleRestroom: React.FC<AddRestroomPropsExtended> = ({
                 />
               )}
             />
-            {/* <Controller
-              name="latitude"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  type="number"
-                  label="緯度"
-                  sx={{ backgroundColor: 'white' }}
-                  value={35.681236}
-                  InputProps={{ readOnly: true }}
-                  style={{ display: 'none' }}
-                />
-              )}
-            />
-            <Controller
-              name="longitude"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  type="number"
-                  label="経度"
-                  sx={{ backgroundColor: 'white' }}
-                  value={139.767125}
-                  InputProps={{ readOnly: true }}
-                  style={{ display: 'none' }}
-                />
-              )}
-            /> */}
             <Coord
               name="latitude"
               control={control}

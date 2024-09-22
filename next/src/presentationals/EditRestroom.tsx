@@ -11,6 +11,7 @@ import {
   Grid,
 } from '@mui/material'
 import { Controller } from 'react-hook-form'
+import { EditFacilityCheckBox } from './FacilityCheckBox'
 import { EditFormTextField } from './FormTextField'
 import { EditRestroomProps } from '@/interface/editRestroomInterface'
 import { modalStyle } from '@/styles/modalStyles'
@@ -82,98 +83,36 @@ const EditRestroom: React.FC<EditRestroomProps> = ({
             </Typography>
             <Box>
               <Grid container spacing={0.1}>
-                <Grid item xs={6}>
-                  <Controller
-                    name="nursing_room"
-                    control={control}
-                    render={({ field }) => (
-                      <FormControlLabel
-                        label="授乳室"
-                        control={
-                          <Checkbox
-                            {...field}
-                            defaultChecked={selectedRestroom.nursingRoom}
-                          />
-                        }
-                        sx={{ padding: '1px', marginBottom: '1px' }}
-                      />
-                    )}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <Controller
-                    name="anyone_toilet"
-                    control={control}
-                    render={({ field }) => (
-                      <FormControlLabel
-                        label="誰でもトイレ"
-                        control={
-                          <Checkbox
-                            {...field}
-                            defaultChecked={selectedRestroom.anyoneToilet}
-                          />
-                        }
-                        sx={{ padding: '1px', marginBottom: '1px' }}
-                      />
-                    )}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <Controller
-                    name="diaper_changing_station"
-                    control={control}
-                    render={({ field }) => (
-                      <FormControlLabel
-                        label="オムツ交換台"
-                        control={
-                          <Checkbox
-                            {...field}
-                            defaultChecked={
-                              selectedRestroom.diaperChangingStation
-                            }
-                          />
-                        }
-                        sx={{ padding: '1px', marginBottom: '1px' }}
-                      />
-                    )}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <Controller
-                    name="powder_corner"
-                    control={control}
-                    render={({ field }) => (
-                      <FormControlLabel
-                        label="パウダーコーナー"
-                        control={
-                          <Checkbox
-                            {...field}
-                            defaultChecked={selectedRestroom.powderCorner}
-                          />
-                        }
-                        sx={{ padding: '1px', marginBottom: '1px' }}
-                      />
-                    )}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <Controller
-                    name="stroller_accessible"
-                    control={control}
-                    render={({ field }) => (
-                      <FormControlLabel
-                        label="ベビーカー可"
-                        control={
-                          <Checkbox
-                            {...field}
-                            defaultChecked={selectedRestroom.strollerAccessible}
-                          />
-                        }
-                        sx={{ padding: '1px', marginBottom: '1px' }}
-                      />
-                    )}
-                  />
-                </Grid>
+                <EditFacilityCheckBox
+                  name="nursing_room"
+                  control={control}
+                  defaultChecked={selectedRestroom.nursingRoom}
+                  label="授乳室"
+                />
+                <EditFacilityCheckBox
+                  name="anyone_toilet"
+                  control={control}
+                  defaultChecked={selectedRestroom.anyoneToilet}
+                  label="誰でもトイレ"
+                />
+                <EditFacilityCheckBox
+                  name="diaper_changing_station"
+                  control={control}
+                  defaultChecked={selectedRestroom.diaperChangingStation}
+                  label="オムツ交換台"
+                />
+                <EditFacilityCheckBox
+                  name="powder_corner"
+                  control={control}
+                  defaultChecked={selectedRestroom.powderCorner}
+                  label="パウダーコーナー"
+                />
+                <EditFacilityCheckBox
+                  name="stroller_accessible"
+                  control={control}
+                  defaultChecked={selectedRestroom.strollerAccessible}
+                  label="ベビーカー可"
+                />
               </Grid>
             </Box>
             <input
