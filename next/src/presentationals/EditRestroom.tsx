@@ -2,15 +2,12 @@ import {
   Box,
   Button,
   Container,
-  TextField,
   Typography,
   Stack,
   Modal,
-  FormControlLabel,
-  Checkbox,
   Grid,
 } from '@mui/material'
-import { Controller } from 'react-hook-form'
+import { EditCoord } from './Coord'
 import { EditFacilityCheckBox } from './FacilityCheckBox'
 import { EditFormTextField } from './FormTextField'
 import { EditRestroomProps } from '@/interface/editRestroomInterface'
@@ -173,7 +170,26 @@ const EditRestroom: React.FC<EditRestroomProps> = ({
                 </>
               )}
             </div>
-            <Controller
+            <EditCoord
+              name="latitude"
+              control={control}
+              label="緯度"
+              coordValue={
+                selectedRestroom.latitude ? selectedRestroom.latitude : null
+              }
+              coordType="lat"
+            />
+            <EditCoord
+              name="longitude"
+              control={control}
+              label="経度"
+              coordValue={
+                selectedRestroom.longitude ? selectedRestroom.longitude : null
+              }
+              coordType="lng"
+            />
+
+            {/* <Controller
               name="latitude"
               control={control}
               render={({ field }) => (
@@ -206,7 +222,7 @@ const EditRestroom: React.FC<EditRestroomProps> = ({
                   style={{ display: 'none' }}
                 />
               )}
-            />
+            /> */}
             <Button
               variant="contained"
               type="submit"

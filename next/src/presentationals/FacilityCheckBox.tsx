@@ -48,7 +48,7 @@ export const EditFacilityCheckBox = ({
       render={({ field }) => (
         <FormControlLabel
           label={label}
-          control={<Checkbox {...field} checked={!!defaultChecked} />}
+          control={<Checkbox {...field} defaultChecked={defaultChecked} />}
           sx={{ padding: '1px', marginBottom: '1px' }}
         />
       )}

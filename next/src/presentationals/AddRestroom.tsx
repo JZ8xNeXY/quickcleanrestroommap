@@ -10,7 +10,7 @@ import {
   Alert,
 } from '@mui/material'
 import { Controller } from 'react-hook-form'
-import Coord from './Coord'
+import { AddCoord } from './Coord'
 import { AddFacilityCheckBox } from './FacilityCheckBox'
 import { AddFormTextField } from './FormTextField'
 import { AddRestroomProps } from '@/interface/addRestroomInterface'
@@ -193,14 +193,14 @@ const AddRestroom: React.FC<AddRestroomPropsExtended> = ({
                 />
               )}
             />
-            <Coord
+            <AddCoord
               name="latitude"
               control={control}
               label="緯度"
               coords={coords}
               coordType="lat"
             />
-            <Coord
+            <AddCoord
               name="longitude"
               control={control}
               label="経度"
