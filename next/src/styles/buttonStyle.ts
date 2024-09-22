@@ -1,4 +1,6 @@
-const buttonStyle = {
+export const defaultButtonStyle = { fontWeight: 'bold', color: 'white' }
+
+export const editButtonStyle = {
   height: '40px',
   color: '#FFFFFF',
   fontWeight: 'bold',
@@ -12,4 +14,11 @@ const buttonStyle = {
   },
 }
 
-export default buttonStyle
+export const deleteButtonStyle = {
+  fontWeight: 'bold',
+  color: 'white',
+  backgroundColor: 'red',
+  '&:hover': {
+    backgroundColor: 'darked',
+  },
+}

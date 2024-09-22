@@ -11,6 +11,7 @@ import { EditCoord } from './Coord'
 import { EditFacilityCheckBox } from './FacilityCheckBox'
 import { EditFormTextField } from './FormTextField'
 import { EditRestroomProps } from '@/interface/editRestroomInterface'
+import { defaultButtonStyle, deleteButtonStyle } from '@/styles/buttonStyle'
 import { modalStyle } from '@/styles/modalStyles'
 
 const EditRestroom: React.FC<EditRestroomProps> = ({
@@ -127,7 +128,7 @@ const EditRestroom: React.FC<EditRestroomProps> = ({
             <Button
               variant="contained"
               type="button"
-              sx={{ fontWeight: 'bold', color: 'white' }}
+              sx={defaultButtonStyle}
               onClick={selectImageFile}
             >
               📁 画像を変更
@@ -174,73 +175,24 @@ const EditRestroom: React.FC<EditRestroomProps> = ({
               name="latitude"
               control={control}
               label="緯度"
-              coordValue={
-                selectedRestroom.latitude ? selectedRestroom.latitude : null
-              }
+              coordValue={selectedRestroom.latitude || null}
               coordType="lat"
             />
             <EditCoord
               name="longitude"
               control={control}
               label="経度"
-              coordValue={
-                selectedRestroom.longitude ? selectedRestroom.longitude : null
-              }
+              coordValue={selectedRestroom.longitude || null}
               coordType="lng"
             />
 
-            {/* <Controller
-              name="latitude"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  type="number"
-                  label="緯度"
-                  sx={{ backgroundColor: 'white' }}
-                  value={
-                    selectedRestroom.latitude ? selectedRestroom.latitude : ''
-                  }
-                  InputProps={{ readOnly: true }}
-                  style={{ display: 'none' }}
-                />
-              )}
-            />
-            <Controller
-              name="longitude"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  type="number"
-                  label="経度"
-                  sx={{ backgroundColor: 'white' }}
-                  value={
-                    selectedRestroom.longitude ? selectedRestroom.longitude : ''
-                  }
-                  InputProps={{ readOnly: true }}
-                  style={{ display: 'none' }}
-                />
-              )}
-            /> */}
-            <Button
-              variant="contained"
-              type="submit"
-              sx={{ fontWeight: 'bold', color: 'white' }}
-            >
+            <Button variant="contained" type="submit" sx={defaultButtonStyle}>
               編集する
             </Button>
             <Button
               variant="contained"
               type="button"
-              sx={{
-                fontWeight: 'bold',
-                color: 'white',
-                backgroundColor: 'red',
-                '&:hover': {
-                  backgroundColor: 'darkred',
-                },
-              }}
+              sx={deleteButtonStyle}
               onClick={onDelete}
             >
               削除する
