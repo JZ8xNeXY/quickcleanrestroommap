@@ -12,8 +12,6 @@ export default async function uploadToS3(
       region: process.env.AWS_REGION,
     })
 
-    console.log(s3)
-
     const { fileName, fileType } = req.query
 
     if (!fileName || !fileType) {

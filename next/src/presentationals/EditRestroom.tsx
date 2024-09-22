@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @next/next/no-img-element */
 import {
   Box,
   Button,
@@ -12,26 +10,9 @@ import {
   Checkbox,
   Grid,
 } from '@mui/material'
-import { MutableRefObject } from 'react'
 import { Controller } from 'react-hook-form'
+import { EditRestroomProps } from '@/interface/editRestroomInterface'
 import { modalStyle } from '@/styles/modalStyles'
-
-interface EditRestroomProps {
-  open: boolean
-  onClose: () => void
-  handleSubmit: any
-  onSubmit: any
-  control: any
-  fileName: string
-  imageData: string
-  selectImageFile: () => void
-  resetImageFile: () => void
-  register: any
-  fileInput: MutableRefObject<HTMLInputElement | null> //更新可能
-  selectedRestroom: any
-  onDelete: () => void
-  onChange: any
-}
 
 const EditRestroom: React.FC<EditRestroomProps> = ({
   open,
@@ -49,6 +30,9 @@ const EditRestroom: React.FC<EditRestroomProps> = ({
   onDelete,
   onChange,
 }) => {
+  // ref関数 react-hook-formが管理できるようになる
+  const { ref, ...rest } = register('image', { onChange })
+
   return (
     <Modal open={open} onClose={onClose}>
       <Box sx={modalStyle}>
@@ -215,12 +199,12 @@ const EditRestroom: React.FC<EditRestroomProps> = ({
               type="file"
               id="file"
               ref={(e) => {
-                register.ref(e) // ref関数でフォームに入力した値を管理
+                ref(e) // ref関数でフォームに入力した値を管理
                 if (e) fileInput.current = e
               }}
               accept="image/*"
               style={{ display: 'none' }}
-              {...register.rest}
+              {...rest}
               onChange={onChange}
             />
             <Button
@@ -241,11 +225,27 @@ const EditRestroom: React.FC<EditRestroomProps> = ({
             >
               {(fileName || selectedRestroom.image) && (
                 <>
-                  <Button onClick={resetImageFile}>❌ CLOSE</Button>
-                  <img
+                  <Button
+                    onClick={resetImageFile}
+                    sx={{
+                      alignSelf: 'flex-start',
+                      mb: 1,
+                      fontWeight: 'bold',
+                      color: 'red',
+                    }}
+                  >
+                    ❌ CLOSE
+                  </Button>
+                  <Box
+                    component="img"
                     src={imageData || selectedRestroom.image}
-                    style={{ margin: 'auto', maxWidth: '100%' }}
                     alt="Selected"
+                    sx={{
+                      display: 'block',
+                      margin: 'auto',
+                      maxWidth: '100%',
+                      height: 'auto',
+                    }}
                   />
                   <Typography>{fileName}</Typography>
                 </>

@@ -1,7 +1,6 @@
-import AWS from 'aws-sdk'
 import { useState, useRef, MutableRefObject } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
-import useSWR, { mutate } from 'swr'
+import { mutate } from 'swr'
 import { supabase } from '../utils/supabase'
 import { useRestroomContext } from '@/context/RestRoomContext'
 import {
@@ -48,28 +47,34 @@ const EditRestroomContainer: React.FC<AddRestroomProps> = ({
     fileReader.readAsDataURL(file)
   }
 
-  //Todo サーバーサイドから読み込む設定に変更予定
-  const s3 = new AWS.S3({
-    accessKeyId: process.env.NEXT_PUBLIC_AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY,
-    region: process.env.NEXT_PUBLIC_AWS_REGION,
-  })
-
   const uploadFileToS3 = async (file: File) => {
-    const fileName = `${Date.now()}-${file.name}`
-    const params = {
-      Bucket: 'quickcleanrestroommap',
-      Key: fileName,
-      Body: file,
-      ContentType: file.type,
+    const fileName = file.name
+    const fileType = file.type
+
+    const res = await fetch(
+      `/api/uploadToS3?fileName=${encodeURIComponent(fileName)}&fileType=${encodeURIComponent(fileType)}`,
+    )
+
+    if (!res.ok) {
+      console.error('Failed to get upload URL')
+      return
     }
 
-    try {
-      const { Location } = await s3.upload(params).promise()
-      setImageS3Url(Location) // 画像URLをステートに保存
-    } catch (error) {
-      console.error('Error uploading file to S3:', error)
-      throw new Error('Failed to upload file to S3')
+    const { uploadURL } = await res.json()
+
+    const upload = await fetch(uploadURL, {
+      method: 'PUT',
+      body: file,
+      headers: {
+        'Content-Type': file.type,
+      },
+    })
+
+    if (upload.ok) {
+      const fileUrl = uploadURL.split('?')[0]
+      setImageS3Url(fileUrl)
+    } else {
+      console.error('File upload failed')
     }
   }
 
@@ -150,9 +155,6 @@ const EditRestroomContainer: React.FC<AddRestroomProps> = ({
     return true
   }
 
-  // ref関数 react-hook-formが管理できるようになる
-  const { ref, ...rest } = register('image', { onChange })
-
   return (
     <EditRestroom
       open={open}
@@ -164,7 +166,7 @@ const EditRestroomContainer: React.FC<AddRestroomProps> = ({
       imageData={imageData}
       selectImageFile={selectImageFile}
       resetImageFile={resetImageFile}
-      register={{ ...rest, ref }}
+      register={register}
       fileInput={fileInput}
       selectedRestroom={selectedRestroom}
       onDelete={onDelete}
