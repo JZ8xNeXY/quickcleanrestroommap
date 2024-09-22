@@ -43,11 +43,11 @@ export const EditFormTextField = ({
   <Controller
     name={name}
     control={control}
+    defaultValue={defaultValue}
     render={({ field }) => (
       <TextField
         {...field}
         type="text"
-        defaultValue={defaultValue}
         label={label}
         sx={{ backgroundColor: 'white' }}
       />
