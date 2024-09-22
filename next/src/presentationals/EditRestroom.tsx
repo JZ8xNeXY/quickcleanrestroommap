@@ -1,37 +1,17 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @next/next/no-img-element */
 import {
   Box,
   Button,
   Container,
-  TextField,
   Typography,
   Stack,
   Modal,
-  FormControlLabel,
-  Checkbox,
   Grid,
 } from '@mui/material'
-import { MutableRefObject } from 'react'
-import { Controller } from 'react-hook-form'
+import { EditCoord } from './Coord'
+import { EditFacilityCheckBox } from './FacilityCheckBox'
+import { EditFormTextField } from './FormTextField'
+import { EditRestroomProps } from '@/interface/editRestroomInterface'
 import { modalStyle } from '@/styles/modalStyles'
-
-interface EditRestroomProps {
-  open: boolean
-  onClose: () => void
-  handleSubmit: any
-  onSubmit: any
-  control: any
-  fileName: string
-  imageData: string
-  selectImageFile: () => void
-  resetImageFile: () => void
-  register: any
-  fileInput: MutableRefObject<HTMLInputElement | null> //更新可能
-  selectedRestroom: any
-  onDelete: () => void
-  onChange: any
-}
 
 const EditRestroom: React.FC<EditRestroomProps> = ({
   open,
@@ -49,6 +29,9 @@ const EditRestroom: React.FC<EditRestroomProps> = ({
   onDelete,
   onChange,
 }) => {
+  // ref関数 react-hook-formが管理できるようになる
+  const { ref, ...rest } = register('image', { onChange })
+
   return (
     <Modal open={open} onClose={onClose}>
       <Box sx={modalStyle}>
@@ -66,45 +49,25 @@ const EditRestroom: React.FC<EditRestroomProps> = ({
             onSubmit={handleSubmit(onSubmit)}
             spacing={1.5}
           >
-            <Controller
+            <EditFormTextField
               name="name"
               control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  type="text"
-                  label="施設名称"
-                  defaultValue={selectedRestroom.name}
-                  sx={{ backgroundColor: 'white' }}
-                />
-              )}
+              defaultValue={selectedRestroom.name}
+              label="施設名称"
             />
-            <Controller
+            <EditFormTextField
               name="address"
               control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  defaultValue={selectedRestroom.address}
-                  type="text"
-                  label="住所"
-                  sx={{ backgroundColor: 'white' }}
-                />
-              )}
+              defaultValue={selectedRestroom.address}
+              label="住所"
             />
-            <Controller
+            <EditFormTextField
               name="content"
               control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  defaultValue={selectedRestroom.content}
-                  type="text"
-                  label="コメント"
-                  sx={{ backgroundColor: 'white' }}
-                />
-              )}
+              defaultValue={selectedRestroom.content}
+              label="コメント"
             />
+
             <Typography
               component="p"
               sx={{
@@ -117,110 +80,48 @@ const EditRestroom: React.FC<EditRestroomProps> = ({
             </Typography>
             <Box>
               <Grid container spacing={0.1}>
-                <Grid item xs={6}>
-                  <Controller
-                    name="nursing_room"
-                    control={control}
-                    render={({ field }) => (
-                      <FormControlLabel
-                        label="授乳室"
-                        control={
-                          <Checkbox
-                            {...field}
-                            defaultChecked={selectedRestroom.nursingRoom}
-                          />
-                        }
-                        sx={{ padding: '1px', marginBottom: '1px' }}
-                      />
-                    )}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <Controller
-                    name="anyone_toilet"
-                    control={control}
-                    render={({ field }) => (
-                      <FormControlLabel
-                        label="誰でもトイレ"
-                        control={
-                          <Checkbox
-                            {...field}
-                            defaultChecked={selectedRestroom.anyoneToilet}
-                          />
-                        }
-                        sx={{ padding: '1px', marginBottom: '1px' }}
-                      />
-                    )}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <Controller
-                    name="diaper_changing_station"
-                    control={control}
-                    render={({ field }) => (
-                      <FormControlLabel
-                        label="オムツ交換台"
-                        control={
-                          <Checkbox
-                            {...field}
-                            defaultChecked={
-                              selectedRestroom.diaperChangingStation
-                            }
-                          />
-                        }
-                        sx={{ padding: '1px', marginBottom: '1px' }}
-                      />
-                    )}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <Controller
-                    name="powder_corner"
-                    control={control}
-                    render={({ field }) => (
-                      <FormControlLabel
-                        label="パウダーコーナー"
-                        control={
-                          <Checkbox
-                            {...field}
-                            defaultChecked={selectedRestroom.powderCorner}
-                          />
-                        }
-                        sx={{ padding: '1px', marginBottom: '1px' }}
-                      />
-                    )}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <Controller
-                    name="stroller_accessible"
-                    control={control}
-                    render={({ field }) => (
-                      <FormControlLabel
-                        label="ベビーカー可"
-                        control={
-                          <Checkbox
-                            {...field}
-                            defaultChecked={selectedRestroom.strollerAccessible}
-                          />
-                        }
-                        sx={{ padding: '1px', marginBottom: '1px' }}
-                      />
-                    )}
-                  />
-                </Grid>
+                <EditFacilityCheckBox
+                  name="nursing_room"
+                  control={control}
+                  defaultChecked={selectedRestroom.nursingRoom}
+                  label="授乳室"
+                />
+                <EditFacilityCheckBox
+                  name="anyone_toilet"
+                  control={control}
+                  defaultChecked={selectedRestroom.anyoneToilet}
+                  label="誰でもトイレ"
+                />
+                <EditFacilityCheckBox
+                  name="diaper_changing_station"
+                  control={control}
+                  defaultChecked={selectedRestroom.diaperChangingStation}
+                  label="オムツ交換台"
+                />
+                <EditFacilityCheckBox
+                  name="powder_corner"
+                  control={control}
+                  defaultChecked={selectedRestroom.powderCorner}
+                  label="パウダーコーナー"
+                />
+                <EditFacilityCheckBox
+                  name="stroller_accessible"
+                  control={control}
+                  defaultChecked={selectedRestroom.strollerAccessible}
+                  label="ベビーカー可"
+                />
               </Grid>
             </Box>
             <input
               type="file"
               id="file"
               ref={(e) => {
-                register.ref(e) // ref関数でフォームに入力した値を管理
+                ref(e) // ref関数でフォームに入力した値を管理
                 if (e) fileInput.current = e
               }}
               accept="image/*"
               style={{ display: 'none' }}
-              {...register.rest}
+              {...rest}
               onChange={onChange}
             />
             <Button
@@ -229,7 +130,7 @@ const EditRestroom: React.FC<EditRestroomProps> = ({
               sx={{ fontWeight: 'bold', color: 'white' }}
               onClick={selectImageFile}
             >
-              📁 ファイルから選択
+              📁 画像を変更
             </Button>
             <div
               style={{
@@ -241,17 +142,54 @@ const EditRestroom: React.FC<EditRestroomProps> = ({
             >
               {(fileName || selectedRestroom.image) && (
                 <>
-                  <Button onClick={resetImageFile}>❌ CLOSE</Button>
-                  <img
+                  {fileName && (
+                    <Button
+                      onClick={resetImageFile}
+                      sx={{
+                        alignSelf: 'flex-start',
+                        mb: 1,
+                        fontWeight: 'bold',
+                        color: 'red',
+                      }}
+                    >
+                      ❌ CLOSE
+                    </Button>
+                  )}
+                  <Box
+                    component="img"
                     src={imageData || selectedRestroom.image}
-                    style={{ margin: 'auto', maxWidth: '100%' }}
                     alt="Selected"
+                    sx={{
+                      display: 'block',
+                      margin: 'auto',
+                      maxWidth: '100%',
+                      height: 'auto',
+                    }}
                   />
                   <Typography>{fileName}</Typography>
                 </>
               )}
             </div>
-            <Controller
+            <EditCoord
+              name="latitude"
+              control={control}
+              label="緯度"
+              coordValue={
+                selectedRestroom.latitude ? selectedRestroom.latitude : null
+              }
+              coordType="lat"
+            />
+            <EditCoord
+              name="longitude"
+              control={control}
+              label="経度"
+              coordValue={
+                selectedRestroom.longitude ? selectedRestroom.longitude : null
+              }
+              coordType="lng"
+            />
+
+            {/* <Controller
               name="latitude"
               control={control}
               render={({ field }) => (
@@ -284,7 +222,7 @@ const EditRestroom: React.FC<EditRestroomProps> = ({
                   style={{ display: 'none' }}
                 />
               )}
-            />
+            /> */}
             <Button
               variant="contained"
               type="submit"

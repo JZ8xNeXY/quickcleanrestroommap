@@ -1,33 +1,19 @@
-import AWS from 'aws-sdk'
 import { useState, useRef, MutableRefObject } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
-import useSWR, { mutate } from 'swr'
+import { mutate } from 'swr'
 import { supabase } from '../utils/supabase'
 import { useRestroomContext } from '@/context/RestRoomContext'
+import {
+  AddRestroomFormData,
+  AddRestroomProps,
+} from '@/interface/addRestroomFormDataInterface'
 import EditRestroom from '@/presentationals/EditRestroom'
 
-interface EditRestroomFormData {
+interface EditRestroomFormData extends AddRestroomFormData {
   id: number
-  name: string
-  address: string
-  content: string
-  latitude: number
-  longitude: number
-  createdAt: string
-  nursing_room: boolean
-  anyone_toilet: boolean
-  diaper_changing_station: boolean
-  powder_corner: boolean
-  stroller_accessible: boolean
-  image?: string
 }
 
-interface EditRestroomProps {
-  open: boolean
-  onClose: () => void
-}
-
-const EditRestroomContainer: React.FC<EditRestroomProps> = ({
+const EditRestroomContainer: React.FC<AddRestroomProps> = ({
   open,
   onClose,
 }) => {
@@ -42,41 +28,7 @@ const EditRestroomContainer: React.FC<EditRestroomProps> = ({
 
   const [fileName, setFileName] = useState('')
   const [imageData, setImageData] = useState('')
-  const [imageUrl, setImageUrl] = useState<string | null>(null) //S3のURL
-
-  const onChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files
-    if (!files || files.length <= 0) return
-    showImageFileName(files)
-    await onChangeUploadFileToS3(files)
-  }
-
-  // ref関数 react-hook-formが管理できるようになる
-  const { ref, ...rest } = register('image', { onChange })
-
-  const selectImageFile = () => {
-    if (!fileInput.current) return
-    fileInput.current.removeAttribute('capture')
-    fileInput.current.click()
-  }
-
-  const showImageFileName = (files: FileList) => {
-    const file = files[0]
-    const fileReader = new FileReader()
-    setFileName(file.name)
-    fileReader.onload = () => {
-      setImageData(fileReader.result as string)
-    }
-    fileReader.readAsDataURL(file)
-  }
-
-  const resetImageFile = () => {
-    setFileName('')
-    setImageData('')
-    if (fileInput.current) {
-      fileInput.current.value = ''
-    }
-  }
+  const [imageS3Url, setImageS3Url] = useState<string | null>(null)
 
   const resetModal = () => {
     reset()
@@ -84,33 +36,58 @@ const EditRestroomContainer: React.FC<EditRestroomProps> = ({
     onClose()
   }
 
-  const s3 = new AWS.S3({
-    accessKeyId: process.env.NEXT_PUBLIC_AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY,
-    region: process.env.NEXT_PUBLIC_AWS_REGION,
-  })
+  const showImageFileName = (files: FileList) => {
+    const file = files[0]
+    setFileName(file.name)
+
+    const fileReader = new FileReader()
+    fileReader.onload = () => {
+      setImageData(fileReader.result as string)
+    }
+    fileReader.readAsDataURL(file)
+  }
 
   const uploadFileToS3 = async (file: File) => {
-    const fileName = `${Date.now()}-${file.name}`
-    const params = {
-      Bucket: 'quickcleanrestroommap',
-      Key: fileName,
-      Body: file,
-      ContentType: file.type,
+    const fileName = file.name
+    const fileType = file.type
+
+    const res = await fetch(
+      `/api/uploadToS3?fileName=${encodeURIComponent(fileName)}&fileType=${encodeURIComponent(fileType)}`,
+    )
+
+    if (!res.ok) {
+      console.error('Failed to get upload URL')
+      return
     }
 
-    try {
-      const { Location } = await s3.upload(params).promise()
-      setImageUrl(Location) // 画像URLをステートに保存
-    } catch (error) {
-      console.error('Error uploading file to S3:', error)
-      throw new Error('Failed to upload file to S3')
+    const { uploadURL } = await res.json()
+
+    const upload = await fetch(uploadURL, {
+      method: 'PUT',
+      body: file,
+      headers: {
+        'Content-Type': file.type,
+      },
+    })
+
+    if (upload.ok) {
+      const fileUrl = uploadURL.split('?')[0]
+      setImageS3Url(fileUrl)
+    } else {
+      console.error('File upload failed')
     }
   }
 
   const onChangeUploadFileToS3 = async (files: FileList) => {
     const file = files[0]
     await uploadFileToS3(file)
+  }
+
+  const onChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files
+    if (!files || files.length <= 0) return
+    showImageFileName(files)
+    await onChangeUploadFileToS3(files)
   }
 
   const onSubmit: SubmitHandler<EditRestroomFormData> = async (data) => {
@@ -130,7 +107,7 @@ const EditRestroomContainer: React.FC<EditRestroomProps> = ({
         powder_corner: data.powder_corner ?? selectedRestroom.powderCorner,
         stroller_accessible:
           data.stroller_accessible ?? selectedRestroom.strollerAccessible,
-        image: imageUrl || selectedRestroom.image,
+        image: imageS3Url || selectedRestroom.image,
       }
 
       try {
@@ -145,30 +122,26 @@ const EditRestroomContainer: React.FC<EditRestroomProps> = ({
           throw new Error(error.message)
         }
 
-        await mutate('fetchPosts') // キャッシュを再取得して更新
+        await mutate('fetchPosts')
         resetModal()
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } catch (error: any) {
+      } catch (error) {
         console.error('Request failed:', error)
       }
     }
   }
 
-  //supabaseからの読込
-  const fetchPosts = async () => {
-    const { data, error } = await supabase.from('posts').select('*')
-    if (error) {
-      throw new Error(error.message)
-    }
-    return data
+  const selectImageFile = () => {
+    if (!fileInput.current) return
+    fileInput.current.removeAttribute('capture')
+    fileInput.current.click()
   }
 
-  const { error } = useSWR('fetchPosts', fetchPosts, {
-    revalidateOnFocus: false,
-  })
-
-  if (error) {
-    console.error('Error fetching posts:', error)
+  const resetImageFile = () => {
+    setFileName('')
+    setImageData('')
+    if (fileInput.current) {
+      fileInput.current.value = ''
+    }
   }
 
   const onDelete = async () => {
@@ -193,7 +166,7 @@ const EditRestroomContainer: React.FC<EditRestroomProps> = ({
       imageData={imageData}
       selectImageFile={selectImageFile}
       resetImageFile={resetImageFile}
-      register={{ ...rest, ref }}
+      register={register}
       fileInput={fileInput}
       selectedRestroom={selectedRestroom}
       onDelete={onDelete}

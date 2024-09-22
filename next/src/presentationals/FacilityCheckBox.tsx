@@ -2,7 +2,11 @@ import { Grid, FormControlLabel, Checkbox } from '@mui/material'
 import { Controller, Control } from 'react-hook-form'
 import { AddRestroomFormData } from '@/interface/addRestroomFormDataInterface'
 
-const FacilityCheckBox = ({
+interface EditRestroomFormData extends AddRestroomFormData {
+  id: number
+}
+
+export const AddFacilityCheckBox = ({
   name,
   control,
   label,
@@ -26,4 +30,28 @@ const FacilityCheckBox = ({
   </Grid>
 )
 
-export default FacilityCheckBox
+export const EditFacilityCheckBox = ({
+  name,
+  control,
+  defaultChecked,
+  label,
+}: {
+  name: keyof EditRestroomFormData
+  control: Control<EditRestroomFormData>
+  defaultChecked: boolean
+  label: string
+}) => (
+  <Grid item xs={10}>
+    <Controller
+      name={name}
+      control={control}
+      render={({ field }) => (
+        <FormControlLabel
+          label={label}
+          control={<Checkbox {...field} defaultChecked={defaultChecked} />}
+          sx={{ padding: '1px', marginBottom: '1px' }}
+        />
+      )}
+    />
+  </Grid>
+)
