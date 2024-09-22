@@ -11,6 +11,7 @@ import {
   Grid,
 } from '@mui/material'
 import { Controller } from 'react-hook-form'
+import { EditFormTextField } from './FormTextField'
 import { EditRestroomProps } from '@/interface/editRestroomInterface'
 import { modalStyle } from '@/styles/modalStyles'
 
@@ -50,45 +51,25 @@ const EditRestroom: React.FC<EditRestroomProps> = ({
             onSubmit={handleSubmit(onSubmit)}
             spacing={1.5}
           >
-            <Controller
+            <EditFormTextField
               name="name"
               control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  type="text"
-                  label="施設名称"
-                  defaultValue={selectedRestroom.name}
-                  sx={{ backgroundColor: 'white' }}
-                />
-              )}
+              defaultValue={selectedRestroom.name}
+              label="施設名称"
             />
-            <Controller
+            <EditFormTextField
               name="address"
               control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  defaultValue={selectedRestroom.address}
-                  type="text"
-                  label="住所"
-                  sx={{ backgroundColor: 'white' }}
-                />
-              )}
+              defaultValue={selectedRestroom.address}
+              label="住所"
             />
-            <Controller
+            <EditFormTextField
               name="content"
               control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  defaultValue={selectedRestroom.content}
-                  type="text"
-                  label="コメント"
-                  sx={{ backgroundColor: 'white' }}
-                />
-              )}
+              defaultValue={selectedRestroom.content}
+              label="コメント"
             />
+
             <Typography
               component="p"
               sx={{
@@ -213,7 +194,7 @@ const EditRestroom: React.FC<EditRestroomProps> = ({
               sx={{ fontWeight: 'bold', color: 'white' }}
               onClick={selectImageFile}
             >
-              📁 ファイルから選択
+              📁 画像を変更
             </Button>
             <div
               style={{
@@ -225,17 +206,19 @@ const EditRestroom: React.FC<EditRestroomProps> = ({
             >
               {(fileName || selectedRestroom.image) && (
                 <>
-                  <Button
-                    onClick={resetImageFile}
-                    sx={{
-                      alignSelf: 'flex-start',
-                      mb: 1,
-                      fontWeight: 'bold',
-                      color: 'red',
-                    }}
-                  >
-                    ❌ CLOSE
-                  </Button>
+                  {fileName && (
+                    <Button
+                      onClick={resetImageFile}
+                      sx={{
+                        alignSelf: 'flex-start',
+                        mb: 1,
+                        fontWeight: 'bold',
+                        color: 'red',
+                      }}
+                    >
+                      ❌ CLOSE
+                    </Button>
+                  )}
                   <Box
                     component="img"
                     src={imageData || selectedRestroom.image}

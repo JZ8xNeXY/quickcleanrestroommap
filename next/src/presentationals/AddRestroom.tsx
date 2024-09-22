@@ -12,7 +12,7 @@ import {
 import { Controller } from 'react-hook-form'
 import Coord from './Coord'
 import FacilityCheckBox from './FacilityCheckBox'
-import FormTextField from './FormTextField'
+import { AddFormTextField } from './FormTextField'
 import { AddRestroomProps } from '@/interface/addRestroomInterface'
 import { modalStyle } from '@/styles/modalStyles'
 
@@ -133,9 +133,24 @@ const AddRestroom: React.FC<AddRestroomPropsExtended> = ({
               )}
             </Box>
 
-            <FormTextField name="name" control={control} label="施設名称" />
-            <FormTextField name="address" control={control} label="住所" />
-            <FormTextField name="content" control={control} label="コメント" />
+            <AddFormTextField
+              name="name"
+              control={control}
+              defaultValue=""
+              label="施設名称"
+            />
+            <AddFormTextField
+              name="address"
+              control={control}
+              defaultValue=""
+              label="住所"
+            />
+            <AddFormTextField
+              name="content"
+              control={control}
+              defaultValue=""
+              label="コメント"
+            />
 
             <Typography
               component="p"
