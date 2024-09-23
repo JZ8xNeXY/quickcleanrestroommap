@@ -8,7 +8,6 @@ import {
   AddRestroomProps,
 } from '@/interface/addRestroomFormDataInterface'
 import AddSimpleRestroom from '@/presentationals/AddSimpleRestroom'
-import { chatgpt } from '@/utils/chatgptAPI'
 
 interface ExifTagValue {
   '0'?: [number, number, number, number]
