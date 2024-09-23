@@ -82,7 +82,7 @@ const SignIn: NextPage = () => {
     setIsLoading(true)
     try {
       const user = await signIn(data.email, data.password)
-      setCurrentUser(user)
+      setCurrentUser({ ...user, isFetched: true, isSignedIn: !!user })
       router.push('/')
     } catch (e: unknown) {
       setIsLoading(false)
