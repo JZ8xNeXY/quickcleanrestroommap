@@ -12,7 +12,7 @@ import Footer from '@/presentationals/Footer'
 
 import createEmotionCache from '@/styles/createEmotionCache'
 import theme from '@/styles/theme'
-import * as gtag from '@/utils/googleAnalytics'
+// import * as gtag from '@/utils/googleAnalytics'
 import '../styles/globals.css'
 
 // Client-side cache, shared for the whole session of the user in the browser.
@@ -38,7 +38,7 @@ export default function MyApp(props: MyAppProps): JSX.Element {
 
   return (
     <>
-      <Script
+      {/* <Script
         strategy="afterInteractive"
         src={`https://www.googletagmanager.com/gtag/js?id=${gtag.GA_MEASUREMENT_ID}`}
       />
@@ -54,7 +54,7 @@ export default function MyApp(props: MyAppProps): JSX.Element {
            gtag('config', '${gtag.GA_MEASUREMENT_ID}');
            `,
         }}
-      />
+      /> */}
       <CacheProvider value={emotionCache}>
         <ThemeProvider theme={theme}>
           {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
