@@ -15,7 +15,7 @@ import AddSimpleRestroomContainer from '@/containers/AddSimpleRestroomContainer'
 import { User } from '@/interface/userInterface'
 
 interface HeaderProps {
-  user: User
+  user: User | null
   isOpen: boolean
   openDrawer: (
     open: boolean,

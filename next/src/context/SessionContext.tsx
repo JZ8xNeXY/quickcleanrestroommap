@@ -5,13 +5,12 @@ import React, {
   ReactNode,
   useEffect,
 } from 'react'
+import { User } from '@/interface/userInterface'
 import { supabase } from '@/utils/supabase'
 
 interface SessionContextProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  currentUser: any
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  setCurrentUser: (user: any) => void
+  currentUser: User | null
+  setCurrentUser: React.Dispatch<React.SetStateAction<User | null>>
 }
 
 const SessionContext = createContext<SessionContextProps | undefined>(undefined)
@@ -19,24 +18,24 @@ const SessionContext = createContext<SessionContextProps | undefined>(undefined)
 export const SessionProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [currentUser, setCurrentUser] = useState<any>(null)
+  const [currentUser, setCurrentUser] = useState<User | null>(null)
 
-  // ページロード時にローカルストレージからセッション情報を読み込む
   useEffect(() => {
     const getCurrentUser = async () => {
       const { data, error } = await supabase.auth.getUser()
       if (error) {
-        console.error('Error fetching user:', error)
         return
       }
-      setCurrentUser(data.user)
+      setCurrentUser({
+        ...data.user,
+        isFetched: true,
+        isSignedIn: !!data.user,
+      })
     }
 
     getCurrentUser()
   }, [])
 
-  // currentUserが変更された時にローカルストレージに保存する
   useEffect(() => {
     if (currentUser) {
       localStorage.setItem('currentUser', JSON.stringify(currentUser))
