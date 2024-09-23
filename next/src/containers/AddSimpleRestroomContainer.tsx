@@ -170,9 +170,6 @@ const AddSimpleRestroomContainer: React.FC<AddRestroomProps> = ({
         }, 5000)
 
         setImageToiletCleanness(cleannessRating)
-
-        console.log(cleannessRating)
-        return true
       }
 
       setImageToiletCleanness(cleannessRating)

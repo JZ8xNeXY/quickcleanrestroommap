@@ -112,7 +112,6 @@ const AddRestroomContainer: React.FC<AddRestroomPropsExtended> = ({
 
         setImageToiletCleanness(cleannessRating)
 
-        console.log(cleannessRating)
         return true
       }
 
