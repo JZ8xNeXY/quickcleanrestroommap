@@ -99,6 +99,7 @@ const Header: React.FC<HeaderProps> = ({
                     width={200}
                     height={50}
                     prefix="false"
+                    priority
                   />
                 </Box>
               </Link>
