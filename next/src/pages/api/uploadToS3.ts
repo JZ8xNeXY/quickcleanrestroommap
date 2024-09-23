@@ -12,7 +12,8 @@ export default async function uploadToS3(
       region: process.env.AWS_REGION,
     })
 
-    const { fileName, fileType } = req.query
+    // クエリではなくリクエストボディから取得
+    const { fileName, fileType } = req.body
 
     if (!fileName || !fileType) {
       res.status(400).json({ error: 'fileName and fileType are required' })
@@ -26,7 +27,9 @@ export default async function uploadToS3(
       ContentType: fileType, // ファイルのコンテンツタイプ
     }
 
+    // S3用のプリサインドURLを生成
     const uploadURL = await s3.getSignedUrlPromise('putObject', params)
+
     res.status(200).json({ uploadURL })
   } catch (error) {
     console.error('Error generating upload URL:', error)
