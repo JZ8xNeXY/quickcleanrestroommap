@@ -82,7 +82,9 @@ const CalculateAndDisplayRoute: NextPage<CalculateAndDisplayRouteProps> = (
             directionsRenderer.setMap(props.map)
           }
         } else {
-          console.error('Directions request failed due to ' + status)
+          if (status != google.maps.DirectionsStatus.ZERO_RESULTS) {
+            console.error('Directions request failed due to ' + status)
+          }
         }
       },
     )

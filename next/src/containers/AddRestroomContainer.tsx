@@ -7,7 +7,6 @@ import {
   AddRestroomProps,
 } from '@/interface/addRestroomFormDataInterface'
 import AddRestroom from '@/presentationals/AddRestroom'
-import { chatgpt } from '@/utils/chatgptAPI'
 
 interface AddRestroomPropsExtended extends AddRestroomProps {
   coords: { lat: number; lng: number } | null
@@ -77,59 +76,96 @@ const AddRestroomContainer: React.FC<AddRestroomPropsExtended> = ({
     return imageDataToBase64.split(',')[1] // "data:image/jpeg;base64,"の部分を除去して返す
   }
 
+  //サーバーサイドで実行
   const evaluateToiletCleanness = async (imageDataToBase64: string) => {
     setIsLoading(true)
-    const result = await chatgpt(imageDataToBase64)
-    setIsLoading(false)
-    if (result == 0) {
-      setWarningImageMessage('トイレの画像をアップロードしてください')
-    } else {
-      setWarningImageMessage('')
+
+    try {
+      const responseChatgptApi = await fetch('/api/chatgptApi', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ imageDataBase64: imageDataToBase64 }),
+      })
+
+      if (!responseChatgptApi.ok) {
+        setIsLoading(false)
+        return
+      }
+
+      const { result: cleannessRating } = await responseChatgptApi.json()
+
+      setIsLoading(false)
+
+      if (cleannessRating == 0) {
+        setWarningImageMessage('トイレの画像をアップロードしてください')
+      } else {
+        setWarningImageMessage('')
+      }
+
+      if (cleannessRating >= 1) {
+        setConfirmMessage('トイレの画像を確認しました')
+        setTimeout(() => {
+          setConfirmMessage('')
+        }, 5000)
+
+        setImageToiletCleanness(cleannessRating)
+
+        console.log(cleannessRating)
+        return true
+      }
+
+      setImageToiletCleanness(cleannessRating)
+      return false
+    } catch (error) {
+      console.error('Error:', error)
+      setIsLoading(false)
+      return false
     }
-    if (result >= 1) {
-      setConfirmMessage('トイレの画像を確認しました')
-      setTimeout(() => {
-        setConfirmMessage('')
-      }, 5000)
-      setImageToiletCleanness(result)
-      return true
-    }
-    setImageToiletCleanness(result)
-    return false
   }
 
   const onChangeEvaluateToiletCleanness = async (imageDataToBase64: string) => {
     return await evaluateToiletCleanness(imageDataToBase64)
   }
 
-  //サーバーサイドで環境変数を読み込む
+  //サーバーサイドで実行
   const uploadFileToS3 = async (file: File) => {
     const fileName = file.name
     const fileType = file.type
 
-    const res = await fetch(
-      `/api/uploadToS3?fileName=${encodeURIComponent(fileName)}&fileType=${encodeURIComponent(fileType)}`,
-    )
+    try {
+      const responseUploadFileToS3 = await fetch('/api/uploadToS3', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ fileName, fileType }),
+      })
 
-    if (!res.ok) {
-      console.error('Failed to get upload URL')
-      return
-    }
-    const { uploadURL } = await res.json()
+      if (!responseUploadFileToS3.ok) {
+        console.error('Failed to get upload URL')
+        return
+      }
 
-    const upload = await fetch(uploadURL, {
-      method: 'PUT',
-      body: file,
-      headers: {
-        'Content-Type': file.type,
-      },
-    })
+      const { uploadURL } = await responseUploadFileToS3.json()
 
-    if (upload.ok) {
-      const fileUrl = uploadURL.split('?')[0]
-      setImageS3Url(fileUrl)
-    } else {
-      console.error('File upload failed')
+      const upload = await fetch(uploadURL, {
+        method: 'PUT',
+        body: file,
+        headers: {
+          'Content-Type': file.type,
+        },
+      })
+
+      if (upload.ok) {
+        const fileUrl = uploadURL.split('?')[0]
+        setImageS3Url(fileUrl)
+      } else {
+        console.error('File upload failed')
+      }
+    } catch (error) {
+      console.error('Error uploading file:', error)
     }
   }
 
