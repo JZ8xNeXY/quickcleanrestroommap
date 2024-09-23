@@ -1,4 +1,3 @@
-import { User } from '@supabase/supabase-js'
 import React, {
   createContext,
   useContext,
@@ -6,6 +5,7 @@ import React, {
   ReactNode,
   useEffect,
 } from 'react'
+import { User } from '@/interface/userInterface'
 import { supabase } from '@/utils/supabase'
 
 interface SessionContextProps {
@@ -26,7 +26,11 @@ export const SessionProvider: React.FC<{ children: ReactNode }> = ({
       if (error) {
         return
       }
-      setCurrentUser(data.user)
+      setCurrentUser({
+        ...data.user,
+        isFetched: true,
+        isSignedIn: !!data.user,
+      })
     }
 
     getCurrentUser()

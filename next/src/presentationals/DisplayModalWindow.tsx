@@ -23,7 +23,7 @@ import {
 } from '@/styles/modalStyles'
 
 interface DisplayModalWindowProps extends Restroom {
-  user: User
+  user: User | null
   openModalWindow: boolean
   closeModalWindow: () => void
   openEditRestroomModalWindow: () => void

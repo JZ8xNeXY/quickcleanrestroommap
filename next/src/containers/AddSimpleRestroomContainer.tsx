@@ -173,7 +173,7 @@ const AddSimpleRestroomContainer: React.FC<AddRestroomProps> = ({
       }
 
       setImageToiletCleanness(cleannessRating)
-      return false
+      return true
     } catch (error) {
       console.error('Error:', error)
       setIsLoading(false)
@@ -243,6 +243,7 @@ const AddSimpleRestroomContainer: React.FC<AddRestroomProps> = ({
 
       const imageBase64 = await convertFileToBase64(file)
       const isOk = await onChangeEvaluateToiletCleanness(imageBase64)
+      console.log(isOk)
       if (isOk) {
         await onChangeUploadFileToS3(files)
       }
