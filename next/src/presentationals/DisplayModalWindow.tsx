@@ -54,7 +54,11 @@ const DisplayModalWindow: React.FC<DisplayModalWindowProps> = ({
     >
       <Box sx={modalStyle}>
         <Box sx={{ display: 'flex', justifyContent: 'right' }}>
-          <Button sx={closeButtonStyle} onClick={closeModalWindow}>
+          <Button
+            sx={closeButtonStyle}
+            onClick={closeModalWindow}
+            data-testid="closeButton"
+          >
             <CloseIcon />
           </Button>
         </Box>
