@@ -55,4 +55,4 @@ jobs:
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
       
       - name: Run Jest tests
-        run: npm run test
+        run: npm run test:watch
