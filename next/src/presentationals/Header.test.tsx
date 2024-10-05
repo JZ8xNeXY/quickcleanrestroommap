@@ -71,7 +71,7 @@ describe('Header', () => {
   })
 
   it('Should open the modal and display the modal when the modal button is clicked', async () => {
-    const { debug, rerender } = render(<Header {...mockHeaderProps} />)
+    const { rerender } = render(<Header {...mockHeaderProps} />)
     const menuButtons = screen.getAllByLabelText('menu')
     const addLocationButton = menuButtons[1]
     await userEvent.click(addLocationButton)

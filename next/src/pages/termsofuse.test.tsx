@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import TermOfUse from '@/pages/termsofuse' 
+import TermOfUse from '@/pages/termsofuse'
 
 describe('TermOfUse', () => {
   it('Should display "利用規約"', () => {

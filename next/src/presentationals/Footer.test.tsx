@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import Footer from './Footer' 
+import Footer from './Footer'
 import '@testing-library/jest-dom'
 
 describe('Footer', () => {
@@ -11,6 +11,5 @@ describe('Footer', () => {
         'Copyright © Quick Clean Restroom Map All rights reserved.',
       ),
     ).toBeInTheDocument()
-
   })
 })
