@@ -8,6 +8,7 @@
     "start": "next start -p 80",
     "lint": "next lint --dir src",
     "format": "next lint --fix --dir src",
+    "test": "jest -env=jsdom --verbose",
     "test:watch": "jest --watchAll -env=jsdom --verbose"
   },
   "dependencies": {
