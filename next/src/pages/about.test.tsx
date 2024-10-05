@@ -19,5 +19,7 @@ describe('About', () => {
     expect(screen.getByText('\\ P O I N T 3 /')).toBeInTheDocument()
 
     expect(screen.getByText('\\ S E A R C H /')).toBeInTheDocument()
+
+    expect(screen.getByTestId('map')).toBeTruthy()
   })
 })

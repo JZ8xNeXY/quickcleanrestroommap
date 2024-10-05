@@ -104,7 +104,11 @@ const About: NextPage = () => {
             setCurrentUserPos={setCurrentUserPos}
           />
         </RestroomProvider>
-        <Box id="map" sx={{ height: '80vh', width: '100%' }}></Box>
+        <Box
+          id="map"
+          data-testid="map"
+          sx={{ height: '80vh', width: '100%' }}
+        ></Box>
       </Box>
     </Container>
   )
