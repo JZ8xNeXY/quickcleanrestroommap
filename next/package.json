@@ -7,13 +7,16 @@
     "build": "next build",
     "start": "next start -p 80",
     "lint": "next lint --dir src",
-    "format": "next lint --fix --dir src"
+    "format": "next lint --fix --dir src",
+    "test": "jest -env=jsdom --verbose",
+    "test:watch": "jest --watchAll -env=jsdom --verbose"
   },
   "dependencies": {
     "@emotion/cache": "^11.11.0",
     "@emotion/react": "^11.11.1",
     "@emotion/server": "^11.11.0",
     "@emotion/styled": "^11.11.0",
+    "@faker-js/faker": "^9.0.3",
     "@mui/icons-material": "^5.14.7",
     "@mui/lab": "^5.0.0-alpha.142",
     "@mui/material": "^5.14.7",
@@ -36,7 +39,11 @@
   },
   "devDependencies": {
     "@emotion/babel-plugin": "^11.11.0",
+    "@testing-library/jest-dom": "^6.5.0",
+    "@testing-library/react": "^16.0.1",
+    "@testing-library/user-event": "^14.5.2",
     "@types/blueimp-load-image": "^5.16.6",
+    "@types/jest": "^29.5.13",
     "@typescript-eslint/eslint-plugin": "^6.5.0",
     "@typescript-eslint/parser": "^6.5.0",
     "eslint": "^8.48.0",
@@ -46,7 +53,11 @@
     "eslint-plugin-prettier": "^5.0.0",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
     "prettier": "^3.0.3",
+    "ts-jest": "^29.2.5",
+    "ts-node": "^10.9.2",
     "typescript-eslint": "^0.0.1-alpha.0"
   }
 }
