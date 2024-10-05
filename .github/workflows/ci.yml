@@ -51,8 +51,8 @@ jobs:
       - name: Set environment variables for Supabase
         run: echo "Setting environment variables"
         env:
-          SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
-          SUPABASE_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_API_KEY }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_API_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_API_KEY }}
       
       - name: Run Jest tests
         run: npm run test:watch
