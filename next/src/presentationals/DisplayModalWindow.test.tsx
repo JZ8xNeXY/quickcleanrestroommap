@@ -98,7 +98,6 @@ describe('Modal', () => {
   })
 
   it('should display modal when is sign in', () => {
-
     const signedInUser = {
       id: '1',
       email: 'admin@example.com',
@@ -110,7 +109,12 @@ describe('Modal', () => {
       created_at: '2023-01-01T00:00:00Z',
     }
 
-    render(<DisplayModalWindow {...mockDisplayModalWindowProps} user={signedInUser} />)
+    render(
+      <DisplayModalWindow
+        {...mockDisplayModalWindowProps}
+        user={signedInUser}
+      />,
+    )
 
     const closeButton = screen.getByTestId('CloseIcon')
     expect(closeButton).toBeInTheDocument()

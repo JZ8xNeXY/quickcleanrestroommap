@@ -1,9 +1,8 @@
 import { render, waitFor } from '@testing-library/react'
+import { useRouter } from 'next/router'
 import SignOut from '@/pages/sign_out'
 import { supabase } from '@/utils/supabase'
-import { useRouter } from 'next/router'
 import { useUserState } from '@/utils/useGlobalState'
-
 
 beforeEach(() => {
   jest.clearAllMocks()
@@ -34,17 +33,16 @@ jest.mock('@/utils/useGlobalState', () => ({
 
 describe('SignOut', () => {
   it('should sign out user, clear local storage, and redirect to home page', async () => {
-    const mockPush = jest.fn() 
-    const setUserMock = jest.fn() 
+    const mockPush = jest.fn()
+    const setUserMock = jest.fn()
 
     const mockUseRouter = useRouter as jest.Mock
     mockUseRouter.mockReturnValue({
-      push: mockPush, 
+      push: mockPush,
     })
 
     const mockUseUserState = useUserState as jest.Mock
     mockUseUserState.mockReturnValue([{}, setUserMock])
-
 
     render(<SignOut />)
 
@@ -62,6 +60,5 @@ describe('SignOut', () => {
     })
 
     expect(mockPush).toHaveBeenCalledWith('/')
-
   })
 })
