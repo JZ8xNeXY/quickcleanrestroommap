@@ -1,16 +1,17 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, act } from '@testing-library/react'
 import Index from '@/pages/index'
 import '@testing-library/jest-dom'
 
-//camelcase-keysのモックの作成
 jest.mock('camelcase-keys', () => ({
   default: jest.fn().mockReturnValue({}),
 }))
 
 describe('Index', () => {
-  it('Should display "map,"', () => {
-    render(<Index />)
+  it('Should display "map"', async () => {
+    await act(async () => {
+      render(<Index />)
+    })
 
-    expect(screen.getByTestId('map')).toBeTruthy()
+    expect(screen.getByTestId('map')).toBeInTheDocument()
   })
 })
