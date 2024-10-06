@@ -24,10 +24,10 @@ interface DisplayModalWindowProps extends Restroom {
   openEditRestroomModalWindow: () => void
 }
 
-let mockHeaderProps: DisplayModalWindowProps
+let mockDisplayModalWindowProps: DisplayModalWindowProps
 
 beforeEach(() => {
-  mockHeaderProps = {
+  mockDisplayModalWindowProps = {
     name: faker.company.name(),
     address: faker.location.streetAddress(),
     content: faker.string.alphanumeric(),
@@ -49,7 +49,7 @@ beforeEach(() => {
 
 describe('Modal', () => {
   it('should display modal', () => {
-    render(<DisplayModalWindow {...mockHeaderProps} />)
+    render(<DisplayModalWindow {...mockDisplayModalWindowProps} />)
 
     const closeButton = screen.getByTestId('CloseIcon')
     expect(closeButton).toBeInTheDocument()
@@ -68,91 +68,91 @@ describe('Modal', () => {
     expect(image).toHaveAttribute('width', '200')
     expect(image).toHaveAttribute('height', '200')
 
-    expect(screen.getByText(mockHeaderProps.name)).toBeInTheDocument()
+    expect(screen.getByText(mockDisplayModalWindowProps.name)).toBeInTheDocument()
 
     expect(screen.getByText('住所')).toBeInTheDocument()
-    expect(screen.getByText(mockHeaderProps.address)).toBeInTheDocument()
+    expect(screen.getByText(mockDisplayModalWindowProps.address)).toBeInTheDocument()
 
     expect(screen.getByText('コメント')).toBeInTheDocument()
-    expect(screen.getByText(mockHeaderProps.content)).toBeInTheDocument()
+    expect(screen.getByText(mockDisplayModalWindowProps.content)).toBeInTheDocument()
 
     expect(screen.getByText('設備情報')).toBeInTheDocument()
 
     expect(screen.getByText('清潔度')).toBeInTheDocument()
 
     expect(
-      screen.getByText(`ReactStarsRating ${mockHeaderProps.evaluation}`),
+      screen.getByText(`ReactStarsRating ${mockDisplayModalWindowProps.evaluation}`),
     ).toBeInTheDocument()
 
     expect(screen.getByText('お問い合わせはこちら ＞')).toBeInTheDocument()
   })
 
   it('should display "授乳室" when nursingRoom is true', () => {
-    render(<DisplayModalWindow {...mockHeaderProps} nursingRoom={true} />)
+    render(<DisplayModalWindow {...mockDisplayModalWindowProps} nursingRoom={true} />)
     expect(screen.getByText('授乳室')).toBeInTheDocument()
   })
 
   it('should not display "授乳室" when nursingRoom is false', () => {
-    render(<DisplayModalWindow {...mockHeaderProps} nursingRoom={false} />)
+    render(<DisplayModalWindow {...mockDisplayModalWindowProps} nursingRoom={false} />)
     expect(screen.queryByText('授乳室')).not.toBeInTheDocument()
   })
 
   it('should display "誰でもトイレ" when anyoneToilet is true', () => {
-    render(<DisplayModalWindow {...mockHeaderProps} anyoneToilet={true} />)
+    render(<DisplayModalWindow {...mockDisplayModalWindowProps} anyoneToilet={true} />)
     expect(screen.getByText('誰でもトイレ')).toBeInTheDocument()
   })
 
   it('should not display "誰でもトイレ" when anyoneToilet is false', () => {
-    render(<DisplayModalWindow {...mockHeaderProps} anyoneToilet={false} />)
+    render(<DisplayModalWindow {...mockDisplayModalWindowProps} anyoneToilet={false} />)
     expect(screen.queryByText('誰でもトイレ')).not.toBeInTheDocument()
   })
 
   it('should display "オムツ交換台" when diaperChangingStation is true', () => {
     render(
-      <DisplayModalWindow {...mockHeaderProps} diaperChangingStation={true} />,
+      <DisplayModalWindow {...mockDisplayModalWindowProps} diaperChangingStation={true} />,
     )
     expect(screen.getByText('オムツ交換台')).toBeInTheDocument()
   })
 
   it('should not display "オムツ交換台" when diaperChangingStation is false', () => {
     render(
-      <DisplayModalWindow {...mockHeaderProps} diaperChangingStation={false} />,
+      <DisplayModalWindow {...mockDisplayModalWindowProps} diaperChangingStation={false} />,
     )
     expect(screen.queryByText('オムツ交換台')).not.toBeInTheDocument()
   })
 
   it('should display "パウダーコーナー" when powderCorner is true', () => {
-    render(<DisplayModalWindow {...mockHeaderProps} powderCorner={true} />)
+    render(<DisplayModalWindow {...mockDisplayModalWindowProps} powderCorner={true} />)
     expect(screen.getByText('パウダーコーナー')).toBeInTheDocument()
   })
 
   it('should not display "パウダーコーナー" when powderCorner is false', () => {
-    render(<DisplayModalWindow {...mockHeaderProps} powderCorner={false} />)
+    render(<DisplayModalWindow {...mockDisplayModalWindowProps} powderCorner={false} />)
     expect(screen.queryByText('パウダーコーナー')).not.toBeInTheDocument()
   })
 
   it('should display "ベビーカー可" when strollerAccessible is true', () => {
     render(
-      <DisplayModalWindow {...mockHeaderProps} strollerAccessible={true} />,
+      <DisplayModalWindow {...mockDisplayModalWindowProps} strollerAccessible={true} />,
     )
     expect(screen.getByText('ベビーカー可')).toBeInTheDocument()
   })
 
   it('should not display "ベビーカー可" when strollerAccessible is false', () => {
     render(
-      <DisplayModalWindow {...mockHeaderProps} strollerAccessible={false} />,
+      <DisplayModalWindow {...mockDisplayModalWindowProps} strollerAccessible={false} />,
     )
     expect(screen.queryByText('ベビーカー可')).not.toBeInTheDocument()
   })
 
   it('should not display modal when closeButton is clicked', async () => {
     const closeModalWindowMock = jest.fn(() => {
-      mockHeaderProps.openModalWindow = false
+      mockDisplayModalWindowProps.openModalWindow = false
     })
 
     const { rerender } = render(
       <DisplayModalWindow
-        {...mockHeaderProps}
+        {...mockDisplayModalWindowProps}
         closeModalWindow={closeModalWindowMock}
       />,
     )
@@ -164,7 +164,7 @@ describe('Modal', () => {
 
     await userEvent.click(closeButton)
 
-    rerender(<DisplayModalWindow {...mockHeaderProps} />)
+    rerender(<DisplayModalWindow {...mockDisplayModalWindowProps} />)
 
     await waitFor(() => {
       expect(screen.queryByRole('presentation')).not.toBeInTheDocument()
