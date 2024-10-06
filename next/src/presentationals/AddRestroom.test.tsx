@@ -1,10 +1,10 @@
 import { faker } from '@faker-js/faker'
-import { render, screen, within,waitFor } from '@testing-library/react'
+import { render, screen, within, waitFor } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import { userEvent } from '@testing-library/user-event'
+import AddRestroomContainer from '@/containers/AddRestroomContainer'
 import { RestroomProvider } from '@/context/RestRoomContext'
 import { SessionProvider } from '@/context/SessionContext'
-import AddRestroomContainer from '@/containers/AddRestroomContainer'
 
 // camelcase-keys のモックの作成
 jest.mock('camelcase-keys', () => ({
@@ -36,10 +36,10 @@ describe('AddRestroom', () => {
           <AddRestroomContainer
             open={false}
             onClose={() => jest.fn()}
-            coords={{ lat: 35.681236, lng: 139.767125 }} 
+            coords={{ lat: 35.681236, lng: 139.767125 }}
           />
         </RestroomProvider>
-      </SessionProvider>
+      </SessionProvider>,
     )
 
     expect(screen.queryByRole('presentation')).not.toBeInTheDocument()
@@ -52,13 +52,13 @@ describe('AddRestroom', () => {
           <AddRestroomContainer
             open={true}
             onClose={() => jest.fn()}
-            coords={{ lat: 35.681236, lng: 139.767125 }} 
+            coords={{ lat: 35.681236, lng: 139.767125 }}
           />
         </RestroomProvider>
-      </SessionProvider>
+      </SessionProvider>,
     )
 
-    const modal = screen.getByRole('presentation') 
+    const modal = screen.getByRole('presentation')
     expect(within(modal).getByText('トイレ情報を登録する')).toBeInTheDocument()
 
     const imageFileButton = screen.getByRole('button', {
@@ -139,7 +139,6 @@ describe('AddRestroom', () => {
     const submitButton = screen.getByRole('button', { name: '送信する' })
     expect(submitButton).toBeInTheDocument()
     expect(submitButton).toHaveAttribute('type', 'submit')
-
   })
 
   it('Should show error when trying to submit without an image upload', async () => {
@@ -149,10 +148,10 @@ describe('AddRestroom', () => {
           <AddRestroomContainer
             open={true}
             onClose={() => jest.fn()}
-            coords={{ lat: 35.681236, lng: 139.767125 }} 
+            coords={{ lat: 35.681236, lng: 139.767125 }}
           />
         </RestroomProvider>
-      </SessionProvider>
+      </SessionProvider>,
     )
 
     const modal = screen.getByRole('presentation')

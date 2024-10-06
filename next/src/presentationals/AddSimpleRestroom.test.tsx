@@ -17,7 +17,6 @@ const mockHeaderProps = {
   sideBar: jest.fn(() => <div>SideBar Content</div>),
 }
 
-
 describe('AddSimpleRestroom', () => {
   it('Should open the modal and display the modal when the modal button is clicked', async () => {
     const { rerender } = render(<Header {...mockHeaderProps} />)
@@ -29,7 +28,7 @@ describe('AddSimpleRestroom', () => {
     )
     rerender(<Header {...mockHeaderProps} openAddSimpleRestroomModal={true} />)
 
-    const modal = screen.getByRole('presentation') 
+    const modal = screen.getByRole('presentation')
     expect(within(modal).getByText('トイレ情報を登録する')).toBeInTheDocument()
 
     const imageFileButton = screen.getByRole('button', {
