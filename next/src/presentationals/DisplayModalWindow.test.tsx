@@ -48,7 +48,7 @@ beforeEach(() => {
 })
 
 describe('Modal', () => {
-  it('should display modal', () => {
+  it('should display modal when is sign out', () => {
     render(<DisplayModalWindow {...mockDisplayModalWindowProps} />)
 
     const closeButton = screen.getByTestId('CloseIcon')
@@ -67,6 +67,73 @@ describe('Modal', () => {
 
     expect(image).toHaveAttribute('width', '200')
     expect(image).toHaveAttribute('height', '200')
+
+    expect(screen.queryByText('編集する')).not.toBeInTheDocument()
+
+    expect(
+      screen.getByText(mockDisplayModalWindowProps.name),
+    ).toBeInTheDocument()
+
+    expect(screen.getByText('住所')).toBeInTheDocument()
+    expect(
+      screen.getByText(mockDisplayModalWindowProps.address),
+    ).toBeInTheDocument()
+
+    expect(screen.getByText('コメント')).toBeInTheDocument()
+    expect(
+      screen.getByText(mockDisplayModalWindowProps.content),
+    ).toBeInTheDocument()
+
+    expect(screen.getByText('設備情報')).toBeInTheDocument()
+
+    expect(screen.getByText('清潔度')).toBeInTheDocument()
+
+    expect(
+      screen.getByText(
+        `ReactStarsRating ${mockDisplayModalWindowProps.evaluation}`,
+      ),
+    ).toBeInTheDocument()
+
+    expect(screen.getByText('お問い合わせはこちら ＞')).toBeInTheDocument()
+  })
+
+  it('should display modal when is sign in', () => {
+    const signedInUser = {
+      id: '1',
+      email: 'admin@example.com',
+      isFetched: true,
+      isSignedIn: true,
+      app_metadata: {},
+      user_metadata: {},
+      aud: 'authenticated',
+      created_at: '2023-01-01T00:00:00Z',
+    }
+
+    render(
+      <DisplayModalWindow
+        {...mockDisplayModalWindowProps}
+        user={signedInUser}
+      />,
+    )
+
+    const closeButton = screen.getByTestId('CloseIcon')
+    expect(closeButton).toBeInTheDocument()
+
+    const image = screen.getByAltText('restroom')
+
+    expect(image).toBeInTheDocument()
+
+    expect(image).toHaveAttribute(
+      'src',
+      '/_next/image?url=%2Fpublic-toilet.jpeg&w=640&q=75',
+    )
+
+    expect(image).toHaveAttribute('alt', 'restroom')
+
+    expect(image).toHaveAttribute('width', '200')
+    expect(image).toHaveAttribute('height', '200')
+
+    expect(screen.getByText('編集する')).toBeInTheDocument()
 
     expect(
       screen.getByText(mockDisplayModalWindowProps.name),
