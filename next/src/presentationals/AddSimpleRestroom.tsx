@@ -195,7 +195,7 @@ const AddSimpleRestroom: React.FC<AddRestroomPropsExtended> = ({
                   type="number"
                   label="評価"
                   sx={{ backgroundColor: 'white' }}
-                  style={{ display: 'none' }}
+                  // style={{ display: 'none' }}
                 />
               )}
             />
