@@ -1,6 +1,14 @@
 import axios from 'axios'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: '10mb', // 必要に応じてサイズを変更
+    },
+  },
+}
+
 export default async function chatgptApi(
   req: NextApiRequest,
   res: NextApiResponse,
