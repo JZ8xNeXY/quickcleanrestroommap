@@ -70,7 +70,7 @@ const AddRestroomContainer: React.FC<AddRestroomPropsExtended> = ({
 
       fileReader.readAsDataURL(file)
     })
-    console.log(imageDataToBase64)
+
     setImageData(imageDataToBase64)
 
     return imageDataToBase64.split(',')[1] // "data:image/jpeg;base64,"の部分を除去して返す
