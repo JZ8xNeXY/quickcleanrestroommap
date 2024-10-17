@@ -74,7 +74,6 @@ jobs:
       - name: Install packages
         run: npm install
 
-      # テスト用の .env.test ファイルを作成
       - name: Create .env.production file
         run: |
           echo "NEXT_PUBLIC_SUPABASE_URL=${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}" > .env.production
@@ -85,19 +84,12 @@ jobs:
           echo "BASE_URL=${{ secrets.BASE_URL }}" >> .env.production
           echo "EMAIL=${{ secrets.EMAIL }}" >> .env.production
           echo "PASSWORD=${{ secrets.PASSWORD }}" >> .env.production
-    
-
-      - name: Check .env.test content
-        run: cat .env.production
       
-      # Next.jsアプリケーションのビルド
       - name: Build Next.js app
         run: npm run build
       
-      # プロダクションサーバーをポート8000で起動
       - name: Start production server on port 8000
         run: npm run start -- --port 8000 &
 
-      # Cypressテストの実行
       - name: Run Cypress tests
         run: npm run cypress:headless 
