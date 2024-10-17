@@ -1,7 +1,6 @@
 import { defineConfig } from 'cypress'
 import * as dotenv from 'dotenv'
 
-// .env.testファイルを読み込む
 dotenv.config({ path: '.env.test' })
 
 export default defineConfig({
