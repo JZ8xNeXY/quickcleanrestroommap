@@ -22,7 +22,12 @@ describe('CalculateAndDisplayRoute', () => {
 
     cy.get('[data-testid="closeButton"]').click()
 
-    // cy.get('button.gm-ui-hover-effect').should('exist')
+    //始点のポイント
+    cy.get('#gmimap0').should('exist')
+    //終点のポイントの確認
+    cy.get('#gmimap1').should('exist')
+
+    cy.get('button.gm-ui-hover-effect').should('exist')
     cy.contains('トイレまで歩いて約')
     cy.contains('3 mins')
 

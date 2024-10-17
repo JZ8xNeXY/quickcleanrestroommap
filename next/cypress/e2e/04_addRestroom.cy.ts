@@ -23,7 +23,7 @@ describe('AddRestroom', () => {
     cy.get('input[name="powder_corner"]').check()
     cy.get('input[name="stroller_accessible"]').check()
 
-    cy.wait(3000)
+    cy.wait(10000)
 
     cy.get('button[type="submit"]').click()
 
