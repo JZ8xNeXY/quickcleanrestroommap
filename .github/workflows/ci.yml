@@ -55,3 +55,43 @@ jobs:
       # Jestテストの実行
       - name: Run Jest tests
         run: npm run test
+  
+  # 処理③ cypress e2eテストの実施
+  cypress:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: next
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '19.4.0'
+      
+      - name: Install packages
+        run: npm install
+
+      # テスト用の .env.test ファイルを作成
+      - name: Create .env.test file
+        run: |
+          echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" > .env.test
+          echo "AWS_SECRET_ACCESS_KEY==${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> .env.test
+          echo "AWS_REGION==${{ secrets.AWS_REGION }}" >> .env.test
+          echo "BASE_URL==${{ secrets.BASE_URL }}" >> .env.test
+          echo "EMAIL==${{ secrets.EMAIL }}" >> .env.test
+          echo "PASSWORD==${{ secrets.PASSWORD }}" >> .env.test
+          # サーバーをバックグラウンドで起動（ポート8000）
+          
+      - name: Start server
+        run: npm run start -- --port 8000 &
+
+    # サーバーが完全に起動するまで待機
+      - name: Wait for server to be ready
+        run: npx wait-on http://localhost:8000
+
+      # Cypressテストの実行
+      - name: Run Cypress tests
+        run: npm run cypress:headless 
