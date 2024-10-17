@@ -16,6 +16,7 @@ export default defineConfig({
     AWS_ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID,
     AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY,
     AWS_REGION: process.env.AWS_REGION,
+    OPENAI_API_KEY: process.env.OPENAI_API_KEY,
     baseUrl: process.env.BASE_URL,
     email: process.env.EMAIL,
     password: process.env.PASSWORD,
