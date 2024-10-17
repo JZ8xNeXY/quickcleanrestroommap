@@ -84,12 +84,12 @@ jobs:
           echo "EMAIL=${{ secrets.EMAIL }}" >> .env.test
           echo "PASSWORD=${{ secrets.PASSWORD }}" >> .env.test
           # サーバーをバックグラウンドで起動（ポート8000）
-
-      # Next.jsビルド
+      
+      # Next.jsアプリケーションのビルド
       - name: Build Next.js app
         run: npm run build
-
-      # 開発サーバーをバックグラウンドでポート8000に起動
+      
+      # プロダクションサーバーをポート8000で起動
       - name: Start production server on port 8000
         run: npm run start -- --port 8000 &
 
