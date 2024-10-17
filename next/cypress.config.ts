@@ -3,6 +3,9 @@ import * as dotenv from 'dotenv'
 
 dotenv.config({ path: '.env.test' })
 
+// 環境変数が正しく読み込まれているか確認
+console.log('baseurl:', process.env.BASE_URL)
+
 export default defineConfig({
   projectId: 'xv9nv1',
   e2e: {
