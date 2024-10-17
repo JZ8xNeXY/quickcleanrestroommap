@@ -1,7 +1,7 @@
 describe('CalculateAndDisplayRoute', () => {
   it('should display calculate and display route', () => {
     cy.visit(Cypress.env('baseUrl'))
-    cy.wait(2000)
+    cy.wait(2000) // 2秒待つ
     cy.get('gmp-advanced-marker[aria-label="新丸の内ビル地下2階"]').click({
       force: true,
     })
@@ -20,7 +20,9 @@ describe('CalculateAndDisplayRoute', () => {
 
     cy.contains('お問い合わせはこちら ＞')
 
-    cy.get('[data-testid="closeButton"]').click()
+    cy.get('button[data-testid="closeButton"]')
+      .scrollIntoView()
+      .click({ force: true })
 
     //始点のポイント
     cy.get('#gmimap0').should('exist')
