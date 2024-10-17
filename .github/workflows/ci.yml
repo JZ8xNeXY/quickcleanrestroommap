@@ -85,7 +85,6 @@ jobs:
           echo "BASE_URL=${{ secrets.BASE_URL }}" >> .env.test
           echo "EMAIL=${{ secrets.EMAIL }}" >> .env.test
           echo "PASSWORD=${{ secrets.PASSWORD }}" >> .env.test
-          # サーバーをバックグラウンドで起動（ポート8000）
       
       # Next.jsアプリケーションのビルド
       - name: Build Next.js app
