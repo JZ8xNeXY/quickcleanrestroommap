@@ -84,9 +84,15 @@ jobs:
           echo "EMAIL==${{ secrets.EMAIL }}" >> .env.test
           echo "PASSWORD==${{ secrets.PASSWORD }}" >> .env.test
           # サーバーをバックグラウンドで起動（ポート8000）
-          
-      - name: Start server
-        run: npm run start -- --port 8000 &
+
+      # 開発サーバーをバックグラウンドでポート8000に起動
+      - name: Start development server on port 8000
+        run: npm run dev -- --port 8000 &
+
+      # サーバーが完全に起動するまで待機
+      - name: Wait for server to be ready
+        run: npx wait-on http://localhost:8000
+
 
     # サーバーが完全に起動するまで待機
       - name: Wait for server to be ready
