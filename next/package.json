@@ -9,7 +9,9 @@
     "lint": "next lint --dir src",
     "format": "next lint --fix --dir src",
     "test": "jest -env=jsdom --verbose",
-    "test:watch": "jest --watchAll -env=jsdom --verbose"
+    "test:watch": "jest --watchAll -env=jsdom --verbose",
+    "cypress": "cypress open",
+    "cypress:headless": "cypress run"
   },
   "dependencies": {
     "@emotion/cache": "^11.11.0",
@@ -46,6 +48,9 @@
     "@types/jest": "^29.5.13",
     "@typescript-eslint/eslint-plugin": "^6.5.0",
     "@typescript-eslint/parser": "^6.5.0",
+    "cypress": "^13.15.0",
+    "cypress-file-upload": "^5.0.8",
+    "dotenv": "^16.4.5",
     "eslint": "^8.48.0",
     "eslint-config-next": "^13.4.19",
     "eslint-config-prettier": "^9.0.0",
