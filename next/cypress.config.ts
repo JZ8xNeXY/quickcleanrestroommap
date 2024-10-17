@@ -20,5 +20,6 @@ export default defineConfig({
     baseUrl: process.env.BASE_URL,
     email: process.env.EMAIL,
     password: process.env.PASSWORD,
+    CYPRESS_PROJECT_ID: process.env.CYPRESS_PROJECT_ID,
   },
 })
