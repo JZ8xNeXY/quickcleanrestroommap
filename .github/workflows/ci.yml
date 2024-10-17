@@ -85,6 +85,9 @@ jobs:
           echo "BASE_URL=${{ secrets.BASE_URL }}" >> .env.test
           echo "EMAIL=${{ secrets.EMAIL }}" >> .env.test
           echo "PASSWORD=${{ secrets.PASSWORD }}" >> .env.test
+
+      - name: Check .env.test content
+        run: cat .env.test
       
       # Next.jsアプリケーションのビルド
       - name: Build Next.js app
