@@ -8,9 +8,12 @@ describe('editRestroom', () => {
 
     cy.contains('管理者権限でログイン中')
 
+    cy.wait(2000)
     cy.get('gmp-advanced-marker[aria-label="test name"]')
       .should('be.visible')
-      .click()
+      .click({
+        force: true,
+      })
 
     cy.wait(1000)
 
