@@ -6,7 +6,7 @@ dotenv.config({ path: '.env.test' })
 export default defineConfig({
   projectId: 'xv9nv1',
   e2e: {
-    supportFile: false,
+    supportFile: 'cypress/support/commands.ts',
     video: true,
     screenshotOnRunFailure: true,
   },
