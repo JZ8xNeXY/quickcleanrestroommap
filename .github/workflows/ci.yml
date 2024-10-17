@@ -93,15 +93,6 @@ jobs:
       - name: Start development server on port 8000
         run: npm run dev -- --port 8000 &
 
-      # サーバーが完全に起動するまで待機
-      - name: Wait for server to be ready
-        run: npx wait-on http://localhost:8000
-
-
-    # サーバーが完全に起動するまで待機
-      - name: Wait for server to be ready
-        run: npx wait-on http://localhost:8000
-
       # Cypressテストの実行
       - name: Run Cypress tests
         run: npm run cypress:headless 
