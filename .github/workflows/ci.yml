@@ -74,6 +74,10 @@ jobs:
       - name: Install packages
         run: npm install
 
+      # wait-onパッケージをインストール
+      - name: Install wait-on package
+        run: npm install wait-on
+
       # テスト用の .env.test ファイルを作成
       - name: Create .env.test file
         run: |
