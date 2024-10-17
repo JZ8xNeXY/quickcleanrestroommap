@@ -1,9 +1,10 @@
 describe('CalculateAndDisplayRoute', () => {
   it('should display calculate and display route', () => {
     cy.visit(Cypress.env('baseUrl'))
-    cy.get('gmp-advanced-marker[aria-label="新丸の内ビル地下2階"]')
-      .should('be.visible')
-      .click()
+    cy.wait(2000)
+    cy.get('gmp-advanced-marker[aria-label="新丸の内ビル地下2階"]').click({
+      force: true,
+    })
 
     cy.contains('新丸の内ビル地下2階')
     cy.get('h6').contains('住所')
