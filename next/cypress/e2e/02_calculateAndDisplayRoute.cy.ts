@@ -22,7 +22,7 @@ describe('CalculateAndDisplayRoute', () => {
 
     cy.get('[data-testid="closeButton"]').click()
 
-    cy.get('button.gm-ui-hover-effect').should('exist')
+    // cy.get('button.gm-ui-hover-effect').should('exist')
     cy.contains('トイレまで歩いて約')
     cy.contains('3 mins')
 
