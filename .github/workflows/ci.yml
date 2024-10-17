@@ -85,12 +85,14 @@ jobs:
           echo "BASE_URL=${{ secrets.BASE_URL }}" >> .env.production
           echo "EMAIL=${{ secrets.EMAIL }}" >> .env.production
           echo "PASSWORD=${{ secrets.PASSWORD }}" >> .env.production
-      
+          echo "CYPRESS_PROJECT_ID=${{ secrets.CYPRESS_PROJECT_ID }}" >> .env.production
+
       - name: Build Next.js app
         run: npm run build
       
       - name: Start production server on port 8000
         run: npm run start -- --port 8000 &
 
+        #record
       - name: Run Cypress tests
-        run: npm run cypress:headless 
+        run: npm run cypress:headless -- --record --key ${{ secrets.CYPRESS_PROJECT_ID }}
