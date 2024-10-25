@@ -58,7 +58,6 @@ export default function MyApp(props: MyAppProps): JSX.Element {
       /> */}
       <CacheProvider value={emotionCache}>
         <ThemeProvider theme={theme}>
-          {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
           <SessionProvider>
             <RestroomProvider>
               <CssBaseline />

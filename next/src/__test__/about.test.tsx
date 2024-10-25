@@ -2,7 +2,6 @@ import { render, screen } from '@testing-library/react'
 import About from '@/pages/about'
 import '@testing-library/jest-dom'
 
-//camelcase-keysのモックの作成
 jest.mock('camelcase-keys', () => ({
   default: jest.fn().mockReturnValue({}),
 }))
@@ -20,6 +19,6 @@ describe('About', () => {
 
     expect(screen.getByText('\\ S E A R C H /')).toBeInTheDocument()
 
-    expect(screen.getByTestId('map')).toBeTruthy()
+    expect(screen.getByTestId('map')).toBeInTheDocument()
   })
 })
