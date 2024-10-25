@@ -17,13 +17,13 @@ const mockHeaderProps = {
 }
 
 describe('Header', () => {
-  it('should not display "管理者権限でログイン中" when user is not signed in', () => {
+  it('should not display "ログイン中" when user is not signed in', () => {
     render(<Header {...mockHeaderProps} />)
-    const adminText = screen.queryByText('管理者権限でログイン中')
+    const adminText = screen.queryByText('ログイン中')
     expect(adminText).not.toBeInTheDocument()
   })
 
-  it('should display "管理者権限でログイン中" when user is signed in', () => {
+  it('should display "ログイン中" when user is signed in', () => {
     const signedInUser = {
       id: '1',
       email: 'admin@example.com',
@@ -35,7 +35,7 @@ describe('Header', () => {
       created_at: '2023-01-01T00:00:00Z',
     }
     render(<Header {...mockHeaderProps} user={signedInUser} />)
-    expect(screen.getByText('管理者権限でログイン中')).toBeInTheDocument()
+    expect(screen.getByText('ログイン中')).toBeInTheDocument()
   })
 
   it('should display "Icon"', () => {

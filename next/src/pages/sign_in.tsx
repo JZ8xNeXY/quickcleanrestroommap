@@ -71,11 +71,12 @@ const SignIn: NextPage = () => {
     }
     setUser({
       ...user,
-      id: Number(data.user?.id) || 0,
+      userUid: String(data.user?.id) || 'dalja-e07-427-8f4-falkjdal',
       email: data.user?.email || '',
       isSignedIn: true,
       isFetched: true,
     })
+
     return data.user
   }
 

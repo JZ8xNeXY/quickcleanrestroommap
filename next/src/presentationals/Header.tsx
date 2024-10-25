@@ -105,7 +105,7 @@ const Header: React.FC<HeaderProps> = ({
               </Link>
             </Box>
             <Box>
-              {user && <Box sx={{ ml: 10 }}> 管理者権限でログイン中 </Box>}
+              {user && <Box sx={{ ml: 10 }}> {user.id}ログイン中 </Box>}
             </Box>
           </Box>
           <Box>
