@@ -1,10 +1,11 @@
 import { Box, Container } from '@mui/material'
 import type { NextPage } from 'next'
+import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import AddMarkersContainer from '@/containers/AddMarkersContainer'
 import AddRestroomContainer from '@/containers/AddRestroomContainer'
 import { RestroomProvider } from '@/context/RestRoomContext'
-import { SessionProvider } from '@/context/SessionContext'
+import { SessionProvider, useSessionContext } from '@/context/SessionContext'
 import { RightClickMapHandler } from '@/utils/RightClickMapHandler'
 import { loadGoogleMapsAPI } from '@/utils/loadGoogleMapsAPI'
 import { userGeoLocation } from '@/utils/userGeoLocation'
@@ -23,16 +24,26 @@ const Index: NextPage = () => {
     lng: number
   }>({ lat: 35.681236, lng: 139.767125 }) //初期値を東京駅に設定
 
+  const { currentUser } = useSessionContext()
+  const router = useRouter()
+
   useEffect(() => {
     loadGoogleMapsAPI(setMap)
   }, [])
 
   useEffect(() => {
     if (map) {
-      RightClickMapHandler({ map, setMap, setOpenAddRestroomModal, setCoords })
+      RightClickMapHandler({
+        map,
+        setMap,
+        setOpenAddRestroomModal,
+        setCoords,
+        currentUser,
+        router,
+      })
       userGeoLocation({ map, setCurrentUserPos })
     }
-  }, [map])
+  }, [map, currentUser, router])
 
   return (
     <>

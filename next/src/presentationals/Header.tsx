@@ -119,11 +119,9 @@ const Header: React.FC<HeaderProps> = ({
                 // onClick={() => setOpenAddSimpleRestroomModal(true)}
                 onClick={() => {
                   if (user?.id) {
-                    // ログインしている場合
                     setOpenAddSimpleRestroomModal(true)
                   } else {
-                    // ログインしていない場合
-                    router.push('/sign_in') // ログインページへリダイレクト
+                    router.push('/sign_in')
                   }
                 }}
               >
