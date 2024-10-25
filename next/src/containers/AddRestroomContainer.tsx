@@ -205,7 +205,6 @@ const AddRestroomContainer: React.FC<AddRestroomPropsExtended> = ({
         return
       }
 
-
       const postData = {
         name: data.name,
         address: data.address,
