@@ -8,6 +8,7 @@ import {
 import { AddRestroomFormData } from './addRestroomFormDataInterface'
 
 export interface AddRestroomProps {
+  user: string
   open: boolean
   onClose: () => void
   handleSubmit: UseFormHandleSubmit<AddRestroomFormData, undefined>
