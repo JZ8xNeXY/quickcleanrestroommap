@@ -12,6 +12,7 @@ export interface AddRestroomFormData {
   stroller_accessible: boolean
   evaluation: number
   image?: FileList
+  userId: string
 }
 
 export interface AddRestroomProps {

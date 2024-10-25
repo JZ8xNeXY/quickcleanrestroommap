@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, MutableRefObject } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { mutate } from 'swr'
 import { supabase } from '../utils/supabase'
+import { useSessionContext } from '@/context/SessionContext'
 import {
   AddRestroomFormData,
   AddRestroomProps,
@@ -29,6 +30,7 @@ const AddRestroomContainer: React.FC<AddRestroomPropsExtended> = ({
         powder_corner: false,
         stroller_accessible: false,
         evaluation: 0,
+        userId: '',
       },
     })
 
@@ -43,9 +45,17 @@ const AddRestroomContainer: React.FC<AddRestroomPropsExtended> = ({
   const [isLoading, setIsLoading] = useState(false)
   const [imageS3Url, setImageS3Url] = useState<string | null>(null)
 
+  const { currentUser } = useSessionContext()
+
   useEffect(() => {
     setValue('evaluation', imageToiletCleanness)
   }, [imageToiletCleanness, setValue])
+
+  useEffect(() => {
+    if (currentUser?.id) {
+      setValue('userId', currentUser.id)
+    }
+  }, [currentUser?.id, setValue])
 
   const resetModal = () => {
     reset()
@@ -195,6 +205,8 @@ const AddRestroomContainer: React.FC<AddRestroomPropsExtended> = ({
         return
       }
 
+      console.log(data)
+
       const postData = {
         name: data.name,
         address: data.address,
@@ -208,6 +220,7 @@ const AddRestroomContainer: React.FC<AddRestroomPropsExtended> = ({
         stroller_accessible: data.stroller_accessible ?? false,
         evaluation: data.evaluation,
         image: imageS3Url,
+        user_id: data.userId,
       }
 
       try {
@@ -256,6 +269,7 @@ const AddRestroomContainer: React.FC<AddRestroomPropsExtended> = ({
 
   return (
     <AddRestroom
+      user={currentUser}
       open={open}
       onClose={resetModal}
       coords={coords}

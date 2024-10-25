@@ -22,6 +22,7 @@ interface AddRestroomPropsExtended extends AddRestroomProps {
 }
 
 const AddRestroom: React.FC<AddRestroomPropsExtended> = ({
+  user,
   open,
   onClose,
   coords,
@@ -189,6 +190,20 @@ const AddRestroom: React.FC<AddRestroomPropsExtended> = ({
                   {...field}
                   type="number"
                   label="評価"
+                  sx={{ backgroundColor: 'white' }}
+                  style={{ display: 'none' }}
+                />
+              )}
+            />
+            <Controller
+              name="userId"
+              control={control}
+              defaultValue={user?.id}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  type="text"
+                  label="ユーザーID"
                   sx={{ backgroundColor: 'white' }}
                   style={{ display: 'none' }}
                 />
