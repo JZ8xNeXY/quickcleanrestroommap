@@ -26,6 +26,7 @@ const DisplayModalWindowContainer: React.FC<
   strollerAccessible,
   evaluation,
   image,
+  userId,
 }) => {
   const { currentUser } = useSessionContext()
   const [editModalWindow, setEditModalWindow] = useState(false)
@@ -54,6 +55,7 @@ const DisplayModalWindowContainer: React.FC<
         strollerAccessible={strollerAccessible}
         evaluation={evaluation}
         image={image}
+        userId={userId}
         openEditRestroomModalWindow={openEditRestroomModalWindow}
       />
     </>

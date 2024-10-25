@@ -21,6 +21,7 @@ const defaultRestroom: Restrooms = {
   powderCorner: false,
   strollerAccessible: false,
   evaluation: 0,
+  userId: '',
 }
 
 const RestroomContext = createContext<RestroomContextProps | undefined>(

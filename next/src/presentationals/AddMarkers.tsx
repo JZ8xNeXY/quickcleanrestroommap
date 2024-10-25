@@ -42,6 +42,7 @@ const AddMarkers: React.FC<AddMarkersProps> = ({
     strollerAccessible: selectedRestroom.strollerAccessible,
     evaluation: selectedRestroom.evaluation,
     image: selectedRestroom.image,
+    userId: selectedRestroom.userId,
   }
 
   return (

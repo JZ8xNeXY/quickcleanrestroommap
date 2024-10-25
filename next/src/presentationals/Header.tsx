@@ -104,9 +104,7 @@ const Header: React.FC<HeaderProps> = ({
                 </Box>
               </Link>
             </Box>
-            <Box>
-              {user && <Box sx={{ ml: 10 }}> {user.id}ログイン中 </Box>}
-            </Box>
+            <Box>{user && <Box sx={{ ml: 10 }}> ログイン中 </Box>}</Box>
           </Box>
           <Box>
             <Toolbar>
