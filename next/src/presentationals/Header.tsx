@@ -10,11 +10,14 @@ import {
 } from '@mui/material'
 import Image from 'next/image'
 import Link from 'next/link'
+
+import type { NextRouter } from 'next/router'
 import React from 'react'
 import AddSimpleRestroomContainer from '@/containers/AddSimpleRestroomContainer'
 import { User } from '@/interface/userInterface'
 
 interface HeaderProps {
+  router: NextRouter
   user: User | null
   isOpen: boolean
   openDrawer: (
@@ -26,6 +29,7 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({
+  router,
   user,
   isOpen,
   openDrawer,
@@ -112,7 +116,16 @@ const Header: React.FC<HeaderProps> = ({
                 edge="start"
                 color="inherit"
                 aria-label="menu"
-                onClick={() => setOpenAddSimpleRestroomModal(true)}
+                // onClick={() => setOpenAddSimpleRestroomModal(true)}
+                onClick={() => {
+                  if (user?.id) {
+                    // ログインしている場合
+                    setOpenAddSimpleRestroomModal(true)
+                  } else {
+                    // ログインしていない場合
+                    router.push('/sign_in') // ログインページへリダイレクト
+                  }
+                }}
               >
                 <AddLocationIcon
                   style={{

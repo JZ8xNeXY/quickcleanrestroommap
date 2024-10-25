@@ -6,9 +6,10 @@ import {
   Control,
 } from 'react-hook-form'
 import { AddRestroomFormData } from './addRestroomFormDataInterface'
+import { User } from './userInterface'
 
 export interface AddRestroomProps {
-  user: string
+  user: User | null
   open: boolean
   onClose: () => void
   handleSubmit: UseFormHandleSubmit<AddRestroomFormData, undefined>
