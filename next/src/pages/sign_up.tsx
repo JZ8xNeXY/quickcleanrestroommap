@@ -76,7 +76,7 @@ const SignUp: NextPage = () => {
     }
     setUser({
       ...user,
-      userUid: Number(data.user?.id) || 0,
+      userUid: data.user?.id || 'dalja-e07-427-8f4-falkjdal',
       email: data.user?.email || '',
       isSignedIn: true,
       isFetched: true,

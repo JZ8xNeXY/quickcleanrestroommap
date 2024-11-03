@@ -16,7 +16,7 @@ const SignOut: NextPage = () => {
       } else {
         localStorage.clear()
         setUser({
-          userUid: 0,
+          userUid: 'dalja-e07-427-8f4-falkjdal',
           email: '',
           isSignedIn: false,
           isFetched: true,
