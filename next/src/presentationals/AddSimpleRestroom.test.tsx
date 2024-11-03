@@ -3,6 +3,7 @@ import { render, screen, waitFor, within } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import Header from '@/presentationals/Header'
 import '@testing-library/jest-dom'
+import { SessionProvider } from '@/context/SessionContext'
 
 beforeEach(() => {
   jest.clearAllMocks()
@@ -19,14 +20,37 @@ const mockHeaderProps = {
 
 describe('AddSimpleRestroom', () => {
   it('Should open the modal and display the modal when the modal button is clicked', async () => {
-    const { rerender } = render(<Header {...mockHeaderProps} />)
+    const signedInUser = {
+      id: '1',
+      email: 'admin@example.com',
+      isFetched: true,
+      isSignedIn: true,
+      app_metadata: {},
+      user_metadata: {},
+      aud: 'authenticated',
+      created_at: '2023-01-01T00:00:00Z',
+    }
+
+    const { rerender } = render(
+      <SessionProvider>
+        <Header {...mockHeaderProps} user={signedInUser} />
+      </SessionProvider>,
+    )
     const menuButtons = screen.getAllByLabelText('menu')
     const addLocationButton = menuButtons[1]
     await userEvent.click(addLocationButton)
     expect(mockHeaderProps.setOpenAddSimpleRestroomModal).toHaveBeenCalledWith(
       true,
     )
-    rerender(<Header {...mockHeaderProps} openAddSimpleRestroomModal={true} />)
+    rerender(
+      <SessionProvider>
+        <Header
+          {...mockHeaderProps}
+          user={signedInUser}
+          openAddSimpleRestroomModal={true}
+        />
+      </SessionProvider>,
+    )
 
     const modal = screen.getByRole('presentation')
     expect(within(modal).getByText('トイレ情報を登録する')).toBeInTheDocument()
@@ -113,7 +137,22 @@ describe('AddSimpleRestroom', () => {
   })
 
   it('Should show error when trying to submit without an image upload', async () => {
-    const { rerender } = render(<Header {...mockHeaderProps} />)
+    const signedInUser = {
+      id: '1',
+      email: 'admin@example.com',
+      isFetched: true,
+      isSignedIn: true,
+      app_metadata: {},
+      user_metadata: {},
+      aud: 'authenticated',
+      created_at: '2023-01-01T00:00:00Z',
+    }
+
+    const { rerender } = render(
+      <SessionProvider>
+        <Header {...mockHeaderProps} user={signedInUser} />
+      </SessionProvider>,
+    )
 
     const menuButtons = screen.getAllByLabelText('menu')
     const addLocationButton = menuButtons[1]
@@ -123,7 +162,15 @@ describe('AddSimpleRestroom', () => {
       true,
     )
 
-    rerender(<Header {...mockHeaderProps} openAddSimpleRestroomModal={true} />)
+    rerender(
+      <SessionProvider>
+        <Header
+          {...mockHeaderProps}
+          user={signedInUser}
+          openAddSimpleRestroomModal={true}
+        />
+      </SessionProvider>,
+    )
 
     const modal = screen.getByRole('presentation')
     expect(within(modal).getByText('トイレ情報を登録する')).toBeInTheDocument()
