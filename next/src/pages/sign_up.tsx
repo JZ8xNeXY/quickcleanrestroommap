@@ -93,7 +93,6 @@ const SignUp: NextPage = () => {
     try {
       const user = await signUp(data.email, data.password)
       setCurrentUser({
-        ...user,
         userUid: data.user?.id || 'dalja-e07-427-8f4-falkjdal',
         id: user?.id || 'default-id',
         isFetched: true,
