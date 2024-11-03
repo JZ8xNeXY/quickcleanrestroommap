@@ -6,7 +6,7 @@ describe('deleteRestroom', () => {
     cy.get('input[name="password"]').type(Cypress.env('password'))
     cy.get('button[type="submit"]').click()
 
-    cy.contains('管理者権限でログイン中')
+    cy.contains('ログイン中')
 
     cy.wait(2000)
     cy.get('gmp-advanced-marker[aria-label="test name2"]')

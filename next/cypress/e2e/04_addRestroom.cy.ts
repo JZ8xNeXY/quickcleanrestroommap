@@ -1,6 +1,11 @@
 describe('AddRestroom', () => {
   it('should add restroom', () => {
-    cy.visit(Cypress.env('baseUrl'))
+    cy.visit(Cypress.env('baseUrl') + '/sign_in')
+    cy.get('input[name="email"]').type(Cypress.env('email'))
+    cy.get('input[name="password"]').type(Cypress.env('password'))
+    cy.get('button[type="submit"]').click()
+
+    cy.contains('ログイン中')
 
     //モーダル表示
     cy.get('button[aria-label="menu"]').eq(1).click()

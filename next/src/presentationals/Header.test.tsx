@@ -1,8 +1,8 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
+import { SessionProvider } from '@/context/SessionContext'
 import Header from '@/presentationals/Header'
 import '@testing-library/jest-dom'
-import { SessionProvider } from '@/context/SessionContext'
 
 jest.mock('next/router', () => ({
   useRouter: jest.fn(),
