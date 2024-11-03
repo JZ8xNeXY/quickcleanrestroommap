@@ -1,7 +1,7 @@
 import { User as SupabaseUser } from '@supabase/supabase-js'
 
 export interface User extends SupabaseUser {
-  userUid: string
+  userUid: number
   isFetched: boolean
   isSignedIn: boolean
 }

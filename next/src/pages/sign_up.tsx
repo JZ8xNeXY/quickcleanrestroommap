@@ -76,7 +76,7 @@ const SignUp: NextPage = () => {
     }
     setUser({
       ...user,
-      id: Number(data.user?.id) || 0,
+      userUid: Number(data.user?.id) || 0,
       email: data.user?.email || '',
       isSignedIn: true,
       isFetched: true,
