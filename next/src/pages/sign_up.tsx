@@ -92,19 +92,22 @@ const SignUp: NextPage = () => {
     setIsLoading(true)
     try {
       const user = await signUp(data.email, data.password)
-      setCurrentUser({
-        userUid: data.user?.id || 'dalja-e07-427-8f4-falkjdal',
-        id: user?.id || 'default-id',
-        isFetched: true,
-        isSignedIn: !!user,
-        app_metadata: user?.app_metadata || 'default_app_metadata',
-        user_metadata: user?.user_metadata || 'default_user_metadata',
-        aud: user?.aud || 'default_aud',
-        created_at: user?.created_at || 'default_date',
-      })
+      if (user) {
+        setCurrentUser({
+          userUid: user.id || 'dalja-e07-427-8f4-falkjdal', // `user` から `id` を取得
+          id: user.id || 'default-id',
+          isFetched: true,
+          isSignedIn: true,
+          app_metadata: user.app_metadata || 'default_app_metadata',
+          user_metadata: user.user_metadata || 'default_user_metadata',
+          aud: user.aud || 'default_aud',
+          created_at: user.created_at || 'default_date',
+        })
+      }
       router.push('/')
     } catch (e: unknown) {
       setIsLoading(false)
+      console.error(e) // エラーをログに出力
     }
   }
 
