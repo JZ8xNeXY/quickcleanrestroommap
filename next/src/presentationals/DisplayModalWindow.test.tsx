@@ -2,6 +2,7 @@ import { faker } from '@faker-js/faker'
 import { render, screen, waitFor } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import { userEvent } from '@testing-library/user-event'
+import { SessionProvider } from '@/context/SessionContext'
 import { Restroom } from '@/interface/restroomInterface'
 import { User } from '@/interface/userInterface'
 import DisplayModalWindow from '@/presentationals/DisplayModalWindow'
@@ -40,6 +41,7 @@ beforeEach(() => {
     strollerAccessible: faker.datatype.boolean(),
     evaluation: faker.number.int({ min: 1, max: 5 }),
     image: '/public-toilet.jpeg',
+    userId: 1,
     user: null,
     openModalWindow: true,
     closeModalWindow: jest.fn(),
@@ -49,7 +51,11 @@ beforeEach(() => {
 
 describe('Modal', () => {
   it('should display modal when is sign out', () => {
-    render(<DisplayModalWindow {...mockDisplayModalWindowProps} />)
+    render(
+      <SessionProvider>
+        <DisplayModalWindow {...mockDisplayModalWindowProps} />
+      </SessionProvider>,
+    )
 
     const closeButton = screen.getByTestId('CloseIcon')
     expect(closeButton).toBeInTheDocument()
@@ -99,7 +105,7 @@ describe('Modal', () => {
 
   it('should display modal when is sign in', () => {
     const signedInUser = {
-      id: '1',
+      id: 1,
       email: 'admin@example.com',
       isFetched: true,
       isSignedIn: true,
@@ -110,10 +116,13 @@ describe('Modal', () => {
     }
 
     render(
-      <DisplayModalWindow
-        {...mockDisplayModalWindowProps}
-        user={signedInUser}
-      />,
+      <SessionProvider>
+        <DisplayModalWindow
+          {...mockDisplayModalWindowProps}
+          user={signedInUser}
+        />
+        ,
+      </SessionProvider>,
     )
 
     const closeButton = screen.getByTestId('CloseIcon')
