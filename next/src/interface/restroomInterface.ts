@@ -12,7 +12,7 @@ export interface Restroom {
   strollerAccessible: boolean
   evaluation: number
   image: string
-  userId: number
+  userId: string
 }
 
 //施設情報全体
