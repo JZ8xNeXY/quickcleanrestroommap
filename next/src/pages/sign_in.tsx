@@ -84,7 +84,12 @@ const SignIn: NextPage = () => {
     setIsLoading(true)
     try {
       const user = await signIn(data.email, data.password)
-      setCurrentUser({ ...user, isFetched: true, isSignedIn: !!user })
+      setCurrentUser({
+        ...user,
+        userUid: 'dalja-e07-427-8f4-falkjdal',
+        isFetched: true,
+        isSignedIn: !!user,
+      })
       router.push('/')
     } catch (e: unknown) {
       setIsLoading(false)
