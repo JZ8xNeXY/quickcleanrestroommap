@@ -1,13 +1,19 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
+import { SessionProvider } from '@/context/SessionContext'
 import Header from '@/presentationals/Header'
 import '@testing-library/jest-dom'
+
+jest.mock('next/router', () => ({
+  useRouter: jest.fn(),
+}))
 
 beforeEach(() => {
   jest.clearAllMocks()
 })
 
 const mockHeaderProps = {
+  router: jest.fn(),
   user: null,
   isOpen: false,
   openDrawer: jest.fn(() => jest.fn()),
@@ -17,13 +23,17 @@ const mockHeaderProps = {
 }
 
 describe('Header', () => {
-  it('should not display "管理者権限でログイン中" when user is not signed in', () => {
-    render(<Header {...mockHeaderProps} />)
-    const adminText = screen.queryByText('管理者権限でログイン中')
+  it('should not display "ログイン中" when user is not signed in', () => {
+    render(
+      <SessionProvider>
+        <Header {...mockHeaderProps} />
+      </SessionProvider>,
+    )
+    const adminText = screen.queryByText('ログイン中')
     expect(adminText).not.toBeInTheDocument()
   })
 
-  it('should display "管理者権限でログイン中" when user is signed in', () => {
+  it('should display "ログイン中" when user is signed in', () => {
     const signedInUser = {
       id: '1',
       email: 'admin@example.com',
@@ -34,12 +44,20 @@ describe('Header', () => {
       aud: 'authenticated',
       created_at: '2023-01-01T00:00:00Z',
     }
-    render(<Header {...mockHeaderProps} user={signedInUser} />)
-    expect(screen.getByText('管理者権限でログイン中')).toBeInTheDocument()
+    render(
+      <SessionProvider>
+        <Header {...mockHeaderProps} user={signedInUser} />
+      </SessionProvider>,
+    )
+    expect(screen.getByText('ログイン中')).toBeInTheDocument()
   })
 
   it('should display "Icon"', () => {
-    render(<Header {...mockHeaderProps} />)
+    render(
+      <SessionProvider>
+        <Header {...mockHeaderProps} />
+      </SessionProvider>,
+    )
     const menuButtons = screen.getAllByLabelText('menu')
     const menuButton = menuButtons[0]
     expect(menuButton).toBeInTheDocument()
@@ -54,17 +72,29 @@ describe('Header', () => {
   })
 
   it('Should open the Drawer and display the sidebar when the menu button is clicked', async () => {
-    const { rerender } = render(<Header {...mockHeaderProps} />)
+    const { rerender } = render(
+      <SessionProvider>
+        <Header {...mockHeaderProps} />
+      </SessionProvider>,
+    )
     const menuButtons = screen.getAllByLabelText('menu')
     const menuButton = menuButtons[0]
     await userEvent.click(menuButton)
     expect(mockHeaderProps.openDrawer).toHaveBeenCalledWith(true)
     expect(mockHeaderProps.openDrawer).toHaveBeenCalledTimes(2) //回数がおかしい再レンダリング可能性あり
-    rerender(<Header {...mockHeaderProps} isOpen={true} />)
+    rerender(
+      <SessionProvider>
+        <Header {...mockHeaderProps} isOpen={true} />
+      </SessionProvider>,
+    )
     expect(screen.getByText('SideBar Content')).toBeInTheDocument()
 
     await waitFor(() => {
-      rerender(<Header {...mockHeaderProps} isOpen={false} />)
+      rerender(
+        <SessionProvider>
+          <Header {...mockHeaderProps} isOpen={false} />
+        </SessionProvider>,
+      )
       expect(screen.queryByText('SideBar Content')).not.toBeInTheDocument()
     })
   })

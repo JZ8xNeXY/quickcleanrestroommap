@@ -99,6 +99,7 @@ const AddMarkersContainer: NextPage<AddMarkersProps> = ({
               strollerAccessible: restroom.strollerAccessible,
               evaluation: restroom.evaluation,
               image: restroom.image,
+              userId: restroom.userId,
             })
           })
 

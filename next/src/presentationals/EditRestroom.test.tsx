@@ -48,6 +48,7 @@ beforeEach(() => {
     strollerAccessible: faker.datatype.boolean(),
     evaluation: faker.number.int({ min: 1, max: 5 }),
     image: '/public-toilet.jpeg',
+    userId: 1,
   }
 
   mockEditRestroomContainerProps = {
@@ -78,7 +79,7 @@ jest.mock('@/context/RestRoomContext', () => ({
 describe('EditRestroom when from nursing_room to strollerAccessible true', () => {
   it('should display EditRestroom modal', async () => {
     const signedInUser = {
-      id: '1',
+      id: 1,
       email: 'admin@example.com',
       isFetched: true,
       isSignedIn: true,
@@ -104,6 +105,7 @@ describe('EditRestroom when from nursing_room to strollerAccessible true', () =>
       powderCorner: true,
       strollerAccessible: true,
       evaluation: mockEditRestroomContainerProps.evaluation,
+      userId: 1,
     }
 
     //ログイン情報をモック
@@ -217,7 +219,7 @@ describe('EditRestroom when from nursing_room to strollerAccessible true', () =>
 describe('EditRestroom when from nursing_room to strollerAccessible false', () => {
   it('should display EditRestroom modal', async () => {
     const signedInUser = {
-      id: '1',
+      id: 1,
       email: 'admin@example.com',
       isFetched: true,
       isSignedIn: true,
@@ -243,6 +245,7 @@ describe('EditRestroom when from nursing_room to strollerAccessible false', () =
       powderCorner: false,
       strollerAccessible: false,
       evaluation: mockEditRestroomContainerProps.evaluation,
+      userId: 1,
     }
 
     //ログイン情報をモック

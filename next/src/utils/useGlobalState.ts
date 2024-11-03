@@ -2,14 +2,14 @@ import useSWR from 'swr'
 
 export const useUserState = () => {
   type userStateType = {
-    id: number
+    userUid: string
     email: string
     isSignedIn: boolean
     isFetched: boolean
   }
 
   const fallbackData: userStateType = {
-    id: 0,
+    userUid: 'dalja-e07-427-8f4-falkjdal',
     email: '',
     isSignedIn: false,
     isFetched: false,

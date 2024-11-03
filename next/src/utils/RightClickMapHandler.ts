@@ -1,3 +1,6 @@
+import type { NextRouter } from 'next/router'
+import { User } from '@/interface/userInterface'
+
 interface RightClickMapHandlerProps {
   map: google.maps.Map
   setMap: React.Dispatch<React.SetStateAction<google.maps.Map | null>>
@@ -5,12 +8,16 @@ interface RightClickMapHandlerProps {
   setCoords: React.Dispatch<
     React.SetStateAction<{ lat: number; lng: number } | null>
   >
+  currentUser: User | null
+  router: NextRouter
 }
 
 export const RightClickMapHandler = ({
   map,
   setOpenAddRestroomModal,
   setCoords,
+  currentUser,
+  router,
 }: RightClickMapHandlerProps) => {
   let currentMarker: google.maps.marker.AdvancedMarkerElement | null = null
 
@@ -67,7 +74,11 @@ export const RightClickMapHandler = ({
         document
           .getElementById('openModalButton')
           ?.addEventListener('click', () => {
-            setOpenAddRestroomModal(true)
+            if (currentUser?.id) {
+              setOpenAddRestroomModal(true)
+            } else {
+              router.push('/sign_in')
+            }
             marker.map = null
             infowindow.close()
             currentMarker = null

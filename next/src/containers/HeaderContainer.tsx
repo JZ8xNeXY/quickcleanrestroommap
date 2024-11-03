@@ -1,6 +1,7 @@
 import CloseIcon from '@mui/icons-material/Close'
 import { Box, List, ListItem, ListItemText } from '@mui/material'
 import NextLink from 'next/link'
+import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import { useSessionContext } from '@/context/SessionContext'
 import Header from '@/presentationals/Header'
@@ -9,6 +10,7 @@ const HeaderContainer = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [openAddSimpleRestroomModal, setOpenAddSimpleRestroomModal] =
     useState(false)
+  const router = useRouter()
   const { currentUser } = useSessionContext()
 
   const openDrawer =
@@ -63,6 +65,7 @@ const HeaderContainer = () => {
 
   return (
     <Header
+      router={router}
       user={currentUser}
       isOpen={isOpen}
       openDrawer={openDrawer}

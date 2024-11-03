@@ -43,6 +43,7 @@ const DisplayModalWindow: React.FC<DisplayModalWindowProps> = ({
   strollerAccessible,
   evaluation,
   image,
+  userId,
   openEditRestroomModalWindow,
 }) => {
   return (
@@ -70,7 +71,7 @@ const DisplayModalWindow: React.FC<DisplayModalWindowProps> = ({
             {name ? name : 'ー'}
           </Typography>
         </Box>
-        {user && (
+        {user && user.id === userId && (
           <Box sx={{ display: 'flex', justifyContent: 'right', mt: 0 }}>
             <Button
               sx={editButtonStyle}
