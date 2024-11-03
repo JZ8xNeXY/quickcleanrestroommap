@@ -53,7 +53,7 @@ describe('SignOut', () => {
     expect(localStorage.clear).toHaveBeenCalledTimes(1)
 
     expect(setUserMock).toHaveBeenCalledWith({
-      id: 0,
+      userUid: '0',
       email: '',
       isSignedIn: false,
       isFetched: true,
