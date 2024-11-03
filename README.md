@@ -102,7 +102,7 @@ https://qiita.com/JZ8xNeXY/items/d5f66eb1d48689fb4cfc
 | バックエンド DB   |Supabase |
 | インフラ        | Vercel                                  |
 | 認証            | Jwt                             |
-| CI           | GitHub Actions                                |
+| CI           | GitHub Actions <br>Jest<br>cypress                               |
 | 開発環境        | Docker                                        |
 | API             | GoogleMapsAPI <br> OpenAPI 
 
