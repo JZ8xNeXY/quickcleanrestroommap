@@ -67,7 +67,6 @@ export const RightClickMapHandler = ({
         document
           .getElementById('openModalButton')
           ?.addEventListener('click', () => {
-            console.log('クリックイベントが発火されました')
             setOpenAddRestroomModal(true)
             marker.map = null
             infowindow.close()
