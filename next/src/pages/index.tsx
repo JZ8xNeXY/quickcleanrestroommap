@@ -39,12 +39,16 @@ const IndexContent: React.FC = () => {
         setMap,
         setOpenAddRestroomModal,
         setCoords,
-        currentUser,
-        router,
       })
       userGeoLocation({ map, setCurrentUserPos })
     }
-  }, [map, currentUser, router])
+  }, [map, router])
+
+  useEffect(() => {
+    if (!currentUser && openAddRestroomModal) {
+      router.push('/sign_in')
+    }
+  }, [currentUser, openAddRestroomModal, router])
 
   return (
     <Container maxWidth="xl">
@@ -54,11 +58,13 @@ const IndexContent: React.FC = () => {
           currentUserPos={currentUserPos}
           setCurrentUserPos={setCurrentUserPos}
         />
-        <AddRestroomContainer
-          open={openAddRestroomModal}
-          onClose={() => setOpenAddRestroomModal(false)}
-          coords={coords}
-        />
+        {currentUser && (
+          <AddRestroomContainer
+            open={openAddRestroomModal}
+            onClose={() => setOpenAddRestroomModal(false)}
+            coords={coords}
+          />
+        )}
       </RestroomProvider>
       <Box
         id="map"

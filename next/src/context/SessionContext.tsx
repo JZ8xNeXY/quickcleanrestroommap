@@ -28,7 +28,7 @@ export const SessionProvider: React.FC<{ children: ReactNode }> = ({
       }
       setCurrentUser({
         ...data.user,
-        userUid: String(data.user?.id) || 'dalja-e07-427-8f4-falkjdal',
+        userUid: String(data.user?.id),
         email: data.user?.email || '',
         isFetched: true,
         isSignedIn: !!data.user,
