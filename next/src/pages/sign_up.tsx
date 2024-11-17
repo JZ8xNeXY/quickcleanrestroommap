@@ -32,7 +32,6 @@ const SignUp: NextPage = () => {
   const router = useRouter()
   const [user, setUser] = useUserState()
   const [isLoading, setIsLoading] = useState(false)
-  const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const { setCurrentUser } = useSessionContext()
 
   const [showPassword, setShowPassword] = useState(false)
