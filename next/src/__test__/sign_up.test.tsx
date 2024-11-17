@@ -1,10 +1,9 @@
+import { faker } from '@faker-js/faker'
 import { render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom'
-
 import { userEvent } from '@testing-library/user-event'
 import { SessionProvider } from '@/context/SessionContext'
 import SignUp from '@/pages/sign_up'
-import { faker } from '@faker-js/faker'
 
 jest.mock('next/router', () => ({
   useRouter: jest.fn(),
