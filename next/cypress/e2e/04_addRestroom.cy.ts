@@ -28,11 +28,11 @@ describe('AddRestroom', () => {
     cy.get('input[name="powder_corner"]').check()
     cy.get('input[name="stroller_accessible"]').check()
 
+    //トイレの評価に時間がかかる
     cy.wait(10000)
 
     cy.get('button[type="submit"]').click()
 
-    //トイレの登録の確認
     cy.get('gmp-advanced-marker[aria-label="test name"]').should('be.visible')
   })
 })

@@ -32,6 +32,7 @@ const SignUp: NextPage = () => {
   const router = useRouter()
   const [user, setUser] = useUserState()
   const [isLoading, setIsLoading] = useState(false)
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const { setCurrentUser } = useSessionContext()
 
   const [showPassword, setShowPassword] = useState(false)
@@ -80,7 +81,7 @@ const SignUp: NextPage = () => {
     }
     setUser({
       ...user,
-      userUid: data.user?.id || 'dalja-e07-427-8f4-falkjdal',
+      userUid: data.user?.id || '',
       email: data.user?.email || '',
       isSignedIn: true,
       isFetched: true,
@@ -94,7 +95,7 @@ const SignUp: NextPage = () => {
       const user = await signUp(data.email, data.password)
       if (user) {
         setCurrentUser({
-          userUid: user.id || 'dalja-e07-427-8f4-falkjdal', // `user` から `id` を取得
+          userUid: user.id || '', // `user` から `id` を取得
           id: user.id || 'default-id',
           isFetched: true,
           isSignedIn: true,
@@ -108,6 +109,7 @@ const SignUp: NextPage = () => {
     } catch (e: unknown) {
       setIsLoading(false)
       console.error(e) // エラーをログに出力
+      setErrorMessage(e.message || 'エラーが発生しました')
     }
   }
 
@@ -119,6 +121,11 @@ const SignUp: NextPage = () => {
       }}
     >
       <Container maxWidth="sm">
+        {errorMessage && (
+          <Typography color="error" sx={{ mb: 2 }}>
+            {errorMessage}
+          </Typography>
+        )}
         <Box sx={{ mb: 4, pt: 4 }}>
           <Typography
             component="h2"

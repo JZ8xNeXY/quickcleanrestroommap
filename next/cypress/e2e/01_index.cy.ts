@@ -1,33 +1,33 @@
 describe('Index Pages', () => {
-  it('should visit the index page', () => {
+  it('should visit all page', () => {
+    //index.tsx
     cy.visit(Cypress.env('baseUrl'))
-
     cy.get('gmp-advanced-marker[aria-label="Your Location"]').should(
       'be.visible',
     )
-
     cy.get('gmp-advanced-marker[aria-label="新丸の内ビル地下2階"]').should(
       'be.visible',
     )
     cy.contains('Copyright © Quick Clean Restroom Map All rights reserved.')
 
+    //about.tsx
     cy.visit(Cypress.env('baseUrl') + '/about')
     cy.get('h3').contains('Quick Clean Restroom Map')
     cy.get('h3').contains('きれいなトイレを見つけよう')
     cy.scrollTo('bottom')
-
     cy.get('gmp-advanced-marker[aria-label="Your Location"]').should(
       'be.visible',
     )
-
     cy.get('gmp-advanced-marker[aria-label="新丸の内ビル地下2階"]').should(
       'be.visible',
     )
     cy.contains('Copyright © Quick Clean Restroom Map All rights reserved.')
 
+    //termofuse.tsx
     cy.visit(Cypress.env('baseUrl') + '/termsofuse')
     cy.get('h1').contains('サービス利用規約')
 
+    //privacypolicy.tsx
     cy.visit(Cypress.env('baseUrl') + '/privacypolicy')
     cy.get('h1').contains('プライバシーポリシー')
   })
