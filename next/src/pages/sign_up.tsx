@@ -118,11 +118,6 @@ const SignUp: NextPage = () => {
       }}
     >
       <Container maxWidth="sm">
-        {errorMessage && (
-          <Typography color="error" sx={{ mb: 2 }}>
-            {errorMessage}
-          </Typography>
-        )}
         <Box sx={{ mb: 4, pt: 4 }}>
           <Typography
             component="h2"
