@@ -164,6 +164,9 @@ const SignUp: NextPage = () => {
                 error={fieldState.invalid}
                 helperText={fieldState.error?.message}
                 sx={{ backgroundColor: 'white' }}
+                inputProps={{
+                  'data-testid': 'password-input',
+                }}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
@@ -195,6 +198,9 @@ const SignUp: NextPage = () => {
                 error={fieldState.invalid}
                 helperText={fieldState.error?.message}
                 sx={{ backgroundColor: 'white' }}
+                inputProps={{
+                  'data-testid': 'confirmed-password-input',
+                }}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
