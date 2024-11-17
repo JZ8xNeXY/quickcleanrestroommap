@@ -80,7 +80,7 @@ const SignUp: NextPage = () => {
     }
     setUser({
       ...user,
-      userUid: data.user?.id || 'dalja-e07-427-8f4-falkjdal',
+      userUid: data.user?.id || '',
       email: data.user?.email || '',
       isSignedIn: true,
       isFetched: true,
@@ -94,7 +94,7 @@ const SignUp: NextPage = () => {
       const user = await signUp(data.email, data.password)
       if (user) {
         setCurrentUser({
-          userUid: user.id || 'dalja-e07-427-8f4-falkjdal', // `user` から `id` を取得
+          userUid: user.id || '', // `user` から `id` を取得
           id: user.id || 'default-id',
           isFetched: true,
           isSignedIn: true,
@@ -107,7 +107,6 @@ const SignUp: NextPage = () => {
       router.push('/')
     } catch (e: unknown) {
       setIsLoading(false)
-      console.error(e) // エラーをログに出力
     }
   }
 
@@ -157,6 +156,9 @@ const SignUp: NextPage = () => {
                 error={fieldState.invalid}
                 helperText={fieldState.error?.message}
                 sx={{ backgroundColor: 'white' }}
+                inputProps={{
+                  'data-testid': 'password-input',
+                }}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
@@ -188,6 +190,9 @@ const SignUp: NextPage = () => {
                 error={fieldState.invalid}
                 helperText={fieldState.error?.message}
                 sx={{ backgroundColor: 'white' }}
+                inputProps={{
+                  'data-testid': 'confirmed-password-input',
+                }}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
