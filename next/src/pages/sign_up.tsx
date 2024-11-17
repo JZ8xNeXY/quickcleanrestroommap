@@ -108,8 +108,6 @@ const SignUp: NextPage = () => {
       router.push('/')
     } catch (e: unknown) {
       setIsLoading(false)
-      console.error(e) // エラーをログに出力
-      setErrorMessage(e.message || 'エラーが発生しました')
     }
   }
 
