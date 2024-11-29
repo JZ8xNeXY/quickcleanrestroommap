@@ -1,37 +1,60 @@
+const signIn = (email: string, password: string) => {
+  cy.visit(`${Cypress.env('baseUrl')}/sign_in`)
+  cy.get('input[name="email"]').type(email)
+  cy.get('input[name="password"]').type(password)
+  cy.get('button[type="submit"]').click()
+}
+
+const openAddRestroomModal = () => {
+  cy.get('button[aria-label="menu"]').eq(1).click()
+  cy.get('h2').contains('トイレ情報を登録する')
+}
+
+const fillRestroomForm = (formData: {
+  fileName: string
+  name: string
+  address: string
+  content: string
+  facilities: string[]
+}) => {
+  cy.get('input[type="file"]').attachFile(formData.fileName, { force: true })
+  cy.get('input[name="name"]').type(formData.name)
+  cy.get('input[name="address"]').type(formData.address)
+  cy.get('input[name="content"]').type(formData.content)
+  formData.facilities.forEach((facility) => {
+    cy.get(`input[name="${facility}"]`).check()
+  })
+}
+
 describe('AddRestroom', () => {
   it('should add restroom', () => {
-    cy.visit(Cypress.env('baseUrl') + '/sign_in')
-    cy.get('input[name="email"]').type(Cypress.env('email'))
-    cy.get('input[name="password"]').type(Cypress.env('password'))
+    const email = Cypress.env('email')
+    const password = Cypress.env('password')
+
+    const restroomData = {
+      fileName: 'test.jpeg',
+      name: 'test name',
+      address: 'test address',
+      content: 'test content',
+      facilities: [
+        'nursing_room',
+        'anyone_toilet',
+        'diaper_changing_station',
+        'powder_corner',
+        'stroller_accessible',
+      ],
+    }
+
+    signIn(email, password)
+    cy.contains('ログイン中')
+
+    openAddRestroomModal()
+
+    fillRestroomForm(restroomData)
+
     cy.get('button[type="submit"]').click()
 
     cy.contains('ログイン中')
-
-    //モーダル表示
-    cy.get('button[aria-label="menu"]').eq(1).click()
-
-    cy.get('h2').contains('トイレ情報を登録する')
-
-    //トイレを登録
-    cy.get('input[type="file"]').attachFile('test.jpeg', { force: true })
-    cy.wait(1000)
-
-    cy.get('input[name="name"]').type('test name')
-    cy.get('input[name="address"]').type('test address')
-    cy.get('input[name="content"]').type('test content')
-
-    cy.get('p').contains('設備有無')
-
-    cy.get('input[name="nursing_room"]').check()
-    cy.get('input[name="anyone_toilet"]').check()
-    cy.get('input[name="diaper_changing_station"]').check()
-    cy.get('input[name="powder_corner"]').check()
-    cy.get('input[name="stroller_accessible"]').check()
-
-    //トイレの評価に時間がかかる
-    cy.wait(10000)
-
-    cy.get('button[type="submit"]').click()
 
     cy.get('gmp-advanced-marker[aria-label="test name"]').should('be.visible')
   })
