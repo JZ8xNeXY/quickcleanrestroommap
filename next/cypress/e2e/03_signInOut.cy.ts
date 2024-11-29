@@ -1,13 +1,35 @@
+const signIn = (email: string, password: string) => {
+  cy.visit(`${Cypress.env('baseUrl')}/sign_in`)
+  cy.get('input[name="email"]').type(email)
+  cy.get('input[name="password"]').type(password)
+  cy.get('button[type="submit"]').click()
+}
+
+const signOut = () => {
+  cy.visit(`${Cypress.env('baseUrl')}/sign_out`)
+}
+
 describe('SignIn', () => {
   it('should sign in and sign out', () => {
-    cy.visit(Cypress.env('baseUrl') + '/sign_in')
-    cy.get('input[name="email"]').type(Cypress.env('email'))
-    cy.get('input[name="password"]').type(Cypress.env('password'))
-    cy.get('button[type="submit"]').click()
+    const email = Cypress.env('email')
+    const password = Cypress.env('password')
 
+    signIn(email, password)
     cy.contains('ログイン中')
 
-    cy.visit(Cypress.env('baseUrl') + '/sign_out')
+    signOut()
     cy.contains('ログイン中').should('not.exist')
+  })
+  it('should not log in with invalid credentials', () => {
+    const email = Cypress.env('email')
+    const invalidPassword = 'wrong_password'
+
+    cy.visit(`${Cypress.env('baseUrl')}/sign_in`)
+    cy.get('input[name="email"]').type(email)
+    cy.get('input[name="password"]').type(invalidPassword)
+    cy.get('button[type="submit"]').click()
+
+    //ページが遷移しない
+    cy.contains('Sign in').should('be.visible')
   })
 })

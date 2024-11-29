@@ -1,19 +1,30 @@
 describe('CalculateAndDisplayRoute', () => {
   it('should display calculate and display route', () => {
     cy.visit(Cypress.env('baseUrl'))
-    cy.wait(2000) // 2秒待つ
     cy.get('gmp-advanced-marker[aria-label="新丸の内ビル地下2階"]').click({
       force: true,
     })
 
-    cy.contains('新丸の内ビル地下2階')
-    cy.get('h6').contains('住所')
-    cy.get('p').contains('東京都千代田区')
-    cy.get('h6').contains('コメント')
-    cy.get('p').contains('とても空いていてキレイ')
-    cy.get('h6').contains('設備情報')
-    cy.get('p').contains('ー')
-    cy.get('h6').contains('清潔度')
+    const restroomDetails = {
+      name: '新丸の内ビル地下2階',
+      addressHeader: '住所',
+      address: '東京都千代田区',
+      commentHeader: 'コメント',
+      comment: 'とても空いていてキレイ',
+      facilitiesHeader: '設備情報',
+      facilities: 'ー',
+      cleanlinessHeader: '清潔度',
+    }
+
+    cy.contains(restroomDetails.name)
+    cy.get('h6').contains(restroomDetails.addressHeader)
+    cy.get('p').contains(restroomDetails.address)
+    cy.get('h6').contains(restroomDetails.commentHeader)
+    cy.get('p').contains(restroomDetails.comment)
+    cy.get('h6').contains(restroomDetails.facilitiesHeader)
+    cy.get('p').contains(restroomDetails.facilities)
+    cy.get('h6').contains(restroomDetails.cleanlinessHeader)
+
     for (let i = 1; i <= 5; i++) {
       cy.get(`.star.star-${i}`).should('exist') // 各クラス名を動的に指定し、存在確認
     }

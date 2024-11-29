@@ -1,30 +1,38 @@
+import { updatedData } from '../data/updatedRestroomData'
+
+const signIn = (email: string, password: string) => {
+  cy.visit(`${Cypress.env('baseUrl')}/sign_in`)
+  cy.get('input[name="email"]').type(email)
+  cy.get('input[name="password"]').type(password)
+  cy.get('button[type="submit"]').click()
+}
+
 describe('deleteRestroom', () => {
   it('should delete restroom', () => {
-    cy.visit(Cypress.env('baseUrl') + '/sign_in')
+    const email = Cypress.env('email')
+    const password = Cypress.env('password')
 
-    cy.get('input[name="email"]').type(Cypress.env('email'))
-    cy.get('input[name="password"]').type(Cypress.env('password'))
-    cy.get('button[type="submit"]').click()
+    const deleteRestroomData = {
+      name: updatedData.updatedName,
+    }
 
+    signIn(email, password)
     cy.contains('ログイン中')
 
-    cy.wait(2000)
-    cy.get('gmp-advanced-marker[aria-label="test name2"]')
+    cy.get(`gmp-advanced-marker[aria-label="${deleteRestroomData.name}"]`)
       .should('be.visible')
       .click({
         force: true,
       })
 
-    cy.wait(1000)
+    cy.scrollTo('bottom')
 
     cy.get('button.MuiButtonBase-root').contains('編集する').click()
 
-    cy.wait(1000)
-
-    cy.scrollTo('bottom')
-
     cy.get('button.MuiButtonBase-root').contains('削除する').click()
 
-    cy.get('gmp-advanced-marker[aria-label="test name2"]').should('not.exist')
+    cy.get(
+      `gmp-advanced-marker[aria-label="${deleteRestroomData.name}"]`,
+    ).should('not.exist')
   })
 })
