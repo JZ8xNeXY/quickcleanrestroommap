@@ -1,4 +1,7 @@
-import { updatedData } from '../faker/updatedRestroomData'
+import {
+  updatedData,
+  updatedRestroomDataInterface,
+} from '../data/updatedRestroomData'
 
 const signIn = (email: string, password: string) => {
   cy.visit(`${Cypress.env('baseUrl')}/sign_in`)
@@ -6,11 +9,7 @@ const signIn = (email: string, password: string) => {
   cy.get('input[name="password"]').type(password)
   cy.get('button[type="submit"]').click()
 }
-const fillEditRestroomModal = (newData: {
-  updatedName: string
-  updatedAddress: string
-  updatedContent: string
-}) => {
+const fillEditRestroomModal = (newData: updatedRestroomDataInterface) => {
   cy.get('input[name="name"]')
     .should('be.visible')
     .clear()

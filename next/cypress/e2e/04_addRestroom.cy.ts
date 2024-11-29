@@ -1,4 +1,4 @@
-import { restroomData } from '../faker/restroomData'
+import { restroomData, RestroomDataInterface } from '../data/restroomData'
 
 const signIn = (email: string, password: string) => {
   cy.visit(`${Cypress.env('baseUrl')}/sign_in`)
@@ -12,7 +12,7 @@ const openAddRestroomModal = () => {
   cy.get('h2').contains('トイレ情報を登録する')
 }
 
-const fillRestroomForm = (formData: RestroomData) => {
+const fillRestroomForm = (formData: RestroomDataInterface) => {
   cy.get('input[type="file"]').attachFile(formData.fileName, { force: true })
   cy.wait(3000)
   cy.get('input[name="name"]').type(formData.originalName)

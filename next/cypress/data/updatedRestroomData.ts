@@ -1,6 +1,6 @@
 import { RestroomDataInterface, restroomData } from './restroomData'
 
-interface updatedRestroomDataInterface extends RestroomDataInterface {
+export interface updatedRestroomDataInterface extends RestroomDataInterface {
   updatedName: string
   updatedAddress: string
   updatedContent: string
