@@ -1,4 +1,4 @@
-import { updatedData } from '../faker/updatedRestroomData'
+import { updatedData } from '../data/updatedRestroomData'
 
 const signIn = (email: string, password: string) => {
   cy.visit(`${Cypress.env('baseUrl')}/sign_in`)
