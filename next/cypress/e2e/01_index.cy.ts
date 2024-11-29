@@ -1,6 +1,5 @@
 describe('Index Pages', () => {
-  it('should visit all page', () => {
-    //index.tsx
+  it('should visit index page correctly', () => {
     cy.visit(Cypress.env('baseUrl'))
     cy.get('gmp-advanced-marker[aria-label="Your Location"]').should(
       'be.visible',
@@ -9,8 +8,9 @@ describe('Index Pages', () => {
       'be.visible',
     )
     cy.contains('Copyright © Quick Clean Restroom Map All rights reserved.')
+  })
 
-    //about.tsx
+  it('should vist about page correctly', () => {
     cy.visit(Cypress.env('baseUrl') + '/about')
     cy.get('h3').contains('Quick Clean Restroom Map')
     cy.get('h3').contains('きれいなトイレを見つけよう')
@@ -22,12 +22,14 @@ describe('Index Pages', () => {
       'be.visible',
     )
     cy.contains('Copyright © Quick Clean Restroom Map All rights reserved.')
+  })
 
-    //termofuse.tsx
+  it('Should visit termofuse correctly', () => {
     cy.visit(Cypress.env('baseUrl') + '/termsofuse')
     cy.get('h1').contains('サービス利用規約')
+  })
 
-    //privacypolicy.tsx
+  it('Should visit privacypolicy correctly', () => {
     cy.visit(Cypress.env('baseUrl') + '/privacypolicy')
     cy.get('h1').contains('プライバシーポリシー')
   })
