@@ -18,6 +18,7 @@ const fillRestroomForm = (formData: {
   facilities: string[]
 }) => {
   cy.get('input[type="file"]').attachFile(formData.fileName, { force: true })
+  cy.wait(1000)
   cy.get('input[name="name"]').type(formData.name)
   cy.get('input[name="address"]').type(formData.address)
   cy.get('input[name="content"]').type(formData.content)
@@ -56,6 +57,8 @@ describe('AddRestroom', () => {
 
     cy.contains('ログイン中')
 
-    cy.get('gmp-advanced-marker[aria-label="test name"]').should('be.visible')
+    cy.get(`gmp-advanced-marker[aria-label="${restroomData.name}"]`).should(
+      'be.visible',
+    )
   })
 })
