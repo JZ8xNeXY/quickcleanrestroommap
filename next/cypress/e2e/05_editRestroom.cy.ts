@@ -1,9 +1,3 @@
-const signIn = (email: string, password: string) => {
-  cy.visit(`${Cypress.env('baseUrl')}/sign_in`)
-  cy.get('input[name="email"]').type(email)
-  cy.get('input[name="password"]').type(password)
-  cy.get('button[type="submit"]').click()
-}
 const fillEditRestroomModal = (newData: {
   name: string
   address: string
@@ -20,7 +14,8 @@ describe('editRestroom', () => {
     const password = Cypress.env('password')
 
     const updatedData = {
-      name: 'test name2',
+      originalName: 'test name',
+      updatedName: 'test name2',
       address: 'updated address',
       content: 'updated content',
     }
@@ -28,7 +23,7 @@ describe('editRestroom', () => {
     signIn(email, password)
     cy.contains('ログイン中')
 
-    cy.get('gmp-advanced-marker[aria-label="test name"]')
+    cy.get(`gmp-advanced-marker[aria-label="${updatedData.originalName}"]`)
       .should('be.visible')
       .click({
         force: true,
@@ -41,8 +36,8 @@ describe('editRestroom', () => {
     cy.scrollTo('bottom')
 
     cy.get('button').contains('編集する').click()
-    cy.get(`gmp-advanced-marker[aria-label="${updatedData.name}"]`).should(
-      'be.visible',
-    )
+    cy.get(
+      `gmp-advanced-marker[aria-label="${updatedData.updatedName}"]`,
+    ).should('be.visible')
   })
 })

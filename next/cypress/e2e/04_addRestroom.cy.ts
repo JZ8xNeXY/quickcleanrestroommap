@@ -1,10 +1,3 @@
-const signIn = (email: string, password: string) => {
-  cy.visit(`${Cypress.env('baseUrl')}/sign_in`)
-  cy.get('input[name="email"]').type(email)
-  cy.get('input[name="password"]').type(password)
-  cy.get('button[type="submit"]').click()
-}
-
 const openAddRestroomModal = () => {
   cy.get('button[aria-label="menu"]').eq(1).click()
   cy.get('h2').contains('トイレ情報を登録する')
