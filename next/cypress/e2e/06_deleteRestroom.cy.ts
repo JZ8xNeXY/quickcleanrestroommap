@@ -1,10 +1,19 @@
+import { updatedData } from '../faker/updatedRestroomData'
+
+const signIn = (email: string, password: string) => {
+  cy.visit(`${Cypress.env('baseUrl')}/sign_in`)
+  cy.get('input[name="email"]').type(email)
+  cy.get('input[name="password"]').type(password)
+  cy.get('button[type="submit"]').click()
+}
+
 describe('deleteRestroom', () => {
   it('should delete restroom', () => {
     const email = Cypress.env('email')
     const password = Cypress.env('password')
 
     const deleteRestroomData = {
-      name: 'test name2',
+      name: updatedData.updatedName,
     }
 
     signIn(email, password)
