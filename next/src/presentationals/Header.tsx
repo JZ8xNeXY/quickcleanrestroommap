@@ -1,6 +1,6 @@
 import AddLocationIcon from "@mui/icons-material/AddLocation";
-import AddressSearchIcon from "@mui/icons-material/Search";
 import MenuIcon from "@mui/icons-material/Menu";
+import AddressSearchIcon from "@mui/icons-material/Search";
 import {
   AppBar,
   Box,
@@ -15,6 +15,7 @@ import Link from "next/link";
 import type { NextRouter } from "next/router";
 import React from "react";
 import AddSimpleRestroomContainer from "@/containers/AddSimpleRestroomContainer";
+import AddressSearchContainer from "@/containers/AddressSearchContainer";
 import { User } from "@/interface/userInterface";
 
 interface HeaderProps {
@@ -24,6 +25,8 @@ interface HeaderProps {
   openDrawer: (
     open: boolean
   ) => (event: React.KeyboardEvent | React.MouseEvent) => void;
+  openAddressSearchModal: boolean;
+  setOpenAddressSearchModal: React.Dispatch<React.SetStateAction<boolean>>;
   openAddSimpleRestroomModal: boolean;
   setOpenAddSimpleRestroomModal: React.Dispatch<React.SetStateAction<boolean>>;
   sideBar: () => JSX.Element;
@@ -34,6 +37,8 @@ const Header: React.FC<HeaderProps> = ({
   user,
   isOpen,
   openDrawer,
+  openAddressSearchModal,
+  setOpenAddressSearchModal,
   openAddSimpleRestroomModal,
   setOpenAddSimpleRestroomModal,
   sideBar,
@@ -114,10 +119,10 @@ const Header: React.FC<HeaderProps> = ({
           <Box>
             <Toolbar>
               <IconButton
-                edee="start"
+                edge="start"
                 color="inherit"
                 aria-label="menu"
-                onClick={() => console.log("display search button")}
+                onClick={() => setOpenAddressSearchModal(true)}
               >
                 <AddressSearchIcon
                   style={{
@@ -148,6 +153,10 @@ const Header: React.FC<HeaderProps> = ({
                 />
               </IconButton>
             </Toolbar>
+            <AddressSearchContainer
+              open={openAddressSearchModal}
+              onClose={() => setOpenAddressSearchModal(false)}
+            />
             <AddSimpleRestroomContainer
               open={openAddSimpleRestroomModal}
               onClose={() => setOpenAddSimpleRestroomModal(false)}

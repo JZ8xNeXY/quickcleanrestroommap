@@ -1,21 +1,20 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
-import { useSessionContext } from '@/context/SessionContext'
 import {
   AddressSearchFormData,
   AddressSearchProps,
-} from '@/interface/addressSearchInterface'
+} from '@/interface/addressSearchFormDataInterface'
+import AddressSearch from '@/presentationals/AddressSearch'
 
 const AddressSearchContainer: React.FC<AddressSearchProps> = ({
   open,
   onClose,
 }) => {
-  const { register, handleSubmit, control, reset } =
-    useForm<AddressSearchFormData>({
-      defaultValues: {
-        addressSearch: '',
-      },
-    })
+  const { handleSubmit, control, reset } = useForm<AddressSearchFormData>({
+    defaultValues: {
+      addressSearch: '',
+    },
+  })
 
   const [warningAddressSearchMessage, setWarningAddressSearchMessage] =
     useState('')
@@ -45,7 +44,6 @@ const AddressSearchContainer: React.FC<AddressSearchProps> = ({
       handleSubmit={handleSubmit}
       onSubmit={onsubmit}
       control={control}
-      register={register}
       warningAddressSearchMessage={warningAddressSearchMessage}
     />
   )

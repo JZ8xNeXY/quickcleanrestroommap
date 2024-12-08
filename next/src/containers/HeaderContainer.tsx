@@ -8,6 +8,7 @@ import Header from '@/presentationals/Header'
 
 const HeaderContainer = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
+  const [openAddressSearchModal, setOpenAddressSearchModal] = useState(false)
   const [openAddSimpleRestroomModal, setOpenAddSimpleRestroomModal] =
     useState(false)
   const router = useRouter()
@@ -69,6 +70,8 @@ const HeaderContainer = () => {
       user={currentUser}
       isOpen={isOpen}
       openDrawer={openDrawer}
+      openAddressSearchModal={openAddressSearchModal}
+      setOpenAddressSearchModal={setOpenAddressSearchModal}
       openAddSimpleRestroomModal={openAddSimpleRestroomModal}
       setOpenAddSimpleRestroomModal={setOpenAddSimpleRestroomModal}
       sideBar={SideBar}
