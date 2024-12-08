@@ -64,7 +64,14 @@ describe('Header', () => {
     expect(menuButton).toHaveAttribute('type', 'button')
     const menuIcon = screen.getByTestId('MenuIcon')
     expect(menuIcon).toBeInTheDocument()
-    const addLocationButton = menuButtons[1]
+
+    const addressSearchButton = menuButtons[1]
+    expect(addressSearchButton).toBeInTheDocument()
+    expect(addressSearchButton).toHaveAttribute('type', 'button')
+    const addressSearchIcon = screen.getByTestId('AddressSearchButton')
+    expect(addressSearchIcon).toBeInTheDocument()
+
+    const addLocationButton = menuButtons[2]
     expect(addLocationButton).toBeInTheDocument()
     expect(addLocationButton).toHaveAttribute('type', 'button')
     const addLocationIcon = screen.getByTestId('AddLocationIcon')
