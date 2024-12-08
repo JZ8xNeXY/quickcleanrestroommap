@@ -22,7 +22,7 @@ interface AddRestroomPropsExtended extends AddRestroomProps {
 
 const AddSimpleRestroom: React.FC<AddRestroomPropsExtended> = ({
   user,
-  open = false,
+  open,
   onClose,
   handleSubmit,
   onSubmit,

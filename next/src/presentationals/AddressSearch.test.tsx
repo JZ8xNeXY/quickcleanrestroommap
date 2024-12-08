@@ -14,6 +14,8 @@ const mockHeaderProps = {
   openDrawer: jest.fn(() => jest.fn()),
   openAddressSearchModal: false,
   setOpenAddressSearchModal: jest.fn(),
+  openAddSimpleRestroomModal: false,
+  setOpenAddSimpleRestroomModal: jest.fn(),
   sideBar: jest.fn(() => <div>SideBar Content</div>),
 }
 
