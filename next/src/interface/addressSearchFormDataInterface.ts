@@ -1,5 +1,6 @@
 export interface AddressSearchFormData {
   addressSearch: string
+  userId: string
 }
 
 export interface AddressSearchProps {

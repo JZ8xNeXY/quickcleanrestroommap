@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
+import { useSessionContext } from '@/context/SessionContext'
 import {
   AddressSearchFormData,
   AddressSearchProps,
@@ -18,6 +19,8 @@ const AddressSearchContainer: React.FC<AddressSearchProps> = ({
 
   const [warningAddressSearchMessage, setWarningAddressSearchMessage] =
     useState('')
+
+  const { currentUser } = useSessionContext()
 
   const resetModal = () => {
     reset()
@@ -39,6 +42,7 @@ const AddressSearchContainer: React.FC<AddressSearchProps> = ({
 
   return (
     <AddressSearch
+      user={currentUser}
       open={open}
       onClose={resetModal}
       handleSubmit={handleSubmit}

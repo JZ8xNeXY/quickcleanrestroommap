@@ -19,9 +19,20 @@ const mockHeaderProps = {
 
 describe('AddressSearch', () => {
   it('Should open the modal and display the modal when the modal button is clicked', async () => {
+    const signedInUser = {
+      id: '1',
+      email: 'admin@example.com',
+      isFetched: true,
+      isSignedIn: true,
+      app_metadata: {},
+      user_metadata: {},
+      aud: 'authenticated',
+      created_at: '2023-01-01T00:00:00Z',
+    }
+
     const { rerender } = render(
       <SessionProvider>
-        <Header {...mockHeaderProps} />
+        <Header {...mockHeaderProps} user={signedInUser} />
       </SessionProvider>,
     )
 
@@ -32,7 +43,11 @@ describe('AddressSearch', () => {
 
     rerender(
       <SessionProvider>
-        <Header {...mockHeaderProps} openAddressSearchModal={true} />
+        <Header
+          {...mockHeaderProps}
+          user={signedInUser}
+          openAddressSearchModal={true}
+        />
       </SessionProvider>,
     )
 
