@@ -37,7 +37,7 @@ describe('AddSimpleRestroom', () => {
       </SessionProvider>,
     )
     const menuButtons = screen.getAllByLabelText('menu')
-    const addLocationButton = menuButtons[1]
+    const addLocationButton = menuButtons[2]
     await userEvent.click(addLocationButton)
     expect(mockHeaderProps.setOpenAddSimpleRestroomModal).toHaveBeenCalledWith(
       true,
@@ -155,7 +155,7 @@ describe('AddSimpleRestroom', () => {
     )
 
     const menuButtons = screen.getAllByLabelText('menu')
-    const addLocationButton = menuButtons[1]
+    const addLocationButton = menuButtons[2]
     await userEvent.click(addLocationButton)
 
     expect(mockHeaderProps.setOpenAddSimpleRestroomModal).toHaveBeenCalledWith(
