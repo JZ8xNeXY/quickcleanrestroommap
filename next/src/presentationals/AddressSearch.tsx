@@ -16,7 +16,7 @@ import { modalStyle } from '@/styles/modalStyles'
 
 const AddressSearch: React.FC<AddressSearchProps> = ({
   user,
-  open,
+  open = false,
   onClose,
   handleSubmit,
   onSubmit,
