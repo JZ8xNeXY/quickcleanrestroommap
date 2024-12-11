@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
+import { RestroomProvider, useRestroomContext } from '@/context/RestRoomContext'
 import { useSessionContext } from '@/context/SessionContext'
 import {
   AddressSearchFormData,
@@ -19,7 +20,8 @@ const AddressSearchContainer: React.FC<AddressSearchProps> = ({
 
   const [warningAddressSearchMessage, setWarningAddressSearchMessage] =
     useState('')
-
+  const [addressSearch, setAddressSearch] = useState('')
+  const { map } = useRestroomContext()
   const { currentUser } = useSessionContext()
 
   const resetModal = () => {
@@ -28,26 +30,49 @@ const AddressSearchContainer: React.FC<AddressSearchProps> = ({
   }
 
   const onsubmit: SubmitHandler<AddressSearchFormData> = async (data) => {
-    if (!data) {
+    if (!data.addressSearch) {
       setWarningAddressSearchMessage('住所を入力してください')
       return
     }
 
-    const request = {
-      query: data.addressSearch,
-      fields: ['name', 'geometry'],
+    setWarningAddressSearchMessage('')
+    setAddressSearch(data.addressSearch)
+    console.log(data.addressSearch)
+  }
+
+  useEffect(() => {
+    if (!map || !addressSearch) return
+
+    const fetchPlacesService = async () => {
+      try {
+        const { PlacesService } = await google.maps.importLibrary('places')
+
+        const service = new PlacesService(map)
+
+        const request = {
+          query: addressSearch,
+          fields: ['name', 'geometry'],
+        }
+
+        service.findPlaceFromQuery(request, (results, status) => {
+          if (
+            status === google.maps.places.PlacesServiceStatus.OK &&
+            results[0]
+          ) {
+            map.setCenter(results[0].geometry.location)
+            resetModal()
+          } else {
+            setWarningAddressSearchMessage('検索結果が見つかりませんでした')
+          }
+        })
+      } catch (error) {
+        console.error('PlacesServiceの読み込みに失敗しました:', error)
+        setWarningAddressSearchMessage('PlacesServiceの読み込みに失敗しました')
+      }
     }
 
-    console.log(data.addressSearch)
-
-    const service = new google.maps.places.PlacesService(map)
-
-    service.findPlaceFromQuery(request, function (results, status) {
-      if (status === google.maps.places.PlacesServiceStatus.OK) {
-        map.setCenter(results[0].geometry.location)
-      }
-    })
-  }
+    fetchPlacesService()
+  }, [map, addressSearch])
 
   return (
     <AddressSearch

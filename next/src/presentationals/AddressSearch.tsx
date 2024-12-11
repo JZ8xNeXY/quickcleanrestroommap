@@ -32,7 +32,7 @@ const AddressSearch: React.FC<AddressSearchProps> = ({
               component="h2"
               sx={{ fontSize: 24, mb: 5, color: 'black', fontWeight: 'bold' }}
             >
-              住所から検索する
+              地名から検索する
             </Typography>
             {warningAddressSearchMessage && (
               <Alert severity="warning" sx={{ mb: 2 }}>
