@@ -1,7 +1,7 @@
 import { TextField } from '@mui/material'
 import { Controller, Control } from 'react-hook-form'
 import { AddRestroomFormData } from '@/interface/addRestroomFormDataInterface'
-import { AddressSearchFormData } from '@/interface/addressSearchInterface'
+import { AddressSearchFormData } from '@/interface/addressSearchFormDataInterface'
 
 interface EditRestroomFormData extends AddRestroomFormData {
   id: number
