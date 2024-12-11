@@ -45,9 +45,10 @@ const AddressSearchContainer: React.FC<AddressSearchProps> = ({
 
     const fetchPlacesService = async () => {
       try {
-        const { PlacesService } = (await google.maps.importLibrary(
-          'places',
-        )) as PlacesLibrary
+        const placesLibrary = await google.maps.importLibrary('places')
+        const { PlacesService } = placesLibrary as unknown as {
+          PlacesService: typeof google.maps.places.PlacesService
+        }
 
         const service = new PlacesService(map)
 
