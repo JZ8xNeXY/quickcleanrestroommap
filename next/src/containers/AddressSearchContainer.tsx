@@ -35,7 +35,9 @@ const AddressSearchContainer: React.FC<AddressSearchProps> = ({
       return
     }
 
-    setWarningAddressSearchMessage('')
+    if (warningAddressSearchMessage != null) {
+      resetModal()
+    }
     setAddressSearch(data.addressSearch)
   }
 
@@ -63,7 +65,6 @@ const AddressSearchContainer: React.FC<AddressSearchProps> = ({
           ) {
             console.log(results[0])
             map.setCenter(results[0].geometry.location)
-            resetModal()
           } else {
             setWarningAddressSearchMessage('検索結果が見つかりませんでした')
           }
