@@ -1,9 +1,9 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
+import { RestroomProvider } from '@/context/RestRoomContext'
 import { SessionProvider } from '@/context/SessionContext'
 import Header from '@/presentationals/Header'
 import '@testing-library/jest-dom'
-import { RestroomProvider } from '@/context/RestRoomContext'
 
 jest.mock('next/router', () => ({
   useRouter: jest.fn(),

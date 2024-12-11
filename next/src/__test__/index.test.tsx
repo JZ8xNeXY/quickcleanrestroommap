@@ -1,7 +1,7 @@
 import { render, screen, act } from '@testing-library/react'
+import { RestroomProvider } from '@/context/RestRoomContext'
 import Index from '@/pages/index'
 import '@testing-library/jest-dom'
-import { RestroomProvider } from '@/context/RestRoomContext'
 
 afterEach(() => {
   jest.resetAllMocks()

@@ -30,7 +30,7 @@ const IndexContent: React.FC = () => {
 
   useEffect(() => {
     loadGoogleMapsAPI(setMap)
-  }, [])
+  }, [setMap])
 
   useEffect(() => {
     if (map) {

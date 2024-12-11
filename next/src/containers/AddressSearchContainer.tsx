@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
-import { RestroomProvider, useRestroomContext } from '@/context/RestRoomContext'
+import { useRestroomContext } from '@/context/RestRoomContext'
 import { useSessionContext } from '@/context/SessionContext'
 import {
   AddressSearchFormData,
@@ -24,10 +24,10 @@ const AddressSearchContainer: React.FC<AddressSearchProps> = ({
   const { map } = useRestroomContext()
   const { currentUser } = useSessionContext()
 
-  const resetModal = () => {
+  const resetModal = useCallback(() => {
     reset()
     onClose()
-  }
+  }, [reset, onClose])
 
   const onsubmit: SubmitHandler<AddressSearchFormData> = async (data) => {
     if (!data.addressSearch) {
@@ -72,7 +72,7 @@ const AddressSearchContainer: React.FC<AddressSearchProps> = ({
     }
 
     fetchPlacesService()
-  }, [map, addressSearch])
+  }, [map, addressSearch, resetModal])
 
   return (
     <AddressSearch
