@@ -1,3 +1,4 @@
+import type { PlacesLibrary } from '@types/googlemaps'
 import { useState, useEffect, useCallback } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { useRestroomContext } from '@/context/RestRoomContext'
@@ -44,7 +45,9 @@ const AddressSearchContainer: React.FC<AddressSearchProps> = ({
 
     const fetchPlacesService = async () => {
       try {
-        const { PlacesService } = await google.maps.importLibrary('places')
+        const { PlacesService } = (await google.maps.importLibrary(
+          'places',
+        )) as PlacesLibrary
 
         const service = new PlacesService(map)
 
