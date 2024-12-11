@@ -71,6 +71,12 @@ describe('AddressSearch', () => {
     const submitButton = screen.getByRole('button', { name: '検索する' })
     expect(submitButton).toBeInTheDocument()
     expect(submitButton).toHaveAttribute('type', 'submit')
+
+    await waitFor(() => {
+      expect(
+        screen.findByText('検索結果が見つかりませんでした'),
+      ).resolves.not.toBeInTheDocument()
+    })
   })
   it('Should open the modal and display the modal when the modal button is clicked', async () => {
     const signedInUser = {

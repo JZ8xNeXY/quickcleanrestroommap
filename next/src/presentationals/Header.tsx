@@ -1,6 +1,6 @@
-import AddLocationIcon from "@mui/icons-material/AddLocation";
-import MenuIcon from "@mui/icons-material/Menu";
-import AddressSearchIcon from "@mui/icons-material/Search";
+import AddLocationIcon from '@mui/icons-material/AddLocation'
+import MenuIcon from '@mui/icons-material/Menu'
+import AddressSearchIcon from '@mui/icons-material/Search'
 import {
   AppBar,
   Box,
@@ -8,28 +8,28 @@ import {
   Toolbar,
   IconButton,
   Drawer,
-} from "@mui/material";
-import Image from "next/image";
-import Link from "next/link";
+} from '@mui/material'
+import Image from 'next/image'
+import Link from 'next/link'
 
-import type { NextRouter } from "next/router";
-import React from "react";
-import AddSimpleRestroomContainer from "@/containers/AddSimpleRestroomContainer";
-import AddressSearchContainer from "@/containers/AddressSearchContainer";
-import { User } from "@/interface/userInterface";
+import type { NextRouter } from 'next/router'
+import React from 'react'
+import AddSimpleRestroomContainer from '@/containers/AddSimpleRestroomContainer'
+import AddressSearchContainer from '@/containers/AddressSearchContainer'
+import { User } from '@/interface/userInterface'
 
 interface HeaderProps {
-  router: NextRouter;
-  user: User | null;
-  isOpen: boolean;
+  router: NextRouter
+  user: User | null
+  isOpen: boolean
   openDrawer: (
-    open: boolean
-  ) => (event: React.KeyboardEvent | React.MouseEvent) => void;
-  openAddressSearchModal: boolean;
-  setOpenAddressSearchModal: React.Dispatch<React.SetStateAction<boolean>>;
-  openAddSimpleRestroomModal: boolean;
-  setOpenAddSimpleRestroomModal: React.Dispatch<React.SetStateAction<boolean>>;
-  sideBar: () => JSX.Element;
+    open: boolean,
+  ) => (event: React.KeyboardEvent | React.MouseEvent) => void
+  openAddressSearchModal: boolean
+  setOpenAddressSearchModal: React.Dispatch<React.SetStateAction<boolean>>
+  openAddSimpleRestroomModal: boolean
+  setOpenAddSimpleRestroomModal: React.Dispatch<React.SetStateAction<boolean>>
+  sideBar: () => JSX.Element
 }
 
 const Header: React.FC<HeaderProps> = ({
@@ -47,25 +47,25 @@ const Header: React.FC<HeaderProps> = ({
     <AppBar
       position="static"
       sx={{
-        backgroundColor: "white",
-        color: "black",
-        boxShadow: "none",
-        py: "12px",
+        backgroundColor: 'white',
+        color: 'black',
+        boxShadow: 'none',
+        py: '12px',
       }}
     >
       <Container maxWidth="xl" sx={{ px: 2 }}>
         <Box
           sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
           }}
         >
           <Box
             sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
             }}
           >
             <Box>
@@ -88,18 +88,18 @@ const Header: React.FC<HeaderProps> = ({
               <Link href="/">
                 <Box
                   sx={{
-                    width: "100%",
+                    width: '100%',
                     maxWidth: {
-                      xs: "120px",
-                      sm: "140px",
-                      md: "160px",
-                      lg: "180px",
-                      xl: "200px",
+                      xs: '120px',
+                      sm: '140px',
+                      md: '160px',
+                      lg: '180px',
+                      xl: '200px',
                     },
-                    height: "auto",
-                    "& img": {
-                      width: "100%",
-                      height: "auto",
+                    height: 'auto',
+                    '& img': {
+                      width: '100%',
+                      height: 'auto',
                     },
                   }}
                 >
@@ -126,9 +126,9 @@ const Header: React.FC<HeaderProps> = ({
               >
                 <AddressSearchIcon
                   style={{
-                    cursor: "pointer",
-                    stroke: "none",
-                    fontSize: "35px",
+                    cursor: 'pointer',
+                    stroke: 'none',
+                    fontSize: '35px',
                   }}
                 />
               </IconButton>
@@ -138,17 +138,17 @@ const Header: React.FC<HeaderProps> = ({
                 aria-label="menu"
                 onClick={() => {
                   if (user?.id) {
-                    setOpenAddSimpleRestroomModal(true);
+                    setOpenAddSimpleRestroomModal(true)
                   } else {
-                    router.push("/sign_in");
+                    router.push('/sign_in')
                   }
                 }}
               >
                 <AddLocationIcon
                   style={{
-                    cursor: "pointer",
-                    stroke: "none",
-                    fontSize: "35px",
+                    cursor: 'pointer',
+                    stroke: 'none',
+                    fontSize: '35px',
                   }}
                 />
               </IconButton>
@@ -165,7 +165,7 @@ const Header: React.FC<HeaderProps> = ({
         </Box>
       </Container>
     </AppBar>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header

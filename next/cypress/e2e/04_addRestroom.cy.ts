@@ -8,7 +8,7 @@ const signIn = (email: string, password: string) => {
 }
 
 const openAddRestroomModal = () => {
-  cy.get('button[aria-label="menu"]').eq(1).click()
+  cy.get('button[aria-label="menu"]').eq(2).click()
   cy.get('h2').contains('トイレ情報を登録する')
 }
 

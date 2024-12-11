@@ -58,6 +58,7 @@ const AddressSearchContainer: React.FC<AddressSearchProps> = ({
             status === google.maps.places.PlacesServiceStatus.OK &&
             results[0]
           ) {
+            console.log(results[0])
             map.setCenter(results[0].geometry.location)
             resetModal()
           } else {
