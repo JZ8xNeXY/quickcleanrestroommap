@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, ReactNode } from 'react'
 import { Restrooms } from '@/interface/restroomInterface'
 
 interface RestroomContextProps {
-  map: google.maps.Map
+  map: google.maps.Map | null
   setMap: React.Dispatch<React.SetStateAction<google.maps.Map | null>>
   selectedRestroom: Restrooms
   setSelectedRestroom: React.Dispatch<React.SetStateAction<Restrooms>>
