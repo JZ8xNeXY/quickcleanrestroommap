@@ -37,7 +37,6 @@ const AddressSearchContainer: React.FC<AddressSearchProps> = ({
 
     setWarningAddressSearchMessage('')
     setAddressSearch(data.addressSearch)
-    console.log(data.addressSearch)
   }
 
   useEffect(() => {
