@@ -4,6 +4,7 @@ import { userEvent } from '@testing-library/user-event'
 import { SessionProvider } from '@/context/SessionContext'
 import Header from '@/presentationals/Header'
 import '@testing-library/jest-dom'
+import { RestroomProvider } from '@/context/RestRoomContext'
 
 beforeEach(() => {
   jest.clearAllMocks()
@@ -35,7 +36,9 @@ describe('AddSimpleRestroom', () => {
 
     const { rerender } = render(
       <SessionProvider>
-        <Header {...mockHeaderProps} user={signedInUser} />
+        <RestroomProvider>
+          <Header {...mockHeaderProps} user={signedInUser} />
+        </RestroomProvider>
       </SessionProvider>,
     )
     const menuButtons = screen.getAllByLabelText('menu')
@@ -46,11 +49,13 @@ describe('AddSimpleRestroom', () => {
     )
     rerender(
       <SessionProvider>
-        <Header
-          {...mockHeaderProps}
-          user={signedInUser}
-          openAddSimpleRestroomModal={true}
-        />
+        <RestroomProvider>
+          <Header
+            {...mockHeaderProps}
+            user={signedInUser}
+            openAddSimpleRestroomModal={true}
+          />
+        </RestroomProvider>
       </SessionProvider>,
     )
 
@@ -152,7 +157,9 @@ describe('AddSimpleRestroom', () => {
 
     const { rerender } = render(
       <SessionProvider>
-        <Header {...mockHeaderProps} user={signedInUser} />
+        <RestroomProvider>
+          <Header {...mockHeaderProps} user={signedInUser} />
+        </RestroomProvider>
       </SessionProvider>,
     )
 
@@ -166,11 +173,13 @@ describe('AddSimpleRestroom', () => {
 
     rerender(
       <SessionProvider>
-        <Header
-          {...mockHeaderProps}
-          user={signedInUser}
-          openAddSimpleRestroomModal={true}
-        />
+        <RestroomProvider>
+          <Header
+            {...mockHeaderProps}
+            user={signedInUser}
+            openAddSimpleRestroomModal={true}
+          />
+        </RestroomProvider>
       </SessionProvider>,
     )
 
