@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import AddMarkersContainer from '@/containers/AddMarkersContainer'
 import AddRestroomContainer from '@/containers/AddRestroomContainer'
-import { RestroomProvider } from '@/context/RestRoomContext'
+import { RestroomProvider, useRestroomContext } from '@/context/RestRoomContext'
 import { SessionProvider, useSessionContext } from '@/context/SessionContext'
 import { RightClickMapHandler } from '@/utils/RightClickMapHandler'
 import { loadGoogleMapsAPI } from '@/utils/loadGoogleMapsAPI'
@@ -12,7 +12,7 @@ import { userGeoLocation } from '@/utils/userGeoLocation'
 
 // SessionProviderの内部で使用するサブコンポーネント
 const IndexContent: React.FC = () => {
-  const [map, setMap] = useState<google.maps.Map | null>(null)
+  //const [map, setMap] = useState<google.maps.Map | null>(null)
   const [openAddRestroomModal, setOpenAddRestroomModal] = useState(false)
   const [coords, setCoords] = useState<{ lat: number; lng: number } | null>(
     null,
@@ -24,7 +24,7 @@ const IndexContent: React.FC = () => {
     lat: 35.681236,
     lng: 139.767125, // 初期値を東京駅に設定
   })
-
+  const { map, setMap } = useRestroomContext()
   const { currentUser } = useSessionContext()
   const router = useRouter()
 
@@ -42,7 +42,7 @@ const IndexContent: React.FC = () => {
       })
       userGeoLocation({ map, setCurrentUserPos })
     }
-  }, [map, router])
+  }, [map, setMap, router])
 
   useEffect(() => {
     if (!currentUser && openAddRestroomModal) {

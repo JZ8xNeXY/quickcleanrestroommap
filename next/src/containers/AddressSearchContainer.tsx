@@ -33,11 +33,20 @@ const AddressSearchContainer: React.FC<AddressSearchProps> = ({
       return
     }
 
-    const postData = {
-      addressSearch: data.addressSearch,
+    const request = {
+      query: data.addressSearch,
+      fields: ['name', 'geometry'],
     }
 
-    console.log(postData)
+    console.log(data.addressSearch)
+
+    const service = new google.maps.places.PlacesService(map)
+
+    service.findPlaceFromQuery(request, function (results, status) {
+      if (status === google.maps.places.PlacesServiceStatus.OK) {
+        map.setCenter(results[0].geometry.location)
+      }
+    })
   }
 
   return (
