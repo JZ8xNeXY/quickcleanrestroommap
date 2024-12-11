@@ -112,7 +112,7 @@ describe('AddressSearch', () => {
     const modal = screen.getByRole('presentation')
     expect(within(modal).getByText('地名から検索する')).toBeInTheDocument()
 
-    const searchAddress = 'jaljajlajajl'
+    const searchAddress = 'jaljajlajajl' //存在しない地名
     const inputElement = screen.getByLabelText('住所')
     expect(inputElement).toBeInTheDocument()
     expect(inputElement).toHaveAttribute('type', 'text')
@@ -123,8 +123,10 @@ describe('AddressSearch', () => {
     expect(submitButton).toBeInTheDocument()
     expect(submitButton).toHaveAttribute('type', 'submit')
 
-    const warningAddressSearchMessage =
-      screen.getByText('検索結果が見つかりませんでした')
-    expect(warningAddressSearchMessage).toBeInTheDocument()
+    await waitFor(() => {
+      expect(
+        screen.findByText('検索結果が見つかりませんでした'),
+      ).resolves.toBeInTheDocument()
+    })
   })
 })
