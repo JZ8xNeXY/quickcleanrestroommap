@@ -1,4 +1,3 @@
-import type { PlacesLibrary } from '@types/googlemaps'
 import { useState, useEffect, useCallback } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { useRestroomContext } from '@/context/RestRoomContext'
