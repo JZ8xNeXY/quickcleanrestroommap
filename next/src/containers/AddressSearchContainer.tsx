@@ -59,7 +59,7 @@ const AddressSearchContainer: React.FC<AddressSearchProps> = ({
         service.findPlaceFromQuery(request, (results, status) => {
           if (
             status === google.maps.places.PlacesServiceStatus.OK &&
-            results[0]
+            results?.[0]?.geometry?.location
           ) {
             console.log(results[0])
             map.setCenter(results[0].geometry.location)
