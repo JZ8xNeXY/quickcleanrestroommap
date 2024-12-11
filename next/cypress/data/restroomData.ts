@@ -10,7 +10,7 @@ export const restroomData: RestroomDataInterface = {
   fileName: 'test.jpeg',
   originalName: 'test name',
   address: 'test address',
-  content: 'test address',
+  content: 'test content',
   facilities: [
     'nursing_room',
     'anyone_toilet',
