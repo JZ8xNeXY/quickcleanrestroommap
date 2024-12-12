@@ -14,7 +14,7 @@ const openAddRestroomModal = () => {
 
 const fillRestroomForm = (formData: RestroomDataInterface) => {
   cy.get('input[type="file"]').attachFile(formData.fileName, { force: true })
-  cy.wait(3000)
+  cy.wait(10000)
   cy.get('input[name="name"]').type(formData.originalName)
   cy.get('input[name="address"]').type(formData.address)
   cy.get('input[name="content"]').type(formData.content)
