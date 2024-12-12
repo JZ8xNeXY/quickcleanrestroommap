@@ -1,4 +1,5 @@
 import { render, screen, act } from '@testing-library/react'
+import { RestroomProvider } from '@/context/RestRoomContext'
 import Index from '@/pages/index'
 import '@testing-library/jest-dom'
 
@@ -19,7 +20,11 @@ jest.mock('next/router', () => ({
 describe('Index', () => {
   it('Should display "map"', async () => {
     await act(async () => {
-      render(<Index />)
+      render(
+        <RestroomProvider>
+          <Index />
+        </RestroomProvider>,
+      )
     })
 
     expect(screen.getByTestId('map')).toBeInTheDocument()

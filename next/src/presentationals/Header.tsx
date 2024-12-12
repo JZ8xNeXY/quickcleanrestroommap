@@ -1,5 +1,6 @@
 import AddLocationIcon from '@mui/icons-material/AddLocation'
 import MenuIcon from '@mui/icons-material/Menu'
+import AddressSearchIcon from '@mui/icons-material/Search'
 import {
   AppBar,
   Box,
@@ -14,6 +15,7 @@ import Link from 'next/link'
 import type { NextRouter } from 'next/router'
 import React from 'react'
 import AddSimpleRestroomContainer from '@/containers/AddSimpleRestroomContainer'
+import AddressSearchContainer from '@/containers/AddressSearchContainer'
 import { User } from '@/interface/userInterface'
 
 interface HeaderProps {
@@ -23,6 +25,8 @@ interface HeaderProps {
   openDrawer: (
     open: boolean,
   ) => (event: React.KeyboardEvent | React.MouseEvent) => void
+  openAddressSearchModal: boolean
+  setOpenAddressSearchModal: React.Dispatch<React.SetStateAction<boolean>>
   openAddSimpleRestroomModal: boolean
   setOpenAddSimpleRestroomModal: React.Dispatch<React.SetStateAction<boolean>>
   sideBar: () => JSX.Element
@@ -33,6 +37,8 @@ const Header: React.FC<HeaderProps> = ({
   user,
   isOpen,
   openDrawer,
+  openAddressSearchModal,
+  setOpenAddressSearchModal,
   openAddSimpleRestroomModal,
   setOpenAddSimpleRestroomModal,
   sideBar,
@@ -116,7 +122,20 @@ const Header: React.FC<HeaderProps> = ({
                 edge="start"
                 color="inherit"
                 aria-label="menu"
-                // onClick={() => setOpenAddSimpleRestroomModal(true)}
+                onClick={() => setOpenAddressSearchModal(true)}
+              >
+                <AddressSearchIcon
+                  style={{
+                    cursor: 'pointer',
+                    stroke: 'none',
+                    fontSize: '35px',
+                  }}
+                />
+              </IconButton>
+              <IconButton
+                edge="start"
+                color="inherit"
+                aria-label="menu"
                 onClick={() => {
                   if (user?.id) {
                     setOpenAddSimpleRestroomModal(true)
@@ -134,6 +153,10 @@ const Header: React.FC<HeaderProps> = ({
                 />
               </IconButton>
             </Toolbar>
+            <AddressSearchContainer
+              open={openAddressSearchModal}
+              onClose={() => setOpenAddressSearchModal(false)}
+            />
             <AddSimpleRestroomContainer
               open={openAddSimpleRestroomModal}
               onClose={() => setOpenAddSimpleRestroomModal(false)}

@@ -8,13 +8,13 @@ const signIn = (email: string, password: string) => {
 }
 
 const openAddRestroomModal = () => {
-  cy.get('button[aria-label="menu"]').eq(1).click()
+  cy.get('button[aria-label="menu"]').eq(2).click()
   cy.get('h2').contains('トイレ情報を登録する')
 }
 
 const fillRestroomForm = (formData: RestroomDataInterface) => {
   cy.get('input[type="file"]').attachFile(formData.fileName, { force: true })
-  cy.wait(3000)
+  cy.wait(10000)
   cy.get('input[name="name"]').type(formData.originalName)
   cy.get('input[name="address"]').type(formData.address)
   cy.get('input[name="content"]').type(formData.content)

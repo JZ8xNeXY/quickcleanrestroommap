@@ -1,5 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
+import { RestroomProvider } from '@/context/RestRoomContext'
 import { SessionProvider } from '@/context/SessionContext'
 import Header from '@/presentationals/Header'
 import '@testing-library/jest-dom'
@@ -17,6 +18,8 @@ const mockHeaderProps = {
   user: null,
   isOpen: false,
   openDrawer: jest.fn(() => jest.fn()),
+  openAddressSearchModal: false,
+  setOpenAddressSearchModal: jest.fn(),
   openAddSimpleRestroomModal: false,
   setOpenAddSimpleRestroomModal: jest.fn(),
   sideBar: jest.fn(() => <div>SideBar Content</div>),
@@ -26,7 +29,9 @@ describe('Header', () => {
   it('should not display "ログイン中" when user is not signed in', () => {
     render(
       <SessionProvider>
-        <Header {...mockHeaderProps} />
+        <RestroomProvider>
+          <Header {...mockHeaderProps} />
+        </RestroomProvider>
       </SessionProvider>,
     )
     const adminText = screen.queryByText('ログイン中')
@@ -46,7 +51,9 @@ describe('Header', () => {
     }
     render(
       <SessionProvider>
-        <Header {...mockHeaderProps} user={signedInUser} />
+        <RestroomProvider>
+          <Header {...mockHeaderProps} user={signedInUser} />
+        </RestroomProvider>
       </SessionProvider>,
     )
     expect(screen.getByText('ログイン中')).toBeInTheDocument()
@@ -55,7 +62,9 @@ describe('Header', () => {
   it('should display "Icon"', () => {
     render(
       <SessionProvider>
-        <Header {...mockHeaderProps} />
+        <RestroomProvider>
+          <Header {...mockHeaderProps} />
+        </RestroomProvider>
       </SessionProvider>,
     )
     const menuButtons = screen.getAllByLabelText('menu')
@@ -64,7 +73,14 @@ describe('Header', () => {
     expect(menuButton).toHaveAttribute('type', 'button')
     const menuIcon = screen.getByTestId('MenuIcon')
     expect(menuIcon).toBeInTheDocument()
-    const addLocationButton = menuButtons[1]
+
+    const addressSearchButton = menuButtons[1]
+    expect(addressSearchButton).toBeInTheDocument()
+    expect(addressSearchButton).toHaveAttribute('type', 'button')
+    const addressSearchIcon = screen.getByTestId('SearchIcon')
+    expect(addressSearchIcon).toBeInTheDocument()
+
+    const addLocationButton = menuButtons[2]
     expect(addLocationButton).toBeInTheDocument()
     expect(addLocationButton).toHaveAttribute('type', 'button')
     const addLocationIcon = screen.getByTestId('AddLocationIcon')
@@ -74,7 +90,9 @@ describe('Header', () => {
   it('Should open the Drawer and display the sidebar when the menu button is clicked', async () => {
     const { rerender } = render(
       <SessionProvider>
-        <Header {...mockHeaderProps} />
+        <RestroomProvider>
+          <Header {...mockHeaderProps} />
+        </RestroomProvider>
       </SessionProvider>,
     )
     const menuButtons = screen.getAllByLabelText('menu')
@@ -84,7 +102,9 @@ describe('Header', () => {
     expect(mockHeaderProps.openDrawer).toHaveBeenCalledTimes(2) //回数がおかしい再レンダリング可能性あり
     rerender(
       <SessionProvider>
-        <Header {...mockHeaderProps} isOpen={true} />
+        <RestroomProvider>
+          <Header {...mockHeaderProps} isOpen={true} />
+        </RestroomProvider>
       </SessionProvider>,
     )
     expect(screen.getByText('SideBar Content')).toBeInTheDocument()
@@ -92,7 +112,9 @@ describe('Header', () => {
     await waitFor(() => {
       rerender(
         <SessionProvider>
-          <Header {...mockHeaderProps} isOpen={false} />
+          <RestroomProvider>
+            <Header {...mockHeaderProps} isOpen={false} />
+          </RestroomProvider>
         </SessionProvider>,
       )
       expect(screen.queryByText('SideBar Content')).not.toBeInTheDocument()

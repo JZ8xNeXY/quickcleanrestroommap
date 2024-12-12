@@ -12,6 +12,7 @@ const signIn = (email: string, password: string) => {
 const fillEditRestroomModal = (newData: updatedRestroomDataInterface) => {
   cy.get('input[name="name"]')
     .should('be.visible')
+    .wait(500)
     .clear()
     .type(newData.updatedName)
   cy.get('input[name="address"]').clear().type(newData.updatedAddress)

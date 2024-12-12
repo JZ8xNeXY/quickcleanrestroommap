@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker'
 import { render, screen, waitFor, within } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
+import { RestroomProvider } from '@/context/RestRoomContext'
 import { SessionProvider } from '@/context/SessionContext'
 import Header from '@/presentationals/Header'
 import '@testing-library/jest-dom'
@@ -13,6 +14,8 @@ const mockHeaderProps = {
   user: null,
   isOpen: false,
   openDrawer: jest.fn(() => jest.fn()),
+  openAddressSearchModal: false,
+  setOpenAddressSearchModal: jest.fn(),
   openAddSimpleRestroomModal: false,
   setOpenAddSimpleRestroomModal: jest.fn(),
   sideBar: jest.fn(() => <div>SideBar Content</div>),
@@ -33,22 +36,26 @@ describe('AddSimpleRestroom', () => {
 
     const { rerender } = render(
       <SessionProvider>
-        <Header {...mockHeaderProps} user={signedInUser} />
+        <RestroomProvider>
+          <Header {...mockHeaderProps} user={signedInUser} />
+        </RestroomProvider>
       </SessionProvider>,
     )
     const menuButtons = screen.getAllByLabelText('menu')
-    const addLocationButton = menuButtons[1]
+    const addLocationButton = menuButtons[2]
     await userEvent.click(addLocationButton)
     expect(mockHeaderProps.setOpenAddSimpleRestroomModal).toHaveBeenCalledWith(
       true,
     )
     rerender(
       <SessionProvider>
-        <Header
-          {...mockHeaderProps}
-          user={signedInUser}
-          openAddSimpleRestroomModal={true}
-        />
+        <RestroomProvider>
+          <Header
+            {...mockHeaderProps}
+            user={signedInUser}
+            openAddSimpleRestroomModal={true}
+          />
+        </RestroomProvider>
       </SessionProvider>,
     )
 
@@ -150,12 +157,14 @@ describe('AddSimpleRestroom', () => {
 
     const { rerender } = render(
       <SessionProvider>
-        <Header {...mockHeaderProps} user={signedInUser} />
+        <RestroomProvider>
+          <Header {...mockHeaderProps} user={signedInUser} />
+        </RestroomProvider>
       </SessionProvider>,
     )
 
     const menuButtons = screen.getAllByLabelText('menu')
-    const addLocationButton = menuButtons[1]
+    const addLocationButton = menuButtons[2]
     await userEvent.click(addLocationButton)
 
     expect(mockHeaderProps.setOpenAddSimpleRestroomModal).toHaveBeenCalledWith(
@@ -164,11 +173,13 @@ describe('AddSimpleRestroom', () => {
 
     rerender(
       <SessionProvider>
-        <Header
-          {...mockHeaderProps}
-          user={signedInUser}
-          openAddSimpleRestroomModal={true}
-        />
+        <RestroomProvider>
+          <Header
+            {...mockHeaderProps}
+            user={signedInUser}
+            openAddSimpleRestroomModal={true}
+          />
+        </RestroomProvider>
       </SessionProvider>,
     )
 

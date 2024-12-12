@@ -2,6 +2,8 @@ import React, { createContext, useContext, useState, ReactNode } from 'react'
 import { Restrooms } from '@/interface/restroomInterface'
 
 interface RestroomContextProps {
+  map: google.maps.Map | null
+  setMap: React.Dispatch<React.SetStateAction<google.maps.Map | null>>
   selectedRestroom: Restrooms
   setSelectedRestroom: React.Dispatch<React.SetStateAction<Restrooms>>
 }
@@ -29,11 +31,14 @@ const RestroomContext = createContext<RestroomContextProps | undefined>(
 )
 
 export function RestroomProvider({ children }: { children: ReactNode }) {
+  const [map, setMap] = useState<google.maps.Map | null>(null)
   const [selectedRestroom, setSelectedRestroom] =
     useState<Restrooms>(defaultRestroom)
 
   return (
-    <RestroomContext.Provider value={{ selectedRestroom, setSelectedRestroom }}>
+    <RestroomContext.Provider
+      value={{ map, setMap, selectedRestroom, setSelectedRestroom }}
+    >
       {children}
     </RestroomContext.Provider>
   )

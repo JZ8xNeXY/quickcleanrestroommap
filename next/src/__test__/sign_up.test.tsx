@@ -2,6 +2,7 @@ import { faker } from '@faker-js/faker'
 import { render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import { userEvent } from '@testing-library/user-event'
+import { RestroomProvider } from '@/context/RestRoomContext'
 import { SessionProvider } from '@/context/SessionContext'
 import SignUp from '@/pages/sign_up'
 
@@ -13,7 +14,9 @@ describe('SignUp', () => {
   it('Should display "the sign up form with email, password , confirmed password and submit button"', async () => {
     render(
       <SessionProvider>
-        <SignUp />
+        <RestroomProvider>
+          <SignUp />
+        </RestroomProvider>
       </SessionProvider>,
     )
 

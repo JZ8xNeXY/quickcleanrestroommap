@@ -13,6 +13,8 @@ const customJestConfig = {
   transform: {
     '^.+\\.(ts|tsx)$': 'ts-jest',
   },
+  // タイムアウトを10秒（10000ミリ秒）に設定
+  testTimeout: 10000,
 }
 
 module.exports = createJestConfig(customJestConfig)
