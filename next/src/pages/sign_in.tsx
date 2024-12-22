@@ -12,7 +12,7 @@ import {
 } from '@mui/material'
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useForm, SubmitHandler, Controller } from 'react-hook-form'
 import { useSessionContext } from '@/context/SessionContext'
 import { supabase } from '@/utils/supabase'
@@ -30,6 +30,10 @@ const SignIn: NextPage = () => {
   const { setCurrentUser } = useSessionContext()
 
   const [showPassword, setShowPassword] = useState(false)
+
+  useEffect(() => {
+    console.log('Updated user:', user)
+  }, [user])
 
   const handleClickShowPassword = () => setShowPassword((show) => !show)
 
@@ -62,22 +66,45 @@ const SignIn: NextPage = () => {
   }
 
   const signIn = async (email: string, password: string) => {
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
+    const response = await fetch('/api/signIn', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password }),
     })
-    if (error != null) {
-      throw new Error(error.message)
+
+    const result = await response.json()
+
+    console.log(result.user.id)
+
+    if (!response.ok) {
+      throw new Error(result.error || 'サインインに失敗しました')
     }
+
+    // ローカルストレージにトークンを保存
+    const { session, user } = result
+    localStorage.setItem('accessToken', session.access_token)
+    localStorage.setItem('refreshToken', session.refresh_token)
+    localStorage.setItem('expiresAt', session.expires_at)
+
+    // Supabaseセッションを設定
+    await supabase.auth.setSession({
+      access_token: session.access_token,
+      refresh_token: session.refresh_token,
+    })
+
     setUser({
       ...user,
-      userUid: String(data.user?.id) || 'dalja-e07-427-8f4-falkjdal',
-      email: data.user?.email || '',
+      userUid: String(result.user?.id) || 'dalja-e07-427-8f4-falkjdal',
+      email: result.user?.email || '',
       isSignedIn: true,
       isFetched: true,
     })
 
-    return data.user
+    console.log(user)
+
+    return result.user
   }
 
   const onSubmit: SubmitHandler<SignInFormData> = async (data) => {

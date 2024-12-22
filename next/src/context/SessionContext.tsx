@@ -34,7 +34,6 @@ export const SessionProvider: React.FC<{ children: ReactNode }> = ({
         isSignedIn: !!data.user,
       })
     }
-
     getCurrentUser()
   }, [])
 
