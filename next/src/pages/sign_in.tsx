@@ -25,15 +25,11 @@ type SignInFormData = {
 
 const SignIn: NextPage = () => {
   const router = useRouter()
-  const [user, setUser] = useUserState()
+  const [, setUser] = useUserState()
   const [isLoading, setIsLoading] = useState(false)
   const { setCurrentUser } = useSessionContext()
 
   const [showPassword, setShowPassword] = useState(false)
-
-  useEffect(() => {
-    console.log('Updated user:', user)
-  }, [user])
 
   const handleClickShowPassword = () => setShowPassword((show) => !show)
 
