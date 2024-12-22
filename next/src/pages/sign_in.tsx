@@ -76,8 +76,6 @@ const SignIn: NextPage = () => {
 
     const result = await response.json()
 
-    console.log(result.user.id)
-
     if (!response.ok) {
       throw new Error(result.error || 'サインインに失敗しました')
     }
@@ -96,13 +94,11 @@ const SignIn: NextPage = () => {
 
     setUser({
       ...user,
-      userUid: String(result.user?.id) || 'dalja-e07-427-8f4-falkjdal',
+      userUid: String(result.user?.id) || '',
       email: result.user?.email || '',
       isSignedIn: true,
       isFetched: true,
     })
-
-    console.log(user)
 
     return result.user
   }
@@ -113,7 +109,7 @@ const SignIn: NextPage = () => {
       const user = await signIn(data.email, data.password)
       setCurrentUser({
         ...user,
-        userUid: 'dalja-e07-427-8f4-falkjdal',
+        userUid: '',
         isFetched: true,
         isSignedIn: !!user,
       })

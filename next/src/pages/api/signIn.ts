@@ -28,7 +28,6 @@ export default async function signInHandler(
         .status(authError.status || 401)
         .json({ error: authError.message })
     }
-    console.log(data.session)
     return res.status(200).json({ user: data.user, session: data.session })
   } catch (error: unknown) {
     return res.status(500).json({ error: 'Internal server error' })

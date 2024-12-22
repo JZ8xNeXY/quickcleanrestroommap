@@ -30,7 +30,7 @@ type SignUpFormData = {
 
 const SignUp: NextPage = () => {
   const router = useRouter()
-  const [user, setUser] = useUserState()
+  const [, setUser] = useUserState()
   const [isLoading, setIsLoading] = useState(false)
   const { setCurrentUser } = useSessionContext()
 
@@ -71,21 +71,40 @@ const SignUp: NextPage = () => {
   }
 
   const signUp = async (email: string, password: string) => {
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
+    const response = await fetch('/api/signUp', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password }),
     })
-    if (error != null) {
-      throw new Error(error.message)
+
+    const result = await response.json()
+
+    if (!response.ok) {
+      throw new Error(result.error || 'サインインに失敗しました')
     }
+
+    // ローカルストレージにトークンを保存
+    const { session, user } = result
+    localStorage.setItem('accessToken', session.access_token)
+    localStorage.setItem('refreshToken', session.refresh_token)
+    localStorage.setItem('expiresAt', session.expires_at)
+
+    // Supabaseセッションを設定
+    await supabase.auth.setSession({
+      access_token: session.access_token,
+      refresh_token: session.refresh_token,
+    })
+
     setUser({
       ...user,
-      userUid: data.user?.id || '',
-      email: data.user?.email || '',
+      userUid: result.user?.id || '',
+      email: result.user?.email || '',
       isSignedIn: true,
       isFetched: true,
     })
-    return data.user
+    return result.user
   }
 
   const onSubmit: SubmitHandler<SignUpFormData> = async (data) => {
