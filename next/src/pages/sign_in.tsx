@@ -12,7 +12,7 @@ import {
 } from '@mui/material'
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useForm, SubmitHandler, Controller } from 'react-hook-form'
 import { useSessionContext } from '@/context/SessionContext'
 import { supabase } from '@/utils/supabase'
@@ -25,7 +25,7 @@ type SignInFormData = {
 
 const SignIn: NextPage = () => {
   const router = useRouter()
-  const [, setUser] = useUserState()
+  const [user, setUser] = useUserState()
   const [isLoading, setIsLoading] = useState(false)
   const { setCurrentUser } = useSessionContext()
 
