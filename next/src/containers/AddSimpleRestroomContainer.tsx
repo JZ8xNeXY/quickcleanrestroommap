@@ -1,4 +1,5 @@
 import loadImage from 'blueimp-load-image'
+import imageCompression from 'browser-image-compression'
 import { useState, useEffect, useRef, MutableRefObject } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { mutate } from 'swr'
@@ -84,6 +85,14 @@ const AddSimpleRestroomContainer: React.FC<AddRestroomProps> = ({
   }
 
   const convertFileToBase64 = async (file: File): Promise<string> => {
+    const options = {
+      maxSizeMB: 1,
+      maxWidthOrHeight: 1024,
+      useWebWorker: true,
+    }
+
+    const compressedFile = await imageCompression(file, options)
+
     const fileReader = new FileReader()
 
     const imageDataToBase64: string = await new Promise((resolve, reject) => {
@@ -93,7 +102,7 @@ const AddSimpleRestroomContainer: React.FC<AddRestroomProps> = ({
 
       fileReader.onerror = (error) => reject(error)
 
-      fileReader.readAsDataURL(file)
+      fileReader.readAsDataURL(compressedFile)
     })
 
     setImageData(imageDataToBase64)
@@ -266,6 +275,12 @@ const AddSimpleRestroomContainer: React.FC<AddRestroomProps> = ({
     if (!fileInput.current?.files || fileInput.current.files.length === 0) {
       setWarningImageMessage('トイレの画像をアップロードしてください')
       return
+    }
+
+    if (data.evaluation == 0) {
+      setWarningImageMessage('トイレの画像をアップロードしてください')
+    } else {
+      setWarningImageMessage('')
     }
 
     const postData = {
