@@ -1,3 +1,4 @@
+import imageCompression from 'browser-image-compression'
 import { useState, useEffect, useRef, MutableRefObject } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { mutate } from 'swr'
@@ -69,6 +70,14 @@ const AddRestroomContainer: React.FC<AddRestroomPropsExtended> = ({
   }
 
   const convertFileToBase64 = async (file: File): Promise<string> => {
+    const options = {
+      maxSizeMB: 1,
+      maxWidthOrHeight: 1024,
+      useWebWorker: true,
+    }
+
+    const compressedFile = await imageCompression(file, options)
+
     const fileReader = new FileReader()
 
     const imageDataToBase64: string = await new Promise((resolve, reject) => {
@@ -78,7 +87,7 @@ const AddRestroomContainer: React.FC<AddRestroomPropsExtended> = ({
 
       fileReader.onerror = (error) => reject(error)
 
-      fileReader.readAsDataURL(file)
+      fileReader.readAsDataURL(compressedFile)
     })
 
     setImageData(imageDataToBase64)
