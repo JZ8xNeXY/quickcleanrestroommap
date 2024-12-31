@@ -214,6 +214,12 @@ const AddRestroomContainer: React.FC<AddRestroomPropsExtended> = ({
         return
       }
 
+      if (data.evaluation == 0) {
+        setWarningImageMessage('トイレの画像をアップロードしてください')
+      } else {
+        setWarningImageMessage('')
+      }
+
       if (!currentUser?.id) {
         setWarningImageMessage('ログインしてください')
         return

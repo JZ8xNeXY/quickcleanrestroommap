@@ -277,6 +277,12 @@ const AddSimpleRestroomContainer: React.FC<AddRestroomProps> = ({
       return
     }
 
+    if (data.evaluation == 0) {
+      setWarningImageMessage('トイレの画像をアップロードしてください')
+    } else {
+      setWarningImageMessage('')
+    }
+
     const postData = {
       name: data.name,
       address: data.address,
