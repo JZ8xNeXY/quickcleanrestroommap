@@ -11,6 +11,7 @@ import {
   InputAdornment,
 } from '@mui/material'
 import type { NextPage } from 'next'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { useForm, SubmitHandler, Controller } from 'react-hook-form'
@@ -188,6 +189,23 @@ const SignIn: NextPage = () => {
             送信する
           </LoadingButton>
         </Stack>
+        <Box sx={{ mt: 2, textAlign: 'center' }}>
+          <Typography variant="body2">
+            アカウントをお持ちでないですか？{' '}
+            <Link href="/sign_up" passHref>
+              <Typography
+                component="span"
+                sx={{
+                  color: 'blue',
+                  cursor: 'pointer',
+                  textDecoration: 'underline',
+                }}
+              >
+                新規登録はこちら
+              </Typography>
+            </Link>
+          </Typography>
+        </Box>
       </Container>
     </Box>
   )

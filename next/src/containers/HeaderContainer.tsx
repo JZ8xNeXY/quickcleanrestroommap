@@ -39,7 +39,7 @@ const HeaderContainer = () => {
     { text: '利用規約', href: '/termsofuse' },
     { text: 'プライバシーポリシー', href: '/privacypolicy' },
     ...(currentUser?.id
-      ? [{ text: 'ログアウト', href: '/sign_out' }]
+      ? [{ text: 'サインアウト', href: '/sign_out' }]
       : [{ text: 'サインイン', href: '/sign_in' }]),
   ]
 
