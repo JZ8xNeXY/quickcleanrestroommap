@@ -26,7 +26,7 @@ const mockHeaderProps = {
 }
 
 describe('Header', () => {
-  it('should not display "ログイン中" when user is not signed in', () => {
+  it('should display "ログインアイコン" when user is not signed in', () => {
     render(
       <SessionProvider>
         <RestroomProvider>
@@ -34,8 +34,8 @@ describe('Header', () => {
         </RestroomProvider>
       </SessionProvider>,
     )
-    const adminText = screen.queryByText('ログイン中')
-    expect(adminText).not.toBeInTheDocument()
+
+    expect(screen.getByTestId('LoginIcon')).toBeInTheDocument()
   })
 
   it('should display "ログイン中" when user is signed in', () => {
@@ -56,7 +56,8 @@ describe('Header', () => {
         </RestroomProvider>
       </SessionProvider>,
     )
-    expect(screen.getByText('ログイン中')).toBeInTheDocument()
+
+    expect(screen.queryByTestId('LoginIcon')).not.toBeInTheDocument()
   })
 
   it('should display "Icon"', () => {

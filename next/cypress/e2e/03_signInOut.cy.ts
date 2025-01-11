@@ -15,10 +15,10 @@ describe('SignIn', () => {
     const password = Cypress.env('password')
 
     signIn(email, password)
-    cy.contains('ログイン中')
+    cy.get('[data-testid="LoginIcon"]').should('not.exist')
 
     signOut()
-    cy.contains('ログイン中').should('not.exist')
+    cy.get('[data-testid="LoginIcon"]').should('be.visible')
   })
   it('should not log in with invalid credentials', () => {
     const email = Cypress.env('email')

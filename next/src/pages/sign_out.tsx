@@ -21,7 +21,8 @@ const SignOut: NextPage = () => {
           isSignedIn: false,
           isFetched: true,
         })
-        router.push('/')
+        // 強制リロードを伴う遷移
+        window.location.assign('/')
       }
     }
 

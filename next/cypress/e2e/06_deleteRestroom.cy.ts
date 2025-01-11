@@ -17,7 +17,6 @@ describe('deleteRestroom', () => {
     }
 
     signIn(email, password)
-    cy.contains('ログイン中')
 
     cy.get(`gmp-advanced-marker[aria-label="${deleteRestroomData.name}"]`)
       .should('be.visible')

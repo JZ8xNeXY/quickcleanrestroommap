@@ -25,7 +25,6 @@ describe('editRestroom', () => {
     const password = Cypress.env('password')
 
     signIn(email, password)
-    cy.contains('ログイン中')
 
     cy.get(`gmp-advanced-marker[aria-label="${updatedData.originalName}"]`)
       .should('be.visible')

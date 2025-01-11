@@ -1,4 +1,5 @@
 import AddLocationIcon from '@mui/icons-material/AddLocation'
+import LoginIcon from '@mui/icons-material/Login'
 import MenuIcon from '@mui/icons-material/Menu'
 import AddressSearchIcon from '@mui/icons-material/Search'
 import {
@@ -114,7 +115,6 @@ const Header: React.FC<HeaderProps> = ({
                 </Box>
               </Link>
             </Box>
-            <Box>{user && <Box sx={{ ml: 10 }}>ログイン中 </Box>}</Box>
           </Box>
           <Box>
             <Toolbar>
@@ -151,6 +151,24 @@ const Header: React.FC<HeaderProps> = ({
                     fontSize: '35px',
                   }}
                 />
+              </IconButton>
+              <IconButton
+                edge="start"
+                color="inherit"
+                aria-label="menu"
+                onClick={() => {
+                  router.push('/sign_in')
+                }}
+              >
+                {!user?.id && (
+                  <LoginIcon
+                    style={{
+                      cursor: 'pointer',
+                      stroke: 'none',
+                      fontSize: '35px',
+                    }}
+                  />
+                )}
               </IconButton>
             </Toolbar>
             <AddressSearchContainer

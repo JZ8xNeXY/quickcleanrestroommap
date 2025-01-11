@@ -19,10 +19,10 @@ describe('SignUp', () => {
 
     signUp(email, password)
 
-    cy.contains('ログイン中')
+    cy.get('[data-testid="LoginIcon"]').should('not.exist')
 
     signOut()
 
-    cy.contains('ログイン中').should('not.exist')
+    cy.get('[data-testid="LoginIcon"]').should('be.visible')
   })
 })

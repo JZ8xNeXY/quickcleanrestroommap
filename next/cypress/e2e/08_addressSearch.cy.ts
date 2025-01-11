@@ -2,7 +2,7 @@ describe('addressSearch', () => {
   it('should search address', () => {
     cy.visit(Cypress.env('baseUrl'))
 
-    cy.get('button[aria-label="menu"]').eq(1).click()
+    cy.get('[data-testid="SearchIcon"]').click()
     cy.get('h2').contains('地名から検索する')
 
     cy.get('input[name="addressSearch"]').type('池袋')
