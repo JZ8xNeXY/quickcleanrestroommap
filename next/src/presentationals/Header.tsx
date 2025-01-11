@@ -115,7 +115,6 @@ const Header: React.FC<HeaderProps> = ({
                 </Box>
               </Link>
             </Box>
-            <Box>{user && <Box sx={{ ml: 10 }}>ログイン中 </Box>}</Box>
           </Box>
           <Box>
             <Toolbar>
@@ -161,13 +160,15 @@ const Header: React.FC<HeaderProps> = ({
                   router.push('/sign_in')
                 }}
               >
-                <LoginIcon
-                  style={{
-                    cursor: 'pointer',
-                    stroke: 'none',
-                    fontSize: '35px',
-                  }}
-                />
+                {!user?.id && (
+                  <LoginIcon
+                    style={{
+                      cursor: 'pointer',
+                      stroke: 'none',
+                      fontSize: '35px',
+                    }}
+                  />
+                )}
               </IconButton>
             </Toolbar>
             <AddressSearchContainer
