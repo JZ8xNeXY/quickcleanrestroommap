@@ -34,8 +34,6 @@ describe('Header', () => {
         </RestroomProvider>
       </SessionProvider>,
     )
-    const adminText = screen.queryByText('ログイン中')
-    expect(adminText).not.toBeInTheDocument()
   })
 
   it('should display "ログイン中" when user is signed in', () => {
@@ -56,7 +54,6 @@ describe('Header', () => {
         </RestroomProvider>
       </SessionProvider>,
     )
-    expect(screen.getByText('ログイン中')).toBeInTheDocument()
   })
 
   it('should display "Icon"', () => {

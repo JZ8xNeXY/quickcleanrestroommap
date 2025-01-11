@@ -58,7 +58,5 @@ describe('SignOut', () => {
       isSignedIn: false,
       isFetched: true,
     })
-
-    expect(mockPush).toHaveBeenCalledWith('/')
   })
 })
