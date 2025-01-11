@@ -1,4 +1,5 @@
 import AddLocationIcon from '@mui/icons-material/AddLocation'
+import LoginIcon from '@mui/icons-material/Login'
 import MenuIcon from '@mui/icons-material/Menu'
 import AddressSearchIcon from '@mui/icons-material/Search'
 import {
@@ -145,6 +146,22 @@ const Header: React.FC<HeaderProps> = ({
                 }}
               >
                 <AddLocationIcon
+                  style={{
+                    cursor: 'pointer',
+                    stroke: 'none',
+                    fontSize: '35px',
+                  }}
+                />
+              </IconButton>
+              <IconButton
+                edge="start"
+                color="inherit"
+                aria-label="menu"
+                onClick={() => {
+                  router.push('/sign_in')
+                }}
+              >
+                <LoginIcon
                   style={{
                     cursor: 'pointer',
                     stroke: 'none',
