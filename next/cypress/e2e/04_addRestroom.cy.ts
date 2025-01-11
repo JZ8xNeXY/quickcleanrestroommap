@@ -8,7 +8,7 @@ const signIn = (email: string, password: string) => {
 }
 
 const openAddRestroomModal = () => {
-  cy.get('button[aria-label="menu"]').eq(2).click()
+  cy.get('[data-testid="AddLocationIcon"]').click()
   cy.get('h2').contains('トイレ情報を登録する')
 }
 
@@ -29,15 +29,14 @@ describe('AddRestroom', () => {
     const password = Cypress.env('password')
 
     signIn(email, password)
-    cy.contains('ログイン中')
+
+    cy.wait(1000)
 
     openAddRestroomModal()
 
     fillRestroomForm(restroomData)
 
     cy.get('button[type="submit"]').click()
-
-    cy.contains('ログイン中')
 
     cy.get(
       `gmp-advanced-marker[aria-label="${restroomData.originalName}"]`,
