@@ -2,6 +2,7 @@ import { CacheProvider, EmotionCache } from '@emotion/react'
 import CssBaseline from '@mui/material/CssBaseline'
 import { ThemeProvider } from '@mui/material/styles'
 import { AppProps } from 'next/app'
+import Head from 'next/head'
 import { useRouter } from 'next/router'
 import Script from 'next/script'
 import { useEffect } from 'react'
@@ -39,6 +40,26 @@ export default function MyApp(props: MyAppProps): JSX.Element {
 
   return (
     <>
+      <Head>
+        <meta
+          property="og:title"
+          content="Quick Clean Restroom Map -最寄りの綺麗なトイレを探そう-"
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://quickcleanrestrooms.com/" />
+        <meta
+          property="og:image"
+          content="https://quickcleanrestrooms.com/logo.png"
+        />
+        <meta
+          property="og:description"
+          content="GPS機能で最寄りの綺麗なトイレを探そう"
+        />
+        <meta property="og:site_name" content="Quick Clean Restroom Map" />
+        {/* ファビコンの設定 */}
+        <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+      </Head>
       <Script
         strategy="afterInteractive"
         src={`https://www.googletagmanager.com/gtag/js?id=${gtag.GA_MEASUREMENT_ID}`}
