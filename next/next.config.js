@@ -27,6 +27,18 @@ module.exports = {
               .replace(/\s{2,}/g, " ")
               .trim(),
           },
+          {
+            key: "Strict-Transport-Security",
+            value: "max-age=63072000; includeSubDomains; preload", // HSTSを設定
+          },
+          {
+            key: "X-Frame-Options",
+            value: "SAMEORIGIN", // iframe埋め込みを制限
+          },
+          {
+            key: "X-Content-Type-Options",
+            value: "nosniff", // MIMEタイプのスニッフィングを防止
+          },
         ],
       },
     ];
