@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor, act } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { RestroomProvider } from '@/context/RestRoomContext'
 import { SessionProvider } from '@/context/SessionContext'
@@ -26,19 +26,21 @@ const mockHeaderProps = {
 }
 
 describe('Header', () => {
-  it('should display "ログインアイコン" when user is not signed in', () => {
-    render(
-      <SessionProvider>
-        <RestroomProvider>
-          <Header {...mockHeaderProps} />
-        </RestroomProvider>
-      </SessionProvider>,
-    )
+  it('should display "ログインアイコン" when user is not signed in', async () => {
+    await act(async () => {
+      render(
+        <SessionProvider>
+          <RestroomProvider>
+            <Header {...mockHeaderProps} />
+          </RestroomProvider>
+        </SessionProvider>,
+      )
+    })
 
     expect(screen.getByTestId('LoginIcon')).toBeInTheDocument()
   })
 
-  it('should display "ログイン中" when user is signed in', () => {
+  it('should display "ログイン中" when user is signed in', async () => {
     const signedInUser = {
       id: '1',
       email: 'admin@example.com',
@@ -49,25 +51,30 @@ describe('Header', () => {
       aud: 'authenticated',
       created_at: '2023-01-01T00:00:00Z',
     }
-    render(
-      <SessionProvider>
-        <RestroomProvider>
-          <Header {...mockHeaderProps} user={signedInUser} />
-        </RestroomProvider>
-      </SessionProvider>,
-    )
+    await act(async () => {
+      render(
+        <SessionProvider>
+          <RestroomProvider>
+            <Header {...mockHeaderProps} user={signedInUser} />
+          </RestroomProvider>
+        </SessionProvider>,
+      )
+    })
 
     expect(screen.queryByTestId('LoginIcon')).not.toBeInTheDocument()
   })
 
-  it('should display "Icon"', () => {
-    render(
-      <SessionProvider>
-        <RestroomProvider>
-          <Header {...mockHeaderProps} />
-        </RestroomProvider>
-      </SessionProvider>,
-    )
+  it('should display "Icon"', async () => {
+    await act(async () => {
+      render(
+        <SessionProvider>
+          <RestroomProvider>
+            <Header {...mockHeaderProps} />
+          </RestroomProvider>
+        </SessionProvider>,
+      )
+    })
+
     const menuButtons = screen.getAllByLabelText('menu')
     const menuButton = menuButtons[0]
     expect(menuButton).toBeInTheDocument()

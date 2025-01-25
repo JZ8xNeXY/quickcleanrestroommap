@@ -6,7 +6,6 @@ import React, {
   useEffect,
 } from 'react'
 import { User } from '@/interface/userInterface'
-import { supabase } from '@/utils/supabase'
 
 interface SessionContextProps {
   currentUser: User | null
