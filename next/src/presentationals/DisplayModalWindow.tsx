@@ -138,7 +138,7 @@ const DisplayModalWindow: React.FC<DisplayModalWindowProps> = ({
           <Button
             variant="contained"
             color="primary"
-            href="https://docs.google.com/forms/d/e/1FAIpQLSekveKygTBRldu2AcRV97sUq5RXS7K4qq_k0DLKuT_Skcv48g/viewform"
+            href="https://forms.gle/1iJ3NJXDwybWpZuh9"
             target="_blank"
             sx={defaultButtonStyle}
           >

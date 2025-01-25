@@ -34,7 +34,7 @@ const HeaderContainer = () => {
     { text: '紹介', href: '/about' },
     {
       text: 'お問い合わせ',
-      href: 'https://docs.google.com/forms/d/e/1FAIpQLSdZwE2uS1wUDa9NQyJU8yIpv_Qq04WzVAZm5CxNnLrVLtuLKg/viewform',
+      href: 'https://forms.gle/1iJ3NJXDwybWpZuh9',
     },
     { text: '利用規約', href: '/termsofuse' },
     { text: 'プライバシーポリシー', href: '/privacypolicy' },
