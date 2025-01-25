@@ -100,6 +100,7 @@ const SignIn: NextPage = () => {
         isFetched: true,
         isSignedIn: !!user,
       })
+
       router.push('/')
     } catch (e: unknown) {
       setIsLoading(false)
