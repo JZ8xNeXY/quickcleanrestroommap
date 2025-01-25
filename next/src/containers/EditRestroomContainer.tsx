@@ -1,14 +1,13 @@
-import { useState,useEffect, useRef, MutableRefObject } from 'react'
+import { useState, useEffect, useRef, MutableRefObject } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { mutate } from 'swr'
-import { supabase } from '../utils/supabase'
 import { useRestroomContext } from '@/context/RestRoomContext'
+import { useSessionContext } from '@/context/SessionContext'
 import {
   AddRestroomFormData,
   AddRestroomProps,
 } from '@/interface/addRestroomFormDataInterface'
 import EditRestroom from '@/presentationals/EditRestroom'
-import { useSessionContext } from '@/context/SessionContext'
 
 interface EditRestroomFormData extends AddRestroomFormData {
   id: number
@@ -20,7 +19,7 @@ const EditRestroomContainer: React.FC<AddRestroomProps> = ({
 }) => {
   const { selectedRestroom } = useRestroomContext()
 
-  const { register, handleSubmit, control, reset,setValue } =
+  const { register, handleSubmit, control, reset, setValue } =
     useForm<EditRestroomFormData>()
 
   const fileInput = useRef<HTMLInputElement>(
@@ -37,7 +36,6 @@ const EditRestroomContainer: React.FC<AddRestroomProps> = ({
     if (currentUser?.id) {
       setValue('userId', currentUser.id)
     }
-   
   }, [currentUser?.id, setValue])
 
   const resetModal = () => {
@@ -118,23 +116,22 @@ const EditRestroomContainer: React.FC<AddRestroomProps> = ({
         stroller_accessible:
           data.stroller_accessible ?? selectedRestroom.strollerAccessible,
         image: imageS3Url || selectedRestroom.image,
-        user_id:  currentUser?.id,
+        user_id: currentUser?.id,
       }
 
       try {
-          const response = await fetch('/api/editPost', {
+        await fetch('/api/editPost', {
           method: 'PATCH',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(postData),
-        });
-      
-   
-        await mutate('fetchPosts');
-        resetModal();
+        })
+
+        await mutate('fetchPosts')
+        resetModal()
       } catch (error) {
-        console.error('Request failed:', error);
+        console.error('Request failed:', error)
       }
     }
   }
@@ -162,13 +159,13 @@ const EditRestroomContainer: React.FC<AddRestroomProps> = ({
         },
         body: JSON.stringify({ id: selectedRestroom.id }),
       })
-  
+
       if (!response.ok) {
         const error = await response.json()
         throw new Error(error.error)
       }
-  
-      await mutate('fetchPosts') // キャッシュの更新
+
+      await mutate('fetchPosts')
       resetModal()
       return true
     } catch (error) {

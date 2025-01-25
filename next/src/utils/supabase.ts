@@ -16,5 +16,4 @@ export const supabase = createClient(supabaseUrl, supabaseKey, {
     detectSessionInUrl: true, // URL のトークンを自動処理
     autoRefreshToken: true, // トークンを自動リフレッシュ
   },
- 
-});
+})
