@@ -22,7 +22,7 @@ export default async function handler(
     throw new Error('Access token is missing or invalid.')
   }
 
-  const supabase = createClient(supabaseUrl, supabaseKey, {
+  const supabase = createClient(supabaseUrl as string, supabaseKey as string, {
     global: {
       headers: {
         Authorization: `Bearer ${token}`, // token を使用
