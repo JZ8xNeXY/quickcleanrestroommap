@@ -1,4 +1,4 @@
-import { useState, useRef, MutableRefObject } from 'react'
+import { useState,useEffect, useRef, MutableRefObject } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { mutate } from 'swr'
 import { supabase } from '../utils/supabase'
@@ -8,6 +8,7 @@ import {
   AddRestroomProps,
 } from '@/interface/addRestroomFormDataInterface'
 import EditRestroom from '@/presentationals/EditRestroom'
+import { useSessionContext } from '@/context/SessionContext'
 
 interface EditRestroomFormData extends AddRestroomFormData {
   id: number
@@ -19,7 +20,7 @@ const EditRestroomContainer: React.FC<AddRestroomProps> = ({
 }) => {
   const { selectedRestroom } = useRestroomContext()
 
-  const { register, handleSubmit, control, reset } =
+  const { register, handleSubmit, control, reset,setValue } =
     useForm<EditRestroomFormData>()
 
   const fileInput = useRef<HTMLInputElement>(
@@ -29,6 +30,15 @@ const EditRestroomContainer: React.FC<AddRestroomProps> = ({
   const [fileName, setFileName] = useState('')
   const [imageData, setImageData] = useState('')
   const [imageS3Url, setImageS3Url] = useState<string | null>(null)
+
+  const { currentUser } = useSessionContext()
+
+  useEffect(() => {
+    if (currentUser?.id) {
+      setValue('userId', currentUser.id)
+    }
+   
+  }, [currentUser?.id, setValue])
 
   const resetModal = () => {
     reset()
@@ -108,24 +118,23 @@ const EditRestroomContainer: React.FC<AddRestroomProps> = ({
         stroller_accessible:
           data.stroller_accessible ?? selectedRestroom.strollerAccessible,
         image: imageS3Url || selectedRestroom.image,
+        user_id:  currentUser?.id,
       }
 
       try {
-        const { error, status } = await supabase
-          .from('posts')
-          .update(postData)
-          .eq('id', selectedRestroom.id)
-
-        if (error) {
-          console.error('Supabase Error:', error)
-          console.error('Status Code:', status)
-          throw new Error(error.message)
-        }
-
-        await mutate('fetchPosts')
-        resetModal()
+          const response = await fetch('/api/editPost', {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(postData),
+        });
+      
+   
+        await mutate('fetchPosts');
+        resetModal();
       } catch (error) {
-        console.error('Request failed:', error)
+        console.error('Request failed:', error);
       }
     }
   }
@@ -145,14 +154,27 @@ const EditRestroomContainer: React.FC<AddRestroomProps> = ({
   }
 
   const onDelete = async () => {
-    const { error } = await supabase
-      .from('posts')
-      .delete()
-      .eq('id', selectedRestroom.id)
-    await mutate('fetchPosts')
-    resetModal()
-    if (error != null) throw new Error(error.message)
-    return true
+    try {
+      const response = await fetch('/api/deletePost', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id: selectedRestroom.id }),
+      })
+  
+      if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error.error)
+      }
+  
+      await mutate('fetchPosts') // キャッシュの更新
+      resetModal()
+      return true
+    } catch (error) {
+      console.error('Failed to delete post:', error)
+      return false
+    }
   }
 
   return (

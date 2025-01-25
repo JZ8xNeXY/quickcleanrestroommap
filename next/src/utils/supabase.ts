@@ -9,4 +9,12 @@ if (!supabaseUrl || !supabaseKey) {
   throw new Error('Missing Supabase URL or API Key')
 }
 
-export const supabase = createClient(supabaseUrl, supabaseKey)
+// Supabaseクライアントの初期化
+export const supabase = createClient(supabaseUrl, supabaseKey, {
+  auth: {
+    persistSession: true, // セッションを永続化
+    detectSessionInUrl: true, // URL のトークンを自動処理
+    autoRefreshToken: true, // トークンを自動リフレッシュ
+  },
+ 
+});
