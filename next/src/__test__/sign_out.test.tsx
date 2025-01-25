@@ -13,6 +13,15 @@ beforeEach(() => {
     },
     writable: true,
   })
+
+  global.fetch = jest.fn().mockResolvedValue({
+    ok: true,
+    json: async () => ({ message: 'Signed out successfully' }),
+  })
+})
+
+afterEach(() => {
+  jest.clearAllMocks()
 })
 
 jest.mock('@/utils/supabase', () => ({
@@ -29,6 +38,13 @@ jest.mock('next/router', () => ({
 
 jest.mock('@/utils/useGlobalState', () => ({
   useUserState: jest.fn(),
+}))
+
+jest.mock('@/pages/api/signOut', () => ({
+  default: jest.fn().mockResolvedValue({
+    status: 200,
+    json: jest.fn().mockResolvedValue({ message: 'Signed out successfully' }),
+  }),
 }))
 
 describe('SignOut', () => {
@@ -49,8 +65,11 @@ describe('SignOut', () => {
     await waitFor(() => {
       expect(supabase.auth.signOut).toHaveBeenCalled()
     })
-
-    expect(localStorage.clear).toHaveBeenCalledTimes(1)
+    await waitFor(() => {
+      expect(fetch).toHaveBeenCalledWith('/api/signOut', {
+        method: 'POST',
+      })
+    })
 
     expect(setUserMock).toHaveBeenCalledWith({
       userUid: '0',

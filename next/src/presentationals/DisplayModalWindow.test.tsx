@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker'
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor, act } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import { userEvent } from '@testing-library/user-event'
 import { SessionProvider } from '@/context/SessionContext'
@@ -50,12 +50,14 @@ beforeEach(() => {
 })
 
 describe('Modal', () => {
-  it('should display modal when is sign out', () => {
-    render(
-      <SessionProvider>
-        <DisplayModalWindow {...mockDisplayModalWindowProps} />
-      </SessionProvider>,
-    )
+  it('should display modal when is sign out', async () => {
+    await act(async () => {
+      render(
+        <SessionProvider>
+          <DisplayModalWindow {...mockDisplayModalWindowProps} />
+        </SessionProvider>,
+      )
+    })
 
     const closeButton = screen.getByTestId('CloseIcon')
     expect(closeButton).toBeInTheDocument()
@@ -103,7 +105,7 @@ describe('Modal', () => {
     expect(screen.getByText('お問い合わせはこちら ＞')).toBeInTheDocument()
   })
 
-  it('should display modal when is sign in', () => {
+  it('should display modal when is sign in', async () => {
     const signedInUser = {
       id: 1,
       email: 'admin@example.com',
@@ -115,15 +117,17 @@ describe('Modal', () => {
       created_at: '2023-01-01T00:00:00Z',
     }
 
-    render(
-      <SessionProvider>
-        <DisplayModalWindow
-          {...mockDisplayModalWindowProps}
-          user={signedInUser}
-        />
-        ,
-      </SessionProvider>,
-    )
+    await act(async () => {
+      render(
+        <SessionProvider>
+          <DisplayModalWindow
+            {...mockDisplayModalWindowProps}
+            user={signedInUser}
+          />
+          ,
+        </SessionProvider>,
+      )
+    })
 
     const closeButton = screen.getByTestId('CloseIcon')
     expect(closeButton).toBeInTheDocument()
@@ -171,7 +175,7 @@ describe('Modal', () => {
     expect(screen.getByText('お問い合わせはこちら ＞')).toBeInTheDocument()
   })
 
-  it('should display "授乳室" when nursingRoom is true', () => {
+  it('should display "授乳室" when nursingRoom is true', async () => {
     render(
       <DisplayModalWindow
         {...mockDisplayModalWindowProps}

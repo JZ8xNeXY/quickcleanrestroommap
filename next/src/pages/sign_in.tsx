@@ -16,7 +16,6 @@ import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { useForm, SubmitHandler, Controller } from 'react-hook-form'
 import { useSessionContext } from '@/context/SessionContext'
-import { supabase } from '@/utils/supabase'
 import { useUserState } from '@/utils/useGlobalState'
 
 type SignInFormData = {
@@ -69,6 +68,7 @@ const SignIn: NextPage = () => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ email, password }),
+      credentials: 'include', // Cookieを送信
     })
 
     const result = await response.json()
@@ -77,17 +77,7 @@ const SignIn: NextPage = () => {
       throw new Error(result.error || 'サインインに失敗しました')
     }
 
-    // ローカルストレージにトークンを保存
-    const { session, user } = result
-    localStorage.setItem('accessToken', session.access_token)
-    localStorage.setItem('refreshToken', session.refresh_token)
-    localStorage.setItem('expiresAt', session.expires_at)
-
-    // Supabaseセッションを設定
-    await supabase.auth.setSession({
-      access_token: session.access_token,
-      refresh_token: session.refresh_token,
-    })
+    const { user } = result
 
     setUser({
       ...user,
@@ -110,6 +100,7 @@ const SignIn: NextPage = () => {
         isFetched: true,
         isSignedIn: !!user,
       })
+
       router.push('/')
     } catch (e: unknown) {
       setIsLoading(false)

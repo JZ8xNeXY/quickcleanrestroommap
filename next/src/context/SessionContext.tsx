@@ -6,7 +6,6 @@ import React, {
   useEffect,
 } from 'react'
 import { User } from '@/interface/userInterface'
-import { supabase } from '@/utils/supabase'
 
 interface SessionContextProps {
   currentUser: User | null
@@ -22,28 +21,29 @@ export const SessionProvider: React.FC<{ children: ReactNode }> = ({
 
   useEffect(() => {
     const getCurrentUser = async () => {
-      const { data, error } = await supabase.auth.getUser()
-      if (error) {
-        return
+      try {
+        const response = await fetch('/api/getUser', {
+          method: 'GET',
+          credentials: 'include',
+        })
+        if (response.ok) {
+          const user = await response.json()
+          setCurrentUser({
+            ...user,
+            userUid: String(user.id),
+            email: user.email || '',
+            isFetched: true,
+            isSignedIn: true,
+          })
+        } else {
+          setCurrentUser(null)
+        }
+      } catch (error) {
+        console.error('Error fetching user:', error)
       }
-      setCurrentUser({
-        ...data.user,
-        userUid: String(data.user?.id),
-        email: data.user?.email || '',
-        isFetched: true,
-        isSignedIn: !!data.user,
-      })
     }
     getCurrentUser()
   }, [])
-
-  useEffect(() => {
-    if (currentUser) {
-      localStorage.setItem('currentUser', JSON.stringify(currentUser))
-    } else {
-      localStorage.removeItem('currentUser')
-    }
-  }, [currentUser])
 
   return (
     <SessionContext.Provider value={{ currentUser, setCurrentUser }}>
