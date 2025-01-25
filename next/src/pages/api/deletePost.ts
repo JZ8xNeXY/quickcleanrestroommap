@@ -16,7 +16,11 @@ export default async function handler(
     return res.status(405).json({ error: 'Method not allowed' })
   }
 
-  const token = req.cookies['accessToken']
+  const token = req.cookies['accessToken'] as string;; 
+
+  if (!token) {
+    throw new Error('Access token is missing.');
+  }
 
   const supabase = createClient(supabaseUrl, supabaseKey, {
     global: {
