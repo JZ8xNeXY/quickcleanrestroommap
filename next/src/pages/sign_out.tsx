@@ -14,13 +14,17 @@ const SignOut: NextPage = () => {
       if (error != null) {
         console.error('Error signing out:', error.message)
       } else {
-        localStorage.clear()
-        setUser({
-          userUid: '0',
-          email: '',
-          isSignedIn: false,
-          isFetched: true,
+        const response = await fetch('/api/signOut', {
+          method: 'POST',
         })
+        if (response.ok) {
+          setUser({
+            userUid: '0',
+            email: '',
+            isSignedIn: false,
+            isFetched: true,
+          })
+        }
         // 強制リロードを伴う遷移
         window.location.assign('/')
       }
