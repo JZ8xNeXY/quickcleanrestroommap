@@ -112,13 +112,19 @@ const AddMarkersContainer: NextPage<AddMarkersProps> = ({
         })
 
         class CustomClusterRenderer extends DefaultRenderer {
-          getColor(count) {
+          getColor(count: number) {
             if (count >= 10) return 'red'
             if (count >= 5) return 'orange'
             return 'blue'
           }
 
-          render({ count, position }) {
+          render({
+            count,
+            position,
+          }: {
+            count: number
+            position: google.maps.LatLng
+          }) {
             const color = this.getColor(count)
             const svg = window.btoa(`
               <svg fill="${color}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240">
@@ -151,7 +157,6 @@ const AddMarkersContainer: NextPage<AddMarkersProps> = ({
             map,
             markers,
             renderer: new CustomClusterRenderer(),
-            maxZoom: 15,
           })
         }
       }
