@@ -1,3 +1,4 @@
+import { MarkerClusterer, DefaultRenderer } from '@googlemaps/markerclusterer'
 import camelcaseKeys from 'camelcase-keys'
 import type { NextPage } from 'next'
 import { useEffect, useState, useRef, useCallback } from 'react'
@@ -31,6 +32,7 @@ const AddMarkersContainer: NextPage<AddMarkersProps> = ({
 
   //状態の不要な更新を防ぐ
   const markersRef = useRef<google.maps.marker.AdvancedMarkerElement[]>([])
+  const clustererRef = useRef<MarkerClusterer | null>(null)
 
   const fetchPosts = async () => {
     const { data, error } = await supabase.from('posts').select('*')
@@ -68,6 +70,8 @@ const AddMarkersContainer: NextPage<AddMarkersProps> = ({
           'marker',
         )) as google.maps.MarkerLibrary
 
+        const markers: google.maps.marker.AdvancedMarkerElement[] = []
+
         restrooms.forEach((restroom) => {
           const restroomImg = document.createElement('img')
           restroomImg.src = '/restroom.png'
@@ -102,9 +106,54 @@ const AddMarkersContainer: NextPage<AddMarkersProps> = ({
               userId: restroom.userId,
             })
           })
+          markers.push(marker)
 
           markersRef.current.push(marker)
         })
+
+        class CustomClusterRenderer extends DefaultRenderer {
+          getColor(count) {
+            if (count >= 10) return 'red'
+            if (count >= 5) return 'orange'
+            return 'blue'
+          }
+
+          render({ count, position }, stats) {
+            const color = this.getColor(count)
+            const svg = window.btoa(`
+              <svg fill="${color}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240">
+                <circle cx="120" cy="120" opacity=".8" r="70" />
+              </svg>
+            `)
+
+            return new google.maps.Marker({
+              position,
+              icon: {
+                url: `data:image/svg+xml;base64,${svg}`,
+                scaledSize: new google.maps.Size(100, 100),
+              },
+              label: {
+                text: String(count),
+                color: 'rgba(255,255,255,0.9)',
+                fontSize: '12px',
+              },
+              zIndex: Number(google.maps.Marker.MAX_ZINDEX) + count,
+            })
+          }
+        }
+
+        if (map && markers.length) {
+          if (clustererRef.current) {
+            clustererRef.current.clearMarkers()
+          }
+
+          clustererRef.current = new MarkerClusterer({
+            map,
+            markers,
+            renderer: new CustomClusterRenderer(),
+            maxZoom: 15,
+          })
+        }
       }
     }
 
