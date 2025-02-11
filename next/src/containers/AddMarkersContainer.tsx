@@ -84,6 +84,7 @@ const AddMarkersContainer: NextPage<AddMarkersProps> = ({
             position: { lat: restroom.latitude, lng: restroom.longitude },
             title: restroom.name,
             content: restroomImg,
+            zIndex: 0,
           })
 
           marker.addListener('gmp-click', function () {
@@ -118,6 +119,22 @@ const AddMarkersContainer: NextPage<AddMarkersProps> = ({
             return 'blue'
           }
 
+          getSize(count: number): number {
+            if (count >= 50) return 180
+            if (count >= 20) return 160
+            if (count >= 10) return 140
+            if (count >= 5) return 120
+            return 100
+          }
+
+          getFontSize(count: number): string {
+            if (count >= 50) return '70px'
+            if (count >= 20) return '50px'
+            if (count >= 10) return '40px'
+            if (count >= 5) return '30px'
+            return '20px'
+          }
+
           render({
             count,
             position,
@@ -126,9 +143,12 @@ const AddMarkersContainer: NextPage<AddMarkersProps> = ({
             position: google.maps.LatLng
           }) {
             const color = this.getColor(count)
+            const size = this.getSize(count)
+            const fontSize = this.getFontSize(count)
+
             const svg = window.btoa(`
               <svg fill="${color}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240">
-                <circle cx="120" cy="120" opacity=".8" r="70" />
+                <circle cx="120" cy="120" opacity=".6" r="70" />
               </svg>
             `)
 
@@ -136,14 +156,15 @@ const AddMarkersContainer: NextPage<AddMarkersProps> = ({
               position,
               icon: {
                 url: `data:image/svg+xml;base64,${svg}`,
-                scaledSize: new google.maps.Size(100, 100),
+                scaledSize: new google.maps.Size(size, size),
               },
               label: {
                 text: String(count),
                 color: 'rgba(255,255,255,0.9)',
-                fontSize: '12px',
+                fontSize: fontSize,
+                fontWeight: 'bold',
               },
-              zIndex: Number(google.maps.Marker.MAX_ZINDEX + 1000) + count,
+              zIndex: Number(google.maps.Marker.MAX_ZINDEX) + count,
             })
           }
         }

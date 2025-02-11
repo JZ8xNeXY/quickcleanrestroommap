@@ -25,6 +25,7 @@ export const userGeoLocation = ({
       position,
       title: 'Your Location',
       content: userPosImg,
+      zIndex: 1,
     })
 
     setCurrentUserPos(position)
