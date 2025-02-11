@@ -137,7 +137,7 @@ const AddMarkersContainer: NextPage<AddMarkersProps> = ({
                 color: 'rgba(255,255,255,0.9)',
                 fontSize: '12px',
               },
-              zIndex: Number(google.maps.Marker.MAX_ZINDEX) + count,
+              zIndex: Number(google.maps.Marker.MAX_ZINDEX + 1000) + count,
             })
           }
         }
