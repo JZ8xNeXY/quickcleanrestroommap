@@ -8,8 +8,10 @@ export default async function handler(
   if (req.method === 'GET') {
     const token = req.cookies.accessToken
     if (!token) {
-      res.status(401).json({ error: 'Unauthorized: No access token provided' })
-      return // ❗ `return` を追加して関数を終了
+      // res.status(401).json({ error: 'Unauthorized: No access token provided' })
+      return res
+        .status(401)
+        .json({ error: 'Unauthorized: No access token provided' })
     }
 
     try {
