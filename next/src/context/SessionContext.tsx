@@ -22,6 +22,17 @@ export const SessionProvider: React.FC<{ children: ReactNode }> = ({
   useEffect(() => {
     const getCurrentUser = async () => {
       try {
+        const tokenResponse = await fetch('/api/getToken', {
+          method: 'GET',
+          credentials: 'include',
+        })
+        const tokenData = await tokenResponse.json()
+
+        if (!tokenData.hasToken) {
+          console.warn('No token found. Skipping API call.')
+          return //
+        }
+
         const response = await fetch('/api/getUser', {
           method: 'GET',
           credentials: 'include',

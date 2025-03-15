@@ -8,7 +8,10 @@ export default async function handler(
   if (req.method === 'GET') {
     const token = req.cookies.accessToken
     if (!token) {
-      return res.status(401).json({ error: 'Unauthorized' })
+      // res.status(401).json({ error: 'Unauthorized: No access token provided' })
+      return res
+        .status(401)
+        .json({ error: 'Unauthorized: No access token provided' })
     }
 
     try {

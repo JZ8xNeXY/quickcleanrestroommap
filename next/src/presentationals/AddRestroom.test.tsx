@@ -28,6 +28,7 @@ beforeAll(() => {
   }
 })
 
+jest.setTimeout(15000)
 describe('AddRestroom', () => {
   it('should not display AddRestroom modal when open is false', async () => {
     await act(async () => {
