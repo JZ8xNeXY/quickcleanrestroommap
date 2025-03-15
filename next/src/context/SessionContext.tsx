@@ -1,3 +1,4 @@
+import Cookies from 'js-cookie'
 import React, {
   createContext,
   useContext,
@@ -21,6 +22,13 @@ export const SessionProvider: React.FC<{ children: ReactNode }> = ({
 
   useEffect(() => {
     const getCurrentUser = async () => {
+      const token = Cookies.get('accessToken')
+
+      if (!token) {
+        setCurrentUser(null)
+        return
+      }
+
       try {
         const response = await fetch('/api/getUser', {
           method: 'GET',
