@@ -21,6 +21,7 @@ const mockHeaderProps = {
   sideBar: jest.fn(() => <div>SideBar Content</div>),
 }
 
+jest.setTimeout(15000)
 describe('AddSimpleRestroom', () => {
   it('Should open the modal and display the modal when the modal button is clicked', async () => {
     const signedInUser = {

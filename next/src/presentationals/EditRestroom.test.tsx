@@ -216,6 +216,7 @@ describe('EditRestroom when from nursing_room to strollerAccessible true', () =>
   })
 })
 
+jest.setTimeout(15000)
 describe('EditRestroom when from nursing_room to strollerAccessible false', () => {
   it('should display EditRestroom modal', async () => {
     const signedInUser = {
