@@ -31,6 +31,7 @@ export default async function uploadToS3(
     const uploadURL = await s3.getSignedUrlPromise('putObject', params)
 
     res.status(200).json({ uploadURL })
+    console.log('📡 upload.status success')
   } catch (error) {
     console.error('Error generating upload URL:', error)
     res.status(500).json({ error: 'Error generating upload URL' })

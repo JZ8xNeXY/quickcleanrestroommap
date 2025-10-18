@@ -235,6 +235,7 @@ const AddSimpleRestroomContainer: React.FC<AddRestroomProps> = ({
 
       if (upload.ok) {
         const fileUrl = uploadURL.split('?')[0]
+        console.log('✅ Upload successful:', fileUrl)
         setImageS3Url(fileUrl)
       } else {
         console.error('File upload failed')

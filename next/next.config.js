@@ -20,7 +20,7 @@ module.exports = {
               script-src 'self' 'unsafe-inline' 'unsafe-eval' https://maps.googleapis.com https://maps.gstatic.com;
               style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
               img-src 'self' https://quickcleanrestroommap.s3.ap-northeast-1.amazonaws.com https://maps.gstatic.com data: https:;
-              connect-src 'self' https://wxprtdliozgiizvfejql.supabase.co https://maps.googleapis.com https://maps.gstatic.com;
+              connect-src 'self' https://wxprtdliozgiizvfejql.supabase.co https://maps.googleapis.com https://maps.gstatic.com https://quickcleanrestroommap.s3.ap-northeast-1.amazonaws.com;;
               frame-src 'self';
               font-src 'self' https://fonts.gstatic.com;
             `
