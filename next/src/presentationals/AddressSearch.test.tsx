@@ -74,11 +74,11 @@ describe('AddressSearch', () => {
 
     await waitFor(() => {
       expect(
-        screen.findByText('検索結果が見つかりませんでした'),
-      ).resolves.not.toBeInTheDocument()
+        screen.queryByText('検索結果が見つかりませんでした'),
+      ).not.toBeInTheDocument()
     })
   })
-  it('Should open the modal and display the modal when the modal button is clicked', async () => {
+  it('Should open the modal and display the modal when the modal button is clicked2', async () => {
     const signedInUser = {
       id: '1',
       email: 'admin@example.com',
@@ -129,11 +129,10 @@ describe('AddressSearch', () => {
     expect(submitButton).toBeInTheDocument()
     expect(submitButton).toHaveAttribute('type', 'submit')
 
-    //TODO テストの修正
-    // await waitFor(() => {
-    //   expect(
-    //     screen.findByText('検索結果が見つかりませんでした'),
-    //   ).resolves.toBeInTheDocument()
-    // })
+    await waitFor(() => {
+      expect(
+        screen.findByText('検索結果が見つかりませんでした'),
+      ).resolves.toBeInTheDocument()
+    })
   })
 })
