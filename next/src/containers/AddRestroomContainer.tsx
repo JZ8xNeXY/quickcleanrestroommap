@@ -152,6 +152,8 @@ const AddRestroomContainer: React.FC<AddRestroomPropsExtended> = ({
     const fileName = file.name
     const fileType = file.type
 
+    console.log('🟢 S3 Upload Start')
+
     try {
       const responseUploadFileToS3 = await fetch('/api/uploadToS3', {
         method: 'POST',
@@ -201,6 +203,7 @@ const AddRestroomContainer: React.FC<AddRestroomPropsExtended> = ({
     showImageFileName(files)
 
     const imageBase64 = await convertFileToBase64(file)
+    console.log('files')
     const isOk = await onChangeEvaluateToiletCleanness(imageBase64)
     if (isOk) {
       await onChangeUploadFileToS3(files)
