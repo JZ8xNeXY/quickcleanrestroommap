@@ -43,7 +43,7 @@ const AddMarkersContainer: NextPage<AddMarkersProps> = ({
   }
 
   // SWRを使ってデータをフェッチし、ウィンドウやタブのフォーカス時の再フェッチを無効化
-  const { data, error } = useSWR('fetchPosts', fetchPosts, {
+  const { data, error, mutate } = useSWR('fetchPosts', fetchPosts, {
     revalidateOnFocus: false,
   })
 
@@ -56,6 +56,30 @@ const AddMarkersContainer: NextPage<AddMarkersProps> = ({
   useEffect(() => {
     findCurrentLocation()
   }, [findCurrentLocation])
+
+  useEffect(() => {
+    const channel = supabase
+      .channel('posts-realtime')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'posts',
+        },
+        (payload) => {
+          if (process.env.NODE_ENV === 'development') {
+            console.log('Realtime:', payload)
+          }
+          mutate()
+        },
+      )
+      .subscribe()
+
+    return () => {
+      supabase.removeChannel(channel)
+    }
+  }, [mutate])
 
   useEffect(() => {
     const addMarkersToMap = async () => {
