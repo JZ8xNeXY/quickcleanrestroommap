@@ -74,10 +74,11 @@ describe('AddressSearch', () => {
 
     await waitFor(() => {
       expect(
-        screen.findByText('検索結果が見つかりませんでした'),
-      ).resolves.not.toBeInTheDocument()
+        screen.queryByText('検索結果が見つかりませんでした'),
+      ).not.toBeInTheDocument()
     })
   })
+
   it('Should open the modal and display the modal when the modal button is clicked', async () => {
     const signedInUser = {
       id: '1',
